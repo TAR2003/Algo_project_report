@@ -1781,7 +1781,7 @@
 % ════════════════════════════════════════════════════════════════════════════
 \subsection{KMA: Kernelized Memetic Algorithm}
 
-\begin{frame}{KMA — Motivation and High-Level Design}
+\begin{frame}{KMA - Motivation and High-Level Design}
 	\begin{columns}[T]
 		\begin{column}{0.52\textwidth}
 			\textbf{Why not pure Memetic Algorithm?}
@@ -1794,9 +1794,9 @@
 			\vspace{6pt}
 			\textbf{KMA Pipeline}
 			\begin{enumerate}\setlength\itemsep{2pt}
-				\item \highlight{Kernelization} — apply reduction rules, record forced vertices
-				\item \highlight{MA on kernel} — C++ evolutionary search on reduced graph
-				\item \highlight{Reconstruction} — map kernel solution to original indices,
+				\item \highlight{Kernelization} - apply reduction rules, record forced vertices
+				\item \highlight{MA on kernel} - C++ evolutionary search on reduced graph
+				\item \highlight{Reconstruction} - map kernel solution to original indices,
 				      union with forced vertices
 			\end{enumerate}
 		\end{column}
@@ -1824,7 +1824,7 @@
 	\end{columns}
 \end{frame}
 
-\begin{frame}{KMA — Kernelization Rules}
+\begin{frame}{KMA - Kernelization Rules}
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
 			\begin{block}{Undirected Kernelization Rules}
@@ -1863,7 +1863,7 @@
 	\end{tcolorbox}
 \end{frame}
 
-\begin{frame}{KMA — Memetic Algorithm Core}
+\begin{frame}{KMA - Memetic Algorithm Core}
 	\begin{columns}[T]
 		\begin{column}{0.50\textwidth}
 			\textbf{C++ MA Solver} (evolutionary search on kernel):
@@ -1914,17 +1914,17 @@
 \subsection{DKMA: Dynamic Kernelized Memetic Algorithm}
 % ════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{DKMA - Dynamic Kernelized Memetic Algorithm — Core Idea}
+\begin{frame}{DKMA - Dynamic Kernelized Memetic Algorithm - Core Idea}
 	\begin{columns}[T]
 		\begin{column}{0.52\textwidth}
 			\textbf{Limitation of static kernelization (KMA):}
 			\begin{itemize}
 				\item Kernelization is applied \emph{once} before MA
-				\item Partial solutions during MA may \emph{unlock} new reductions —
+				\item Partial solutions during MA may \emph{unlock} new reductions -
 				      these are never exploited
 			\end{itemize}
 			\vspace{4pt}
-			\textbf{DKMA — Dynamic interleaving} \cite{pace2022,esa2022}:
+			\textbf{DKMA - Dynamic interleaving} \cite{pace2022,esa2022}:
 			\begin{enumerate}\setlength\itemsep{2pt}
 				\item Evolve population for one MA generation
 				\item \highlight{Commit} vertices appearing in $\ge \tau$ fraction of individuals
@@ -1964,7 +1964,7 @@
 	\end{columns}
 \end{frame}
 
-\begin{frame}{DKMA — Key Innovations \& Helpers}
+\begin{frame}{DKMA - Key Innovations \& Helpers}
 	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
@@ -2010,7 +2010,7 @@
 	\end{columns}
 \end{frame}
 
-\begin{frame}{DKMA — Correctness \& Comparison with KMA}
+\begin{frame}{DKMA - Correctness \& Comparison with KMA}
 	\small
 	\begin{columns}[T]
 		\begin{column}{0.44\textwidth}
@@ -2026,7 +2026,7 @@
 			\end{block}
 		\end{column}
 		\begin{column}{0.52\textwidth}
-			\begin{block}{KMA vs DKMA — Key Differences}
+			\begin{block}{KMA vs DKMA - Key Differences}
 				\begin{tabular}{p{2.6cm}p{2.0cm}p{2.0cm}}
 					\toprule
 					Feature          & KMA  & DKMA           \\
@@ -2056,7 +2056,7 @@
 \subsection{GNN-KMA Models}
 % ════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{GNN-KMA — Hybrid Coupling Strategy}
+\begin{frame}{GNN-KMA - Hybrid Coupling Strategy}
 	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.50\textwidth}
@@ -2103,7 +2103,7 @@
 \end{frame}
 
 % ─── GNN-KMA v1 ───────────────────────────────────────────────────────────────
-\begin{frame}{GNN-KMA v1 — Baseline Architecture}
+\begin{frame}{GNN-KMA v1 - Baseline Architecture}
 	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
@@ -2124,7 +2124,7 @@
 			\vspace{4pt}
 			\begin{tcolorbox}[algbox,title=Design Choice]
 				\footnotesize
-				Clustering coefficient \cite{watts1998} captures local cycle density —
+				Clustering coefficient \cite{watts1998} captures local cycle density -
 				vertices with high $c(v)$ are strong FVS candidates.
 				This is a well-established heuristic from the
 				small-world network literature.
@@ -2160,14 +2160,14 @@
 \end{frame}
 
 % ─── GNN-KMA v2 ───────────────────────────────────────────────────────────────
-\begin{frame}{GNN-KMA v2 — Richer Structural Features}
+\begin{frame}{GNN-KMA v2 - Richer Structural Features}
 	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
 			\begin{block}{Feature Engineering (11 channels)}
 				\begin{enumerate}\setlength\itemsep{2pt}
 					\item Degree-like channels (in/out/min or undirected)
-					\item \textbf{RWSE} — Random Walk Structural Encoding
+					\item \textbf{RWSE} - Random Walk Structural Encoding
 					      \cite{dwivedi2021}\\
 					      {\footnotesize short-range return probabilities at steps
 					      $\{2,3,4\}$}
@@ -2194,7 +2194,7 @@
 			\begin{tcolorbox}[algbox,title=Why These Features?]
 				\footnotesize
 				\textbf{RWSE} \cite{dwivedi2021}: captures short-range cycle
-				return probability — directly relevant to FVS membership.\\[3pt]
+				return probability - directly relevant to FVS membership.\\[3pt]
 				\textbf{k-core} \cite{batagelj2003}: vertices deep in dense
 				cores are more likely to be in any FVS.\\[3pt]
 				\textbf{Motif counts} \cite{ahmed2015}: triangle/4-cycle
@@ -2205,7 +2205,7 @@
 \end{frame}
 
 % ─── GNN-KMA v3 ───────────────────────────────────────────────────────────────
-\begin{frame}{GNN-KMA v3 — Attention-Based Precision Model}
+\begin{frame}{GNN-KMA v3 - Attention-Based Precision Model}
 	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
@@ -2254,7 +2254,7 @@
 	\end{columns}
 \end{frame}
 
-\begin{frame}{GNN-KMA — Feature \& Architecture Evolution Summary}
+\begin{frame}{GNN-KMA - Feature \& Architecture Evolution Summary}
 	\small
 	\begin{center}
 		\begin{tabular}{llll}
@@ -2292,26 +2292,26 @@
 
 \begin{frame}{Notation \& Terms}
 	\begin{itemize}
-		\item \textbf{MA}: Memetic Algorithm — a genetic algorithm with local search
-		\item \textbf{KMA}: Kernelized Memetic Algorithm — MA applied on a reduced kernel
-		\item \textbf{DKMA}: Dynamic Kernelized Memetic Algorithm — KMA with iterative re-kernelization
-		\item \textbf{GNN-KMA}: GNN-augmented KMA — GNN guides/fixes high-confidence vertices for KMA
+		\item \textbf{MA}: Memetic Algorithm - a genetic algorithm with local search
+		\item \textbf{KMA}: Kernelized Memetic Algorithm - MA applied on a reduced kernel
+		\item \textbf{DKMA}: Dynamic Kernelized Memetic Algorithm - KMA with iterative re-kernelization
+		\item \textbf{GNN-KMA}: GNN-augmented KMA - GNN guides/fixes high-confidence vertices for KMA
 	\end{itemize}
 \end{frame}
 
 \subsection{Synthetic Dataset}
 
-\begin{frame}{Dataset — Design Goals \& Generation Pipeline}
+\begin{frame}{Dataset - Design Goals \& Generation Pipeline}
 	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.52\textwidth}
 			\textbf{Five design goals:}
 			\begin{enumerate}\setlength\itemsep{2pt}
-				\item \highlight{Controlled distribution} — fixed category proportions
-				\item \highlight{Track-aware difficulty} — separate exact \& heuristic tracks
-				\item \highlight{Reproducibility} — deterministic seeding throughout
-				\item \highlight{Restartability} — safe reuse of existing files
-				\item \highlight{Benchmark/train alignment} — PT datasets mirror
+				\item \highlight{Controlled distribution} - fixed category proportions
+				\item \highlight{Track-aware difficulty} - separate exact \& heuristic tracks
+				\item \highlight{Reproducibility} - deterministic seeding throughout
+				\item \highlight{Restartability} - safe reuse of existing files
+				\item \highlight{Benchmark/train alignment} - PT datasets mirror
 				      TXT corpus structure
 			\end{enumerate}
 			\vspace{6pt}
@@ -2354,7 +2354,7 @@
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Dataset — Undirected Distribution}
+\begin{frame}{Dataset - Undirected Distribution}
 	\small
 	\begin{block}{Undirected Categories (20\% each)}
 		\begin{tabular}{lll}
@@ -2377,7 +2377,7 @@
 	\end{tcolorbox}
 \end{frame}
 
-\begin{frame}{Dataset — Directed Distribution}
+\begin{frame}{Dataset - Directed Distribution}
 	\small
 	\begin{block}{Directed Categories}
 		\begin{tabular}{ll}
@@ -2400,7 +2400,7 @@
 	\end{tcolorbox}
 \end{frame}
 
-\begin{frame}{Dataset — Real-World Share \& Labels}
+\begin{frame}{Dataset - Real-World Share \& Labels}
 	\small
 	\begin{columns}[T]
 		\begin{column}{0.50\textwidth}
@@ -2425,7 +2425,7 @@
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Dataset — Why We Used This Approach}
+\begin{frame}{Dataset - Why We Used This Approach}
 	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.46\textwidth}
@@ -2476,7 +2476,7 @@
 \subsection{PACE 2022 Benchmark}
 % ════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{PACE 2022 Dataset — Real-World Benchmark Testing}
+\begin{frame}{PACE 2022 Dataset - Real-World Benchmark Testing}
 	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.52\textwidth}
@@ -2499,7 +2499,7 @@
 				\begin{itemize}\setlength\itemsep{3pt}
 					\item PACE 2022 instances stored under
 					      \texttt{data/pace2022/}
-					\item \textbf{Protected from cleanup} — never deleted
+					\item \textbf{Protected from cleanup} - never deleted
 					      by \texttt{setup\_benchmark\_inputs.py}
 					\item Benchmarked via \texttt{pacerun.sh}
 					      and \texttt{paceresults/}
@@ -2621,7 +2621,7 @@
 			\vspace{4pt}
 			\begin{tcolorbox}[greenbox,fontupper=\footnotesize]
 				\textbf{Resume semantics:} all benchmark
-				pipelines support deterministic restart —
+				pipelines support deterministic restart -
 				interrupted runs continue from last completed file.
 			\end{tcolorbox}
 		\end{column}
@@ -2731,6 +2731,70 @@
 		\item We ran all available heuristics on the PACE 2022 test cases and kept this result as our competitor baseline.
 		\item Because the winner's score is so close to 100, this gives us a realistic reference for actual PACE scoring.
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{PACE 2022 heuristic results (descending score)}
+	\small
+	\begin{itemize}
+		\item \textbf{pace2022 winner}: 100.0000 (based on 200 instances) - total time=600.00s
+		\item \textbf{directed KMA heuristic 90}: 78.9312 (based on 200 instances) - total time=18709.90s
+		\item \textbf{directed GNN-KMA-3 0.85 heuristic 30}: 78.6449 (based on 200 instances) - total time=15617.54s
+		\item \textbf{directed GNN-KMA-3 0.95 heuristic 30}: 77.7510 (based on 200 instances) - total time=15302.61s
+		\item \textbf{directed GNN-KMA heuristic 30}: 76.9814 (based on 200 instances) - total time=8380.73s
+		\item \textbf{directed DKMA heuristic 30}: 76.4942 (based on 200 instances) - total time=8367.24s
+		\item \textbf{directed KMA heuristic 30}: 76.3657 (based on 200 instances) - total time=7820.26s
+		\item \textbf{directed GNN-KMA-3 small 0.9 heuristic 30}: 76.2655 (based on 200 instances) - total time=16480.64s
+		\item \textbf{directed DKMA heuristic 15}: 75.8974 (based on 200 instances) - total time=4641.90s
+		\item \textbf{directed KMA heuristic 15}: 75.6944 (based on 200 instances) - total time=4209.18s
+		\item \textbf{directed MA heuristic 90}: 71.8443 (based on 200 instances) - total time=18281.50s
+		\item \textbf{directed MA heuristic 60}: 70.6738 (based on 200 instances) - total time=12483.29s
+		\item \textbf{directed MA heuristic 30}: 68.6420 (based on 200 instances) - total time=6565.01s
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{All solvers mean score}
+	\centering
+	\includegraphics[width=0.60\textwidth]{figures/all_solvers_mean_score.png}
+\end{frame}
+
+\begin{frame}{MA models mean score}
+	\centering
+	\includegraphics[width=0.55\textwidth]{figures/models_MA_mean_score.png}
+\end{frame}
+
+\begin{frame}{KMA models mean score}
+	\centering
+	\includegraphics[width=0.55\textwidth]{figures/models_KMA_mean_score.png}
+\end{frame}
+
+\begin{frame}{DKMA models mean score}
+	\centering
+	\includegraphics[width=0.55\textwidth]{figures/models_DKMA_mean_score.png}
+\end{frame}
+
+\begin{frame}{Group 15 mean score}
+	\centering
+	\includegraphics[width=0.55\textwidth]{figures/group_15_mean_score.png}
+\end{frame}
+
+\begin{frame}{Group 30 mean score}
+	\centering
+	\includegraphics[width=0.55\textwidth]{figures/group_30_mean_score.png}
+\end{frame}
+
+\begin{frame}{Group 60 mean score}
+	\centering
+	\includegraphics[width=0.55\textwidth]{figures/group_60_mean_score.png}
+\end{frame}
+
+\begin{frame}{Group 90 mean score}
+	\centering
+	\includegraphics[width=0.55\textwidth]{figures/group_90_mean_score.png}
+\end{frame}
+
+\begin{frame}{GNN models mean score}
+	\centering
+	\includegraphics[width=0.55\textwidth]{figures/models_GNN_mean_score.png}
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
