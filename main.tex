@@ -1965,7 +1965,7 @@
 \end{frame}
 
 \begin{frame}{DKMA — Key Innovations \& Helpers}
-    \tiny
+	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
 			\begin{block}{SHORTONE Directed Contractions}
@@ -2011,7 +2011,7 @@
 \end{frame}
 
 \begin{frame}{DKMA — Correctness \& Comparison with KMA}
-    \small
+	\small
 	\begin{columns}[T]
 		\begin{column}{0.44\textwidth}
 			\begin{block}{Correctness Safeguards}
@@ -2057,7 +2057,7 @@
 % ════════════════════════════════════════════════════════════════════════════
 
 \begin{frame}{GNN-KMA — Hybrid Coupling Strategy}
-    \tiny
+	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.50\textwidth}
 			\textbf{Motivation:}
@@ -2104,7 +2104,7 @@
 
 % ─── GNN-KMA v1 ───────────────────────────────────────────────────────────────
 \begin{frame}{GNN-KMA v1 — Baseline Architecture}
-    \tiny
+	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
 			\begin{block}{Feature Engineering (3 channels)}
@@ -2161,7 +2161,7 @@
 
 % ─── GNN-KMA v2 ───────────────────────────────────────────────────────────────
 \begin{frame}{GNN-KMA v2 — Richer Structural Features}
-    \tiny
+	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
 			\begin{block}{Feature Engineering (11 channels)}
@@ -2206,7 +2206,7 @@
 
 % ─── GNN-KMA v3 ───────────────────────────────────────────────────────────────
 \begin{frame}{GNN-KMA v3 — Attention-Based Precision Model}
-    \tiny
+	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
 			\begin{block}{Feature Engineering (16 channels)}
@@ -2255,7 +2255,7 @@
 \end{frame}
 
 \begin{frame}{GNN-KMA — Feature \& Architecture Evolution Summary}
-    \small
+	\small
 	\begin{center}
 		\begin{tabular}{llll}
 			\toprule
@@ -2283,6 +2283,22 @@
 % ════════════════════════════════════════════════════════════════════════════
 \section{Results}
 % ════════════════════════════════════════════════════════════════════════════
+\begin{frame}[plain]
+	\centering
+	\vspace{1.0cm}
+	{\Huge \textbf{Results}}\\[6pt]
+	{\Large Synthetic Dataset \quad PACE 2022 \quad Evaluation}
+\end{frame}
+
+\begin{frame}{Notation \& Terms}
+	\begin{itemize}
+		\item \textbf{MA}: Memetic Algorithm — a genetic algorithm with local search
+		\item \textbf{KMA}: Kernelized Memetic Algorithm — MA applied on a reduced kernel
+		\item \textbf{DKMA}: Dynamic Kernelized Memetic Algorithm — KMA with iterative re-kernelization
+		\item \textbf{GNN-KMA}: GNN-augmented KMA — GNN guides/fixes high-confidence vertices for KMA
+	\end{itemize}
+\end{frame}
+
 \subsection{Synthetic Dataset}
 
 \begin{frame}{Dataset — Design Goals \& Generation Pipeline}
@@ -2410,7 +2426,7 @@
 \end{frame}
 
 \begin{frame}{Dataset — Why We Used This Approach}
-    \tiny
+	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.46\textwidth}
 			\begin{block}{Diversity}
@@ -2461,7 +2477,7 @@
 % ════════════════════════════════════════════════════════════════════════════
 
 \begin{frame}{PACE 2022 Dataset — Real-World Benchmark Testing}
-    \tiny
+	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.52\textwidth}
 			\begin{block}{What is PACE 2022?}
@@ -2506,9 +2522,6 @@
 	\end{tcolorbox}
 \end{frame}
 
-% ════════════════════════════════════════════════════════════════════════════
-\section{System Architecture}
-% ════════════════════════════════════════════════════════════════════════════
 
 \begin{frame}{End-to-End System Architecture}
 	\begin{center}
@@ -2560,12 +2573,13 @@
 	\end{center}
 \end{frame}
 
+
 % ════════════════════════════════════════════════════════════════════════════
 \subsection{Results \& Evaluation}
 % ════════════════════════════════════════════════════════════════════════════
 
 \begin{frame}{Evaluation Framework}
-    \tiny
+	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.50\textwidth}
 			\begin{block}{Benchmark Output Format}
@@ -2614,11 +2628,117 @@
 	\end{columns}
 \end{frame}
 
+
+\begin{frame}{Exact solution Checker}
+	\begin{block}{Results}
+		\begin{tabular}{lrr}
+			\toprule
+			Solver                   & Mean score (\%) & Instances completed Before Timeout \\
+			\midrule
+			undirected\_BST\_exact   & 100.0           & 9046                               \\
+			undirected\_IC\_exact    & 100.0           & 9906                               \\
+			undirected\_brute\_force & 100.0           & 7263                               \\
+			\bottomrule
+		\end{tabular}
+	\end{block}
+
+	\vspace{6pt}
+	\begin{itemize}
+		\item \textbf{Instance count:} Number of instances that completed before timeout.
+		\item \textbf{Mean score (100\%):} For every completed instance, the solver returned an optimal solution among the instances it finished.
+		\item As all three solvers report 100\%, the \textbf{brute force}, \textbf{IC}, and \textbf{BST} exact solvers produced the same optimal answers on their completed instances.
+	\end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+\begin{frame}{Exact success percentage by graph size}
+	\centering
+	\begin{columns}[T]
+		\begin{column}{0.33\textwidth}
+			\includegraphics[width=\textwidth]{figures/brute_force_success_percentage_by_n.png}
+			\vspace{3pt}
+			\tiny Brute Force exact success rate vs. $n$
+		\end{column}
+		\begin{column}{0.33\textwidth}
+			\includegraphics[width=\textwidth]{figures/BST_exact_success_percentage_by_n.png}
+			\vspace{3pt}
+			\tiny BST exact success rate vs. $n$
+		\end{column}
+		\begin{column}{0.33\textwidth}
+			\includegraphics[width=\textwidth]{figures/undirected_ic_success_percentage_by_n.png}
+			\vspace{3pt}
+			\tiny IC exact success rate vs. $n$
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Exact success percentage by solution size}
+	\centering
+	\begin{columns}[T]
+		\begin{column}{0.49\textwidth}
+			\includegraphics[width=\textwidth]{figures/BST_exact_success_percentage_by_k.png}
+			\vspace{3pt}
+			\tiny BST exact success rate vs. $k$
+		\end{column}
+		\begin{column}{0.49\textwidth}
+			\includegraphics[width=\textwidth]{figures/undirected_ic_success_percentage_by_k.png}
+			\vspace{3pt}
+			\tiny IC exact success rate vs. $k$
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Undirected runtime vs. $k$ for $n = 28$}
+	\centering
+	\includegraphics[width=0.88\textwidth]{figures/undirected_runtime_vs_k_for_n_28.png}
+\end{frame}
+
+\begin{frame}{Undirected runtime vs. $n$ for $k = 4$}
+	\centering
+	\includegraphics[width=0.88\textwidth]{figures/undirected_runtime_vs_n_for_k_4.png}
+\end{frame}
+
+\begin{frame}{Pareto analysis of solver performance}
+	\centering
+	\includegraphics[width=0.88\textwidth]{figures/pareto_analysis.png}
+\end{frame}
+
+\begin{frame}{PACE 2022 test scoring}
+	\begin{itemize}
+		\item Each PACE 2022 problem uses a separate 100-point score for each test case.
+		\item If three valid solutions $a, b, c$ have sizes 89, 91, 85 then
+			$a$'s score is $100 \times \frac{85}{89}$ for that case.
+		\item The score formula is $100 \times \frac{\text{OPT FVS}}{\text{solved FVS}}$.
+		\item Total marks are the mean over all test case scores.
+		\item For invalid FVS outputs, we use the fallback size $n$ and score accordingly.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{PACE 2022 competitor benchmark}
+	\begin{itemize}
+		\item We benchmarked against the PACE 2022 winner implementation by Sylwester Swat.
+		\item Author: Sylwester Swat, Pozna\'n University Of Technology.
+		\item GitHub: \url{https://github.com/swacisko/pace-2022}
+		\item His reported score: \textbf{99.9117834156}.
+		\item We ran all available heuristics on the PACE 2022 test cases and kept this result as our competitor baseline.
+		\item Because the winner's score is so close to 100, this gives us a realistic reference for actual PACE scoring.
+	\end{itemize}
+\end{frame}
+
 % ════════════════════════════════════════════════════════════════════════════
 \section{Conclusions}
 % ════════════════════════════════════════════════════════════════════════════
 
 \begin{frame}{Summary \& Contributions}
+	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
 			\begin{block}{\faCode~Algorithm Contributions}
