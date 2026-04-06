@@ -121,7 +121,7 @@
 	\titlepage
 \end{frame}
 
-% Table of contents
+% Table of contents (removed as requested)
 \begin{frame}{Outline}
 	\tableofcontents
 \end{frame}
@@ -1768,94 +1768,18 @@
 
 
 
+% ════════════════════════════════════════════════════════════════════════════
+\section{Our Modifications}
 
-
-
-%% Duplicate metadata and templates removed (already defined at document start)
-
-
-\begin{frame}{Project Scope \& Algorithm Hierarchy}
-	\begin{center}
-		\begin{tikzpicture}[
-				box/.style={rounded corners=3pt,draw,fill=blue!8,minimum width=2.8cm,
-						minimum height=0.6cm,font=\scriptsize,align=center},
-				exactbox/.style={box,fill=successgreen!20,draw=successgreen},
-				heurbox/.style={box,fill=warnorange!20,draw=warnorange},
-				hybridbox/.style={box,fill=accentblue!20,draw=midblue},
-				arr/.style={->,>=Stealth,thick,gray!80},
-				scale=0.9]
-			% Layer labels
-			\node[font=\scriptsize\bfseries,text=successgreen] at (-3.5,1.7) {Exact};
-			\node[font=\scriptsize\bfseries,text=warnorange]   at (-3.5,0.5) {Heuristic};
-			\node[font=\scriptsize\bfseries,text=midblue]      at (-3.5,-1.0) {Hybrid ML};
-
-			\node[exactbox]  (bst) at (0,1.7)   {BST\\Bounded Search Tree};
-			\node[exactbox]  (ic)  at (3,1.7)   {IC\\Iterative Compression};
-			\node[heurbox]   (ma)  at (-1.5,0.5) {MA\\Memetic Algorithm};
-			\node[heurbox]   (kma) at (1.5,0.5)  {KMA\\Kernelized MA};
-			\node[heurbox]   (dkma) at (4.5,0.5) {DKMA\\Dynamic Kernelized MA};
-			\node[hybridbox] (g1)  at (0,-1.0)  {GNN-KMA v1\\3-channel GraphSAGE};
-			\node[hybridbox] (g2)  at (3,-1.0)  {GNN-KMA v2\\11-channel + RWSE};
-			\node[hybridbox] (g3)  at (6,-1.0)  {GNN-KMA v3\\16-ch GATv2 + SCC};
-			\node[hybridbox] (gd)  at (-3,-1.0) {GNN-DKMA\\GNN + Dynamic};
-
-			\draw[arr] (ma)--(kma);
-			\draw[arr] (kma)--(dkma);
-			\draw[arr] (kma)--(g1);
-			\draw[arr] (kma)--(g2);
-			\draw[arr] (kma)--(g3);
-			\draw[arr] (dkma)--(gd);
-		\end{tikzpicture}
-	\end{center}
+\begin{frame}[plain]
+	\centering
+	\vspace{1.2cm}
+	{\Huge \textbf{Our Modifications}}\\[8pt]
+	{\Large KMA \quad DKMA \quad GNN-KMA}
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
-\section{Exact Solvers}
-% ════════════════════════════════════════════════════════════════════════════
-
-\begin{frame}{Exact Solvers: BST \& IC}
-	\begin{columns}[T]
-		\begin{column}{0.47\textwidth}
-			\begin{block}{Bounded Search Tree (BST)}
-				\begin{itemize}\setlength\itemsep{2pt}
-					\item Pick a cycle $C$; branch on every vertex of $C$
-					\item At each branch, include that vertex in the FVS
-					\item Prune when solution size $> k$
-					\item Complexity: $O(4^k \cdot n)$ \cite{becker2000}
-					\item Combined with \textbf{reduction rules}:
-					      self-loops, degree-1 bypass, degree-2 bypass
-					\item Applicable only for small $k$ (exact track)
-				\end{itemize}
-			\end{block}
-		\end{column}
-		\begin{column}{0.47\textwidth}
-			\begin{block}{Iterative Compression (IC)}
-				\begin{itemize}\setlength\itemsep{2pt}
-					\item Introduced by Reed et al.\ \cite{reed2004}
-					\item Maintains a solution $S$ of size $k+1$;
-					      iteratively \textbf{compresses} to size $k$
-					\item Uses important separator enumeration
-					\item Yields $O(5^k \cdot k \cdot n^2)$ time \cite{cygan2015}
-					\item Provides \textbf{exact labels} for
-					      GNN training on the exact track
-					\item Correctness enforced via acyclicity
-					      check on final solution
-				\end{itemize}
-			\end{block}
-		\end{column}
-	\end{columns}
-	\vspace{4pt}
-	\begin{tcolorbox}[orangebox,fontupper=\footnotesize]
-		\textbf{Usage in this project:} IC is used as the \textbf{label oracle} for
-		exact-track GNN training data. BST is a secondary exact baseline.
-		Both rely on the parameterized FVS kernel theory of Thomassé \cite{thomasse2010},
-		which reduces any instance to a $O(k^2)$-vertex kernel.
-	\end{tcolorbox}
-\end{frame}
-
-% ════════════════════════════════════════════════════════════════════════════
-\section{KMA: Kernelized Memetic Algorithm}
-% ════════════════════════════════════════════════════════════════════════════
+\subsection{KMA: Kernelized Memetic Algorithm}
 
 \begin{frame}{KMA — Motivation and High-Level Design}
 	\begin{columns}[T]
@@ -1960,7 +1884,7 @@
 			Solver dispatch priority (best-first):
 			\texttt{KMA} $\to$ \texttt{KME} $\to$ \texttt{MA}
 		\end{column}
-		\begin{column}{0.46\textwidth}
+		\begin{column}{0.50\textwidth}
 			\begin{block}{Parameters}
 				\begin{tabular}{lll}
 					\toprule
@@ -1987,10 +1911,10 @@
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
-\section{DKMA: Dynamic Kernelized Memetic Algorithm}
+\subsection{DKMA: Dynamic Kernelized Memetic Algorithm}
 % ════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{DKMA — Core Idea}
+\begin{frame}{DKMA - Dynamic Kernelized Memetic Algorithm — Core Idea}
 	\begin{columns}[T]
 		\begin{column}{0.52\textwidth}
 			\textbf{Limitation of static kernelization (KMA):}
@@ -2041,6 +1965,7 @@
 \end{frame}
 
 \begin{frame}{DKMA — Key Innovations \& Helpers}
+    \tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
 			\begin{block}{SHORTONE Directed Contractions}
@@ -2086,6 +2011,7 @@
 \end{frame}
 
 \begin{frame}{DKMA — Correctness \& Comparison with KMA}
+    \small
 	\begin{columns}[T]
 		\begin{column}{0.44\textwidth}
 			\begin{block}{Correctness Safeguards}
@@ -2127,10 +2053,11 @@
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
-\section{GNN-KMA Models}
+\subsection{GNN-KMA Models}
 % ════════════════════════════════════════════════════════════════════════════
 
 \begin{frame}{GNN-KMA — Hybrid Coupling Strategy}
+    \tiny
 	\begin{columns}[T]
 		\begin{column}{0.50\textwidth}
 			\textbf{Motivation:}
@@ -2167,7 +2094,7 @@
 			\end{tcolorbox}
 			\vspace{5pt}
 			\begin{tcolorbox}[greenbox,fontupper=\footnotesize]
-				\textbf{GNN-DKMA variant:} Same coupling, but
+				\textbf{Can you do a GNN-DKMA variant?} Same coupling, but
 				the residual kernel is handed to DKMA instead of KMA,
 				enabling dynamic re-kernelization atop GNN guidance.
 			\end{tcolorbox}
@@ -2177,6 +2104,7 @@
 
 % ─── GNN-KMA v1 ───────────────────────────────────────────────────────────────
 \begin{frame}{GNN-KMA v1 — Baseline Architecture}
+    \tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
 			\begin{block}{Feature Engineering (3 channels)}
@@ -2228,12 +2156,12 @@
 	\end{columns}
 	\vspace{2pt}
 	{\scriptsize\color{gray}
-		GraphSAGE \cite{hamilton2017}: Hamilton et al., NeurIPS 2017.
-		Labels: IC solver on exact track, KMA on heuristic track.}
+		GraphSAGE \cite{hamilton2017}: Hamilton et al., NeurIPS 2017.}
 \end{frame}
 
 % ─── GNN-KMA v2 ───────────────────────────────────────────────────────────────
 \begin{frame}{GNN-KMA v2 — Richer Structural Features}
+    \tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
 			\begin{block}{Feature Engineering (11 channels)}
@@ -2278,6 +2206,7 @@
 
 % ─── GNN-KMA v3 ───────────────────────────────────────────────────────────────
 \begin{frame}{GNN-KMA v3 — Attention-Based Precision Model}
+    \tiny
 	\begin{columns}[T]
 		\begin{column}{0.47\textwidth}
 			\begin{block}{Feature Engineering (16 channels)}
@@ -2326,6 +2255,7 @@
 \end{frame}
 
 \begin{frame}{GNN-KMA — Feature \& Architecture Evolution Summary}
+    \small
 	\begin{center}
 		\begin{tabular}{llll}
 			\toprule
@@ -2351,11 +2281,12 @@
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
-\section{Synthetic Dataset}
+\section{Results}
 % ════════════════════════════════════════════════════════════════════════════
+\subsection{Synthetic Dataset}
 
 \begin{frame}{Dataset — Design Goals \& Generation Pipeline}
-	\small
+	\tiny
 	\begin{columns}[T]
 		\begin{column}{0.52\textwidth}
 			\textbf{Five design goals:}
@@ -2478,7 +2409,8 @@
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Dataset — Why This Dataset is Strong}
+\begin{frame}{Dataset — Why We Used This Approach}
+    \tiny
 	\begin{columns}[T]
 		\begin{column}{0.46\textwidth}
 			\begin{block}{Diversity}
@@ -2525,10 +2457,11 @@
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
-\section{PACE 2022 Benchmark}
+\subsection{PACE 2022 Benchmark}
 % ════════════════════════════════════════════════════════════════════════════
 
 \begin{frame}{PACE 2022 Dataset — Real-World Benchmark Testing}
+    \tiny
 	\begin{columns}[T]
 		\begin{column}{0.52\textwidth}
 			\begin{block}{What is PACE 2022?}
@@ -2578,20 +2511,20 @@
 % ════════════════════════════════════════════════════════════════════════════
 
 \begin{frame}{End-to-End System Architecture}
-    \begin{center}
-        \begin{tikzpicture}[
-                scale=0.85, transform shape,
-			layer/.style={draw, rounded corners=2pt,
-                        minimum width=10.5cm, minimum height=0.5cm,
-                        font=\scriptsize\bfseries, align=center},
-			module/.style={draw, rounded corners=1pt,
-                        minimum width=1.6cm, minimum height=0.5cm,
-                        font=\tiny, align=center},
-                arr/.style={->, >=Stealth, thick, gray!70}]
+	\begin{center}
+		\begin{tikzpicture}[
+				scale=0.85, transform shape,
+				layer/.style={draw, rounded corners=2pt,
+						minimum width=10.5cm, minimum height=0.5cm,
+						font=\scriptsize\bfseries, align=center},
+				module/.style={draw, rounded corners=1pt,
+						minimum width=1.6cm, minimum height=0.5cm,
+						font=\tiny, align=center},
+				arr/.style={->, >=Stealth, thick, gray!70}]
 
-            % Layer 1: C++ Engine
+			% Layer 1: C++ Engine
 			\node[layer,fill=green!20] (cpp) at (0,3.0)
-            {Layer 1: C++ Algorithm Engine (\texttt{cpp\_engine/})};
+			{Layer 1: C++ Algorithm Engine (\texttt{cpp\_engine/})};
 			\node[module,fill=green!10] (cppbst) at (-3.75,2.4) {BST};
 			\node[module,fill=green!10] (cppic)  at (-2.25,2.4) {IC};
 			\node[module,fill=green!10] (cppma)  at (-0.75,2.4) {MA};
@@ -2599,39 +2532,40 @@
 			\node[module,fill=green!10] (cppdkma) at (2.25,2.4) {DKMA};
 			\node[module,fill=green!10] (cppdir) at (3.75,2.4) {Dir. variants};
 
-            % Layer 2: Python Orchestration
+			% Layer 2: Python Orchestration
 			\node[layer,fill=orange!20] (pyorch) at (0,1.5)
-            {Layer 2: Python Orchestration (\texttt{experiments/})};
+			{Layer 2: Python Orchestration (\texttt{experiments/})};
 			\node[module,fill=orange!10] (bench) at (-3.3,0.9) {Benchmark\\drivers};
 			\node[module,fill=orange!10] (pipe)  at (-1.1,0.9) {Pipeline\\runner};
 			\node[module,fill=orange!10] (hybr)  at (1.1,0.9) {Hybrid\\runtime};
 			\node[module,fill=orange!10] (suite) at (3.3,0.9) {Suite\\runner};
 
-            % Layer 3: Data
+			% Layer 3: Data
 			\node[layer,fill=blue!20] (data) at (0,0.0)
-            {Layer 3: Data Pipeline (\texttt{data/})};
+			{Layer 3: Data Pipeline (\texttt{data/})};
 			\node[module,fill=blue!10] (rw)   at (-3.3,-0.6) {Real-world\\download};
 			\node[module,fill=blue!10] (syn)  at (-1.1,-0.6) {Synthetic\\gen.};
 			\node[module,fill=blue!10] (pt)   at (1.1,-0.6) {TXT $\to$ PT};
 			\node[module,fill=blue!10] (pace) at (3.3,-0.6) {PACE 2022};
 
-            % Layer 4: GNN
+			% Layer 4: GNN
 			\node[layer,fill=cyan!20] (gnn) at (0,-1.5)
-            {Layer 4: GNN Stack (\texttt{gnn\_model/})};
+			{Layer 4: GNN Stack (\texttt{gnn\_model/})};
 			\node[module,fill=cyan!10] (feat) at (-3.3,-2.1) {Features\\v1/v2/v3};
 			\node[module,fill=cyan!10] (mod)  at (-1.1,-2.1) {Model\\defs};
 			\node[module,fill=cyan!10] (trn)  at (1.1,-2.1) {Train\\loop};
 			\node[module,fill=cyan!10] (inf)  at (3.3,-2.1) {Inference};
-            
-        \end{tikzpicture}
-    \end{center}
+
+		\end{tikzpicture}
+	\end{center}
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
-\section{Results \& Evaluation}
+\subsection{Results \& Evaluation}
 % ════════════════════════════════════════════════════════════════════════════
 
 \begin{frame}{Evaluation Framework}
+    \tiny
 	\begin{columns}[T]
 		\begin{column}{0.50\textwidth}
 			\begin{block}{Benchmark Output Format}
@@ -2844,7 +2778,7 @@
 		\vspace{1.8cm}
 		{\color{white}\Huge\bfseries Thank You}\\[14pt]
 		{\color{accentblue!80!white}\large Questions \& Discussion}\\[28pt]
-		
+
 		\begin{tabular}{ll}
 			\color{white}\faGithub   & \color{white}{\small\url{https://github.com/TAR2003/Feedback_Vertex_Set_Problem_Algorithm_Project_4-2}} \\[6pt]
 			\color{white}\faDatabase & \color{white}{\small\url{https://www.kaggle.com/datasets/tawkirazizrahman/fvs-synthetic-dataset-100k}}  \\[6pt]
