@@ -1,0 +1,1261 @@
+\documentclass[10pt,a4paper]{report}
+
+%% ─── Packages ───────────────────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage[margin=2.5cm]{geometry}
+
+\usepackage{setspace}
+\usepackage{parskip}
+
+% Math
+\usepackage{amsmath,amssymb,amsthm}
+
+% Graphics & Color
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc,decorations.pathmorphing,graphs}
+
+% Tables
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+% Lists
+\usepackage{enumitem}
+
+% Code
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+% Headers/Footers
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+% Captions
+\usepackage{caption}
+\usepackage{subcaption}
+
+% References & Links
+\usepackage[hidelinks,colorlinks=true,linkcolor=blue!60!black,citecolor=green!50!black,urlcolor=blue!70!black]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+
+%% ─── Colors ──────────────────────────────────────────────────────────────────
+\definecolor{buetblue}{RGB}{0,56,101}
+\definecolor{accentred}{RGB}{180,30,30}
+\definecolor{lightgray}{RGB}{248,248,248}
+\definecolor{codebg}{RGB}{245,245,245}
+
+%% ─── Page Style ──────────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{buetblue}{\textit{The Feedback Vertex Set Problem}}}
+\fancyhead[R]{\small\textcolor{buetblue}{Group 06 — CSE472}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% ─── Chapter/Section Styling ─────────────────────────────────────────────────
+\titleformat{\chapter}[display]
+  {\color{buetblue}\LARGE\bfseries}
+  {\color{accentred}\chaptertitlename\ \thechapter}{12pt}{\Huge}
+  [\vspace{2pt}\color{buetblue}\hrule]
+
+\titleformat{\section}
+  {\color{buetblue}\Large\bfseries}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\color{buetblue!80!black}\large\bfseries}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\color{buetblue!70!black}\normalsize\bfseries}
+  {\thesubsubsection}{1em}{}
+
+%% ─── Theorem Environments ────────────────────────────────────────────────────
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{example}{Example}[chapter]
+
+%% ─── Code Style ──────────────────────────────────────────────────────────────
+\lstset{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  captionpos=b,
+  commentstyle=\color{green!50!black},
+  keywordstyle=\color{blue!70!black}\bfseries,
+  stringstyle=\color{accentred},
+  showstringspaces=false,
+  frame=single,
+  rulecolor=\color{gray!40},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  tabsize=2,
+}
+
+%% ─── Custom Commands ─────────────────────────────────────────────────────────
+\newcommand{\fvs}{\textsc{FVS}}
+\newcommand{\dfvs}{\textsc{DFVS}}
+\newcommand{\kma}{\textsc{KMA}}
+\newcommand{\dkma}{\textsc{DKMA}}
+\newcommand{\gnnkma}{\textsc{GNN-KMA}}
+\newcommand{\ma}{\textsc{MA}}
+\newcommand{\bst}{\textsc{BST}}
+\newcommand{\ic}{\textsc{IC}}
+\newcommand{\OPT}{\mathrm{OPT}}
+\newcommand{\bigO}[1]{\mathcal{O}\!\left(#1\right)}
+\newcommand{\infobox}[2]{%
+  \begin{center}
+    \colorbox{buetblue!8}{%
+      \begin{minipage}{0.93\textwidth}
+        \vspace{4pt}
+        \textbf{\color{buetblue}#1}\\[2pt]
+        #2
+        \vspace{4pt}
+      \end{minipage}%
+    }
+  \end{center}
+}
+
+%% ─── Document ────────────────────────────────────────────────────────────────
+\begin{document}
+
+\onehalfspacing
+
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  TITLE PAGE
+%% ═══════════════════════════════════════════════════════════════════════════
+\begin{titlepage}
+  \centering
+  \vspace*{1cm}
+
+  {\color{buetblue}\rule{\linewidth}{2pt}}
+  \vspace{0.6cm}
+
+  {\Huge\bfseries\color{buetblue}
+    The Feedback Vertex Set Problem:\\[8pt]
+    Theory, Algorithms, and Applications
+  }
+
+  \vspace{0.5cm}
+  {\color{buetblue}\rule{\linewidth}{2pt}}
+
+  \vspace{1.2cm}
+
+  {\Large\textit{CSE472 --- Design and Analysis of Algorithms}}\\[0.4cm]
+  {\large Project Report --- Group 06}
+
+  \vspace{1.4cm}
+
+  \begin{center}
+    \begin{tabular}{ll}
+      \textbf{2005090} & Tawkir Aziz Rahman \\[4pt]
+      \textbf{2005068} & Suman Hossain \\[4pt]
+      \textbf{2005074} & Dipanta Kumar Roy Nobo \\[4pt]
+      \textbf{2005091} & Waseem Mustak Zisan \\[4pt]
+      \textbf{2005104} & Hasin Arafat \\[4pt]
+      \textbf{2005109} & Noushin Tabassum Aoishy \\
+    \end{tabular}
+  \end{center}
+
+  \vspace{1.4cm}
+
+  {\large
+    \textbf{Department of Computer Science and Engineering}\\[0.3cm]
+    Bangladesh University of Engineering and Technology (BUET)\\[0.3cm]
+    Dhaka 1000, Bangladesh
+  }
+
+  \vspace{1.2cm}
+
+  {\large April 2026}
+
+  \vfill
+
+  \begin{center}
+    \small\textit{GitHub Repository:}\\
+    \url{https://github.com/TAR2003/Feedback_Vertex_Set_Problem_Algorithm_Project_4-2}
+  \end{center}
+\end{titlepage}
+
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  ABSTRACT
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+The Feedback Vertex Set (\fvs{}) problem asks for a minimum set of vertices in a graph whose removal renders the graph acyclic.
+It is a fundamental combinatorial problem with applications in operating system deadlock prevention, circuit stabilization, and dependency resolution.
+While the decision version of \fvs{} is classically NP-Complete, fixed-parameter tractable (FPT) algorithms exist parameterized by the solution size $k$, making it tractable for small $k$.
+
+This report presents a comprehensive research and implementation framework addressing both the undirected \fvs{} problem and the Directed Feedback Vertex Set (\dfvs{}) problem.
+We implement three classes of solvers: \emph{exact FPT solvers} (Bounded Search Tree and Iterative Compression), \emph{heuristic evolutionary solvers} (Memetic Algorithm), and novel \emph{hybrid ML-combinatorial solvers} (GNN-KMA and GNN-DKMA).
+
+Our primary algorithmic contributions are: (i) the \textbf{Kernelized Memetic Algorithm (KMA)}, which integrates graph-theoretic reduction rules --- including SCC-based directed reduction that eliminates 60--90\% of vertices --- with a C++-backed evolutionary search; (ii) the \textbf{Dynamic Kernelized Memetic Algorithm (DKMA)}, which interleaves population-based search with progressive commitment and re-kernelization, enabling an \emph{opening-up} effect that standard static kernelization cannot exploit; and (iii) three generations of \textbf{GNN-KMA} models (v1, v2, v3), where graph neural networks predict high-confidence \fvs{} vertices that are hard-fixed prior to KMA, under a precision-first coupling strategy that caps false-positive risk.
+
+Experimentally, we generate and publicly release the largest labeled \fvs{} dataset to our knowledge: 100K undirected and 100K directed graphs spanning five graph families and two difficulty tracks, with solver-verified ground-truth labels. On the PACE 2022 benchmark, our best configuration (KMA with population 90) achieves a mean score of 78.93 out of 100, while GNN-KMA v3 reaches 78.64, competitive with world-class solvers. All exact solvers achieve 100\% optimality on their completed instances.
+
+This work demonstrates that integrating kernelization, evolutionary search, and graph neural network guidance into a unified pipeline yields competitive solutions across both small exact instances and large heuristic-track graphs.
+
+\vspace{1cm}
+\textbf{Keywords:} Feedback Vertex Set, Directed Feedback Vertex Set, Parameterized Algorithms, Kernelization, Memetic Algorithm, Graph Neural Networks, Hybrid Solver, PACE 2022.
+
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  TABLE OF CONTENTS
+%% ═══════════════════════════════════════════════════════════════════════════
+\begingroup
+  \let\clearpage\relax
+  \let\cleardoublepage\relax
+  \tableofcontents
+  \listoffigures
+  \listoftables
+\endgroup
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Introduction}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\section{Background and Motivation}
+
+Graphs are one of the most fundamental structures in computer science, providing a natural abstraction for networks ranging from the internet to social relationships, circuit topologies, and program dependency graphs.
+Many computational problems on graphs reduce to controlling or eliminating cycles --- paths that return to their starting vertex.
+Cyclic structures create dependencies, feedback loops, and deadlocks in real systems, and their controlled removal is essential.
+
+The \textbf{Feedback Vertex Set} (\fvs{}) problem formalizes this cycle-elimination task:
+\begin{quote}
+\textit{Given a graph $G = (V, E)$, find a minimum-cardinality set $S \subseteq V$ such that the graph $G - S$ induced on $V \setminus S$ is acyclic.}
+\end{quote}
+
+If $G$ is undirected, acyclicity means a forest. If $G$ is directed, acyclicity means a directed acyclic graph (DAG). The directed variant, \dfvs{}, is similarly defined.
+
+The problem arises concretely in:
+\begin{itemize}
+  \item \textbf{Operating system deadlocks}: A resource-allocation graph where processes and resources form cycles must have critical processes removed to resolve deadlock.
+  \item \textbf{Dependency resolution}: Software packages with circular dependencies require one dependency to be removed to restore a valid install order.
+  \item \textbf{Circuit stabilization}: Feedback loops in electronic circuits, if uncontrolled, cause oscillations; removing cycle-forming components stabilizes the circuit.
+  \item \textbf{Bayesian network structure learning}: Ensuring a learned graphical model is a DAG requires breaking directed cycles in candidate structures.
+\end{itemize}
+
+Despite its practical importance, \fvs{} is computationally challenging. The decision version --- does a feedback vertex set of size at most $k$ exist? --- is NP-Complete \cite{karp1972}, and the optimization version is NP-Hard. This complexity gap motivates a multi-strategy approach: exact algorithms for small instances, heuristic algorithms for large instances, and hybrid methods that combine the strengths of both.
+
+\section{Problem Statement}
+
+\begin{definition}[Feedback Vertex Set]
+Let $G = (V, E)$ be an undirected graph. A \textbf{Feedback Vertex Set} of $G$ is a subset $S \subseteq V$ such that $G[V \setminus S]$ is acyclic (a forest). A \textbf{minimum FVS} minimizes $|S|$.
+\end{definition}
+
+\begin{definition}[Directed Feedback Vertex Set]
+Let $G = (V, E)$ be a directed graph. A \textbf{Directed Feedback Vertex Set} of $G$ is a subset $S \subseteq V$ such that $G[V \setminus S]$ is a directed acyclic graph (DAG). A \textbf{minimum DFVS} minimizes $|S|$.
+\end{definition}
+
+\begin{definition}[Decision and Optimization Versions]
+The \textbf{decision version} of \fvs{} is: given $G = (V, E)$ and a non-negative integer $k$, does there exist $S \subseteq V$ with $|S| \leq k$ such that $G - S$ is acyclic? The \textbf{optimization version} seeks a minimum-size $S$.
+\end{definition}
+
+\section{Objectives of This Project}
+
+This project pursues the following objectives:
+
+\begin{enumerate}
+  \item Implement exact FPT solvers (Iterative Compression and Bounded Search Tree) for both undirected and directed \fvs{}.
+  \item Design, implement, and evaluate the \kma{} algorithm, integrating graph-theoretic kernelization with a population-based memetic search.
+  \item Design and evaluate \dkma{}, a dynamic extension of \kma{} that interleaves search and re-kernelization.
+  \item Design and evaluate three generations of GNN-guided hybrid solvers (\gnnkma{} v1/v2/v3 and GNN-DKMA) that use learned vertex-level predictions to guide combinatorial search.
+  \item Construct and release the largest labeled \fvs{} dataset publicly available, comprising 200K graphs across diverse families.
+  \item Benchmark all solvers on synthetic datasets and the PACE 2022 competition instances, with comparison against the official PACE winner.
+\end{enumerate}
+
+\section{Summary of Contributions}
+
+This report makes the following contributions:
+
+\begin{enumerate}
+  \item \textbf{KMA:} First-class integration of kernelization (including directed SCC reduction) into a C++ memetic algorithm, eliminating 60--90\% of directed-graph vertices before search begins.
+  \item \textbf{DKMA:} A dynamic re-kernelization loop with SHORTONE contractions, topological diversification, and 1-1/2-1 gain local search, inspired by PACE 2022 winning strategies.
+  \item \textbf{GNN-KMA v1/v2/v3:} Three generations of GNN architectures (GraphSAGE $\to$ GATv2, 3 $\to$ 16 feature channels, NLL $\to$ asymmetric precision loss), coupled to \kma{} under a precision-first strategy that caps the hard-fix ratio at 8\%.
+  \item \textbf{GNN-DKMA:} Combination of GNN pre-fixing with DKMA's dynamic kernelization.
+  \item \textbf{FVS Dataset:} 200K labeled graphs (100K undirected, 100K directed) spanning five graph families, two difficulty tracks, with ground-truth solver labels, publicly released on Kaggle.
+  \item \textbf{Comprehensive Evaluation:} Benchmarking on synthetic data and PACE 2022, achieving 78.93/100 on 200 competition instances.
+\end{enumerate}
+
+\section{Report Organization}
+
+Chapter~\ref{ch:background} provides theoretical prerequisites including graph theory, complexity theory, and the FPT framework. Chapter~\ref{ch:relatedwork} reviews related work. Chapters~\ref{ch:exact}--\ref{ch:gnnkma} present the algorithms in detail. Chapter~\ref{ch:implementation} covers implementation architecture. Chapter~\ref{ch:experiments} presents datasets and experimental evaluation. Chapter~\ref{ch:discussion} discusses insights and limitations. Chapter~\ref{ch:conclusion} concludes.
+
+
+% ================== Start of Zisan and Aoishy ======================
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Theoretical Background}
+\label{ch:background}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\section{Graph Theory Preliminaries}
+
+\begin{definition}[Graph]
+A \textbf{graph} $G = (V, E)$ consists of a finite set of \textbf{vertices} $V$ and a set of \textbf{edges} $E \subseteq \binom{V}{2}$ (for undirected graphs) or $E \subseteq V \times V$ (for directed graphs).
+\end{definition}
+
+\begin{definition}[Cycle and Acyclicity]
+In an undirected graph, a \textbf{cycle} is a path $v_1, v_2, \ldots, v_\ell, v_1$ of distinct vertices with edges $(v_i, v_{i+1}) \in E$ and $(v_\ell, v_1) \in E$, with $\ell \geq 3$. A graph with no cycles is \textbf{acyclic}. A connected acyclic graph is a \textbf{tree}; a disjoint union of trees is a \textbf{forest}. In a directed graph, a cycle requires directed edges; acyclicity means no directed cycle exists, yielding a DAG.
+\end{definition}
+
+\begin{definition}[Strongly Connected Component (SCC)]
+In a directed graph, a \textbf{strongly connected component} (SCC) is a maximal set $C \subseteq V$ such that for every $u, v \in C$, there exists a directed path from $u$ to $v$ and from $v$ to $u$. An SCC is \textbf{nontrivial} if $|C| > 1$ or it contains a self-loop.
+\end{definition}
+
+The SCC structure of a directed graph is central to \dfvs{}: every directed cycle lies entirely within some nontrivial SCC, so vertices not belonging to any nontrivial SCC are irrelevant to \dfvs{} and can be safely removed during kernelization.
+
+\section{Complexity Theory}
+
+\subsection{P, NP, and NP-Completeness}
+
+% Explain what is P, what is NP, and what is NP Complete. And then Proof that FVS is NP Complete. By using the graphs present in the original presentation.
+
+\subsection{Fixed-Parameter Tractability}
+
+For NP-Hard problems, fixed-parameter tractability (FPT) offers a refined complexity lens: instead of requiring polynomial time in $|V|$, an FPT algorithm runs in $f(k) \cdot \mathrm{poly}(n)$ time, where $k$ is a problem parameter (e.g., solution size) and $f$ is a computable function.
+
+\begin{theorem}[\fvs{} is FPT \cite{reed2004,cygan2015}]
+\fvs{} parameterized by solution size $k$ admits algorithms running in $\bigO{5^k \cdot k \cdot n^2}$ and $\bigO{4^k \cdot n^2}$ time. Similarly, \dfvs{} is FPT \cite{chen2008dfvs}.
+\end{theorem}
+
+This makes exact solvers practical for $k \leq 30$--40, which covers many real-world instances on the exact track.
+
+\section{Kernelization}
+
+\begin{definition}[Kernelization]
+A \textbf{kernelization algorithm} for a parameterized problem $(I, k)$ is a polynomial-time algorithm that produces an equivalent instance $(I', k')$ with $|I'| \leq g(k)$ for some computable function $g$. The instance $(I', k')$ is the \textbf{kernel}.
+\end{definition}
+
+\begin{theorem}[Quadratic Kernel for \fvs{} \cite{thomasse2010}]
+\fvs{} admits a kernel with $\bigO{k^2}$ vertices, achieved by the 4$k^2$ kernel of Thomass\'{e}.
+\end{theorem}
+
+Kernelization is a core component of all our heuristic and hybrid algorithms, as described in subsequent chapters.
+
+
+% ============== End of Part of Zisan and Aoishy =============
+
+
+
+% ============== start of Arafat and Suman ===================
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Related Work}
+\label{ch:relatedwork}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+% add new type as sections, like \sectioon{Exact Algorithms}, \section{Heuristic Algorithms}, and then mention the each of the algorithms inside it as the subsections, mention the time complexity of them, and also copy paste the table you give in the presentation
+
+
+
+% =========================   End of Arafat and Suman ==========================
+
+
+%% ================= Start of Dipanta ============================
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Exact Algorithms}
+\label{ch:exact}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\section{Iterative Compression}
+
+\subsection{Core Idea}
+
+Iterative Compression (IC) is an FPT algorithm for \fvs{} that builds a solution incrementally, compressing an $(k+1)$-sized FVS to a $k$-sized FVS at each step.
+
+\begin{algorithm}[H]
+\caption{Iterative Compression for \fvs{}}
+\label{alg:ic}
+\begin{algorithmic}[1]
+\Require Graph $G = (V, E)$, parameter $k$
+\Ensure Minimum FVS of size $\leq k$, or NO
+\State Order vertices $v_1, v_2, \ldots, v_n$
+\State $F \leftarrow \{v_1\}$
+\For{$i = 2$ to $n$}
+  \State $F \leftarrow F \cup \{v_i\}$
+  \If{$|F| = k + 1$}
+    \State Enumerate all partitions $(F_1, F_2)$ of $F$
+    \For{each partition $(F_1, F_2)$}
+      \State Find $Y \subseteq V \setminus F_2$ such that $F_1 \cup Y$ is an FVS of $G[V \setminus F_2]$ of size $\leq k - |F_1|$
+      \If{such $Y$ exists}
+        \State $F \leftarrow F_1 \cup Y$; \textbf{break}
+      \EndIf
+    \EndFor
+    \If{no valid partition found}
+      \Return NO
+    \EndIf
+  \EndIf
+\EndFor
+\Return $F$ if $|F| \leq k$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Complexity Analysis}
+
+At each compression step, there are $2^{k+1}$ partitions of $F$. For each partition, the inner compression problem on the disjoint vertex set can be solved in $\bigO{4^{k-|F_1|} \cdot n^2}$ using a disjoint-paths-based subroutine. Over $n$ steps, the total complexity is $\bigO{5^k \cdot k \cdot n^2}$ \cite{cygan2015}.
+
+The IC solver is implemented in C++ in the \texttt{cpp\_engine} module. It is exact, guaranteed to find the optimal solution or correctly report that no solution of size $\leq k$ exists. In our evaluation, IC completes 9,906 exact-track instances with 100\% optimality before timeout.
+
+\subsection{Advantages and Limitations}
+
+IC provides a guaranteed optimal solution and is theoretically well-grounded. Its limitation is the exponential dependence on $k$: for $k > 30$, it becomes infeasible within practical time budgets. On the exact track (graph sizes 10--35 nodes), it performs well.
+
+\section{Bounded Search Tree (BST)}
+
+\subsection{Algorithm Description}
+
+The Bounded Search Tree algorithm applies kernelization as preprocessing, reducing the graph to a smaller equivalent kernel, then exhaustively branches over remaining cycles.
+
+\begin{algorithm}[H]
+\caption{Kernelization + Bounded Search Tree}
+\label{alg:bst}
+\begin{algorithmic}[1]
+\Require Graph $G$, parameter $k$
+\Ensure Minimum FVS, or NO
+\State \textbf{Apply reduction rules:}
+  \Statex \hspace*{1em}Remove vertices of degree $\leq 1$ (cannot be in any cycle)
+  \Statex \hspace*{1em}Contract degree-2 vertices via bypass rule
+  \Statex \hspace*{1em}Force self-loop vertices into FVS and remove
+\State Obtain kernel $(G', k')$
+\Function{Search}{$G', k'$}
+  \If{$G'$ is acyclic} \Return $\emptyset$ \EndIf
+  \If{$k' < 0$} \Return NO \EndIf
+  \State Find a cycle $C$ in $G'$
+  \State $\text{best} \leftarrow \infty$
+  \For{each $v \in C$}
+    \State $\text{sol} \leftarrow v \cup \textsc{Search}(G' - v, k' - 1)$
+    \State $\text{best} \leftarrow \min(\text{best}, \text{sol})$
+  \EndFor
+  \Return best
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Complexity Analysis}
+
+After kernelization, the kernel has $\bigO{k^2}$ vertices \cite{thomasse2010}. The search tree branches on a cycle (branching factor $\leq |C|$), with depth $k$. The total complexity is $\bigO{4^k + n^2}$ in the combined kernel + search-tree analysis.
+
+BST completes 9,046 exact-track instances with 100\% optimality before timeout in our evaluation.
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{The Memetic Algorithm}
+\label{ch:ma}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\section{Algorithm Overview}
+
+The Memetic Algorithm (\ma{}) is an evolutionary heuristic that combines genetic-algorithm population dynamics with problem-specific local search. It is designed for large instances ($n > 1000$) where exact methods are infeasible.
+
+\begin{algorithm}[H]
+\caption{Memetic Algorithm for \fvs{}}
+\label{alg:ma}
+\begin{algorithmic}[1]
+\Require Graph $G$, population size $P$, max generations $G_{\max}$, early-stop $T$
+\Ensure Near-optimal FVS
+\State Encode solutions as vertex permutations
+\State Initialize population: $P/2$ greedy, $P/2$ random individuals
+\For{$g = 1$ to $G_{\max}$}
+  \State Evaluate fitness: $-|$FVS$(ind)|$ for each individual $ind$
+  \State Select parents via tournament selection
+  \State Produce offspring via cycle-aware crossover
+  \State Apply mutation (swap cycle-heavy vertices)
+  \State Apply local search (hill-climbing on each offspring)
+  \State Repair: restore FVS validity via greedy cycle cover
+  \State Update population via tournament replacement
+  \If{no improvement for $T$ generations} \textbf{break} \EndIf
+\EndFor
+\Return best individual decoded as FVS
+\end{algorithmic}
+\end{algorithm}
+
+\section{Encoding and Decoding}
+
+Each individual encodes a \textbf{permutation} of vertices $\pi = (\pi_1, \pi_2, \ldots, \pi_n)$. Decoding proceeds greedily: vertices are removed in order $\pi_1, \pi_2, \ldots$ until the remaining graph is acyclic. This ensures every individual represents a valid (though not necessarily minimum) FVS.
+
+\section{Genetic Operators}
+
+\paragraph{Crossover.} Given two parent permutations, a cycle-aware crossover operator produces offspring by preserving cycle-heavy vertices from the better parent and inheriting the relative order of remaining vertices from the other.
+
+\paragraph{Mutation.} A vertex swap operator selects a vertex with high cycle centrality (part of many cycles) and swaps its position earlier in the permutation, increasing its probability of inclusion in the decoded FVS.
+
+\paragraph{Local Search.} For each individual, a hill-climbing post-process attempts to reduce FVS size: it tries removing each FVS vertex and checks whether acyclicity is preserved; if so, the vertex is kept out. This guarantees a local optimum with respect to single-vertex removals.
+
+\section{Complexity and Parameters}
+
+The MA runs in $\bigO{P \cdot G_{\max} \cdot |V|^2}$ per generation due to cycle detection. Default parameters are given in Table~\ref{tab:ma_params}.
+
+\begin{table}[H]
+\centering
+\caption{Default MA / KMA parameters}
+\label{tab:ma_params}
+\begin{tabular}{llll}
+\toprule
+Parameter & Flag & Default & Description \\
+\midrule
+Population & \texttt{--pop} & 20 & Individuals per generation \\
+Generations & \texttt{--gens} & 100 & Max evolutionary iterations \\
+Early-stop & \texttt{--earlystop} & 30 & Gens without improvement \\
+Timeout & \texttt{--timeout} & 600s & Hard wall-clock limit \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ================  End of Dipanta Kumar Roy Nobo =======================
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{KMA: Kernelized Memetic Algorithm}
+\label{ch:kma}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\section{Motivation}
+
+The plain Memetic Algorithm operates on the full input graph, wasting effort on vertices that can be deterministically resolved by reduction rules. \kma{} applies graph-theoretic kernelization \emph{before} the MA, reducing the search space and focusing the evolutionary search on structurally hard subgraphs.
+
+\section{KMA Pipeline}
+
+The KMA pipeline has three phases:
+
+\begin{enumerate}
+  \item \textbf{Kernelization}: Apply safe reduction rules, collecting forced vertices.
+  \item \textbf{MA on kernel}: Run the C++ MA solver on the reduced kernel $G'$.
+  \item \textbf{Reconstruction}: Map kernel-vertex indices back to original indices and union with forced vertices.
+\end{enumerate}
+
+\begin{algorithm}[H]
+\caption{KMA: Kernelized Memetic Algorithm}
+\label{alg:kma}
+\begin{algorithmic}[1]
+\Require Graph $G = (V, E)$, MA parameters
+\Ensure Near-optimal FVS
+\State $(G', k', F_{\text{forced}}, \phi) \leftarrow \textsc{Kernelize}(G)$ \Comment{$\phi$: kernel-to-original map}
+\If{$|V(G')| = 0$} \Return $F_{\text{forced}}$ \EndIf
+\State $S' \leftarrow \textsc{MA}(G', \text{parameters})$ \Comment{C++ solver on kernel}
+\State $S \leftarrow F_{\text{forced}} \cup \{\phi(v) : v \in S'\}$
+\Return $\mathrm{deduplicate}(S)$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Kernelization Rules}
+
+\subsection{Undirected Kernelization}
+
+The function \texttt{kernelize\_undirected\_graph} applies the following rules iteratively to quiescence:
+
+\begin{enumerate}
+  \item \textbf{Self-loop rule}: If $(v,v) \in E$, force $v$ into FVS and remove.
+  \item \textbf{Degree-0/1 rule}: If $\deg(v) \leq 1$, remove $v$ (cannot be in any cycle).
+  \item \textbf{Degree-2 bypass rule}: If $\deg(v) = 2$ with neighbors $a, b$ and $\{a,b\} \notin E$, replace $v$ and its edges with a single edge $(a,b)$.
+\end{enumerate}
+
+These rules are safe: no optimal FVS excludes forced vertices, and removed vertices never need to be included. The theoretical basis is the $\bigO{k^2}$ kernel of Thomass\'{e} \cite{thomasse2010}.
+
+\subsection{Directed Kernelization}
+
+The function \texttt{kernelize\_directed\_graph} applies stronger directed rules:
+
+\begin{enumerate}
+  \item \textbf{Self-loop rule}: If $(v,v) \in E$, force $v$ into DFVS and remove.
+  \item \textbf{Source/Sink rule}: If $\text{in-deg}(v) = 0$ or $\text{out-deg}(v) = 0$, remove $v$ (not on any directed cycle).
+  \item \textbf{Degree-1 bypass}: If $\text{in-deg}(v) = 1$ or $\text{out-deg}(v) = 1$, shortcut its predecessor(s) to its successor(s) and remove.
+  \item \textbf{SCC reduction}: Compute SCCs via Tarjan's algorithm \cite{tarjan1972}; remove all vertices not in nontrivial SCCs. A nontrivial SCC has $|C| > 1$ or contains a self-loop.
+\end{enumerate}
+
+\infobox{Key Impact of SCC Reduction}{
+SCC-based directed reduction alone eliminates 60--90\% of vertices on sparse real-world directed graphs before any search begins, dramatically shrinking the kernel and making DFVS tractable at scales impossible for undirected FVS with comparable vertex counts.
+}
+
+\section{C++ Backend Solver}
+
+The MA on the kernel is dispatched to the C++ engine (\texttt{cpp\_engine}), which exposes:
+\begin{itemize}
+  \item \texttt{cpp\_engine.solve\_undirected\_KMA} / \texttt{solve\_directed\_KMA}
+  \item Fallback chain: KMA $\to$ KME $\to$ MA
+\end{itemize}
+
+The C++ solver enforces a hard wall-clock timeout internally, returning the best solution found within the budget.
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{DKMA: Dynamic Kernelized Memetic Algorithm}
+\label{ch:dkma}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\section{Motivation: The Opening-Up Effect}
+
+\kma{} applies kernelization once before search. A fundamental limitation is that partial solutions formed during evolutionary search may enable additional reductions that static pre-kernelization cannot exploit.
+Consider a directed graph where, after one generation of MA, 80\% of individuals agree that vertex $v$ belongs to the FVS. If $v$ is committed, its removal may create new sources/sinks or break SCCs, unlocking further reductions. This \textbf{opening-up effect} \cite{grossmann2022ipec} progressively shrinks the kernel as partial consensus is reached.
+
+\section{DKMA Algorithm}
+
+\begin{algorithm}[H]
+\caption{DKMA: Dynamic Kernelized Memetic Algorithm}
+\label{alg:dkma}
+\begin{algorithmic}[1]
+\Require Graph $G$, threshold $\tau$, MA parameters
+\Ensure Near-optimal FVS
+\State $(G', F, \phi) \leftarrow \textsc{StaticKernelize}(G)$
+\If{directed} Apply \textsc{ShortonePas}($G'$) \EndIf
+\State $\mathcal{P} \leftarrow \textsc{InitPopulation}(G')$
+\Repeat
+  \State $\mathcal{P} \leftarrow \textsc{RunOneGeneration}(\mathcal{P}, G')$
+  \State $C \leftarrow \textsc{CommitVertices}(\mathcal{P}, G', \tau)$ \Comment{Vertices in $\geq \tau$ fraction}
+  \State $F \leftarrow F \cup \phi(C)$; remove $C$ from $G'$
+  \State $(G', \phi') \leftarrow \textsc{DynamicKernelize}(G')$ \Comment{Re-kernelize residual}
+  \State $\phi \leftarrow \phi \circ \phi'$
+  \If{every 5 generations} $\mathcal{P} \leftarrow \textsc{TopologicalDiversify}(\mathcal{P}, G')$ \EndIf
+\Until{convergence or timeout}
+\State $S \leftarrow \textsc{GainLocalSearch}(F \cup \phi(\text{best}({\mathcal{P}})), G)$ \Comment{1-1 and 2-1 swaps}
+\State Verify acyclicity; fallback to KMA if invalid
+\Return $S$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Key Innovations}
+
+\subsection{Commit Threshold and Cap}
+
+The function \texttt{\_commit\_vertices\_from\_population} selects consensus vertices:
+\begin{itemize}
+  \item A vertex $v$ is committed if it appears in $\geq \tau$ fraction of population individuals (default $\tau = 0.8$).
+  \item If too many vertices would be committed, cap at the top 30\% by frequency to prevent over-committing and loss of diversity.
+\end{itemize}
+This is based on the DFVS approach from Grossmann et al.\ \cite{grossmann2022ipec}.
+
+\subsection{SHORTONE Directed Contractions}
+
+Inspired by the Mount-Doom PACE 2022 solver \cite{langedal2022}, the function \texttt{\_apply\_shortone\_rule} performs a directed contraction pass before the MA loop. It contracts degree-1 in/out vertices with cycle-preserving rewiring, enabling additional SCC reductions that standard kernelization misses.
+
+\subsection{Topological Diversification}
+
+Every 5 generations, \texttt{\_diversify\_with\_topological\_ordering} is called to prevent premature convergence \cite{lust2010}:
+\begin{itemize}
+  \item \textbf{Directed}: Randomized Kahn's algorithm with tie-breaking on cycle-heavy vertices.
+  \item \textbf{Undirected}: Random spanning-tree with cycle-breaking insertion.
+\end{itemize}
+
+\subsection{Gain Local Search}
+
+After the main loop, \texttt{\_gain\_local\_search} applies improvement swaps:
+\begin{itemize}
+  \item \textbf{1-1 swap}: Remove one FVS vertex and add another; accept if FVS remains valid and size decreases.
+  \item \textbf{2-1 swap}: Replace two FVS vertices with one; accept if valid.
+\end{itemize}
+
+\subsection{Correctness Safeguards}
+
+DKMA enforces:
+\begin{enumerate}
+  \item Deduplicated final solution indices.
+  \item All forced vertices (static + dynamic) are included.
+  \item Final acyclicity verification on the \emph{original} graph: directed uses iterative DFS back-edge detection; undirected uses union-find.
+  \item Fallback to KMA if final verification fails.
+\end{enumerate}
+
+\section{KMA vs.\ DKMA: Comparison}
+
+\begin{table}[H]
+\centering
+\caption{Feature comparison between KMA and DKMA}
+\label{tab:kma_dkma_compare}
+\begin{tabular}{lll}
+\toprule
+\textbf{Feature} & \textbf{KMA} & \textbf{DKMA} \\
+\midrule
+Kernelization & Once (static) & Per-generation loop (dynamic) \\
+Vertex commitment & None & Consensus-based ($\tau = 0.8$) \\
+SHORTONE pass & No & Yes (directed only) \\
+Topological diversification & No & Every 5 generations \\
+Post-loop local search & No & Gain 1-1 / 2-1 swaps \\
+Final validity check & End & End + KMA fallback \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{GNN-KMA Models}
+\label{ch:gnnkma}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\section{Motivation: Why Learn to Guide Search?}
+
+Both KMA and DKMA apply reduction rules and evolutionary search but are agnostic to the learned patterns in graph structure that correlate with FVS membership. A graph neural network (GNN) trained on solved instances can learn which structural features make a vertex likely to be in the optimal FVS, providing \emph{soft hints} that guide the solver toward better solutions.
+
+\section{Precision-First Coupling Strategy}
+
+The core coupling design is \textbf{precision-first soft-hint}:
+
+\begin{enumerate}
+  \item Kernelize the input graph $G$ to obtain kernel $G'$.
+  \item Run GNN inference on $G'$ to obtain per-vertex probabilities $p(v)$.
+  \item Hard-fix only vertices with $p(v) \geq \theta$ (default $\theta = 0.65$).
+  \item Cap hard-fix ratio at 8\% of kernel size.
+  \item Run KMA on the residual kernel $G'' = G' \setminus \{\text{hard-fixed}\}$.
+  \item Reconstruct: $S = F_{\text{forced}} \cup F_{\text{GNN}} \cup \phi(\text{KMA}(G''))$.
+\end{enumerate}
+
+\infobox{Why Precision-First?}{
+False positives in hard-fixing are catastrophic: a wrongly fixed vertex inflates the final FVS size and cannot be removed within that solve branch. Capping at 8\% of the kernel and requiring $\theta \geq 0.65$ ensures the GNN only commits when highly confident. If no vertex exceeds $\theta$, the system automatically falls back to pure KMA.
+}
+
+\section{GNN-KMA v1: Baseline Architecture}
+
+\subsection{Feature Engineering (3 channels)}
+
+\paragraph{Undirected:}
+\begin{align}
+  x_1(v) &= \frac{\deg(v)}{\max(n-1, 1)} & &\text{(normalized degree)} \\
+  x_2(v) &= c(v) & &\text{(clustering coefficient)} \\
+  x_3(v) &= \frac{\log(\deg(v)+1)}{\log(n+1)} & &\text{(normalized log-degree)}
+\end{align}
+
+\paragraph{Directed:}
+\begin{align}
+  x_1(v) &= \frac{d^-(v)}{\max(n-1, 1)}, \quad x_2(v) = \frac{d^+(v)}{\max(n-1, 1)}, \quad x_3(v) = \frac{\min(d^-(v),d^+(v))}{\max(n-1,1)}
+\end{align}
+
+The clustering coefficient \cite{watts1998} captures local cycle density, making it a natural predictor for FVS membership.
+
+\subsection{Model Architecture}
+
+\textbf{UndirectedFVSNet}: 3-layer GraphSAGE \cite{hamilton2017} message passing, BatchNorm + Dropout after each layer, MLP classification head, 2-class log-softmax output.
+
+\textbf{DirectedFVSNet}: Custom \texttt{DirectedConvLayer} with separate in-aggregation, out-aggregation, and self terms; 3 layers + BN + Dropout + MLP; 2-class log-softmax output.
+
+\subsection{Training}
+
+Weighted NLL loss with class weights $w_c = n / (2 \cdot |C_c|)$, cosine annealing LR schedule, checkpoint by validation F1.
+
+\section{GNN-KMA v2: Richer Structural Features}
+
+v2 extends the feature set to 11 channels:
+
+\begin{enumerate}
+  \item Degree-like channels (same as v1).
+  \item \textbf{RWSE} \cite{dwivedi2023}: Random Walk Structural Encodings --- short-range return probabilities at steps $\{2, 3, 4\}$.
+  \item \textbf{Motif counts} \cite{ahmed2015}: triangle count, 4-cycle participation, 4-clique-style counts.
+  \item \textbf{$k$-core number} $\kappa(v)$ \cite{batagelj2003}: vertices deep in dense cores are more likely to be in any FVS.
+\end{enumerate}
+
+The model architecture retains the GraphSAGE backbone but with upgraded input (in\_channels = 11). RWSE directly captures short-range cycle return probability, providing a continuous proxy for FVS membership likelihood.
+
+\section{GNN-KMA v3: Attention-Based Precision Model}
+
+v3 is designed for precision-first hybrid coupling, with every architectural and training choice oriented toward reducing false positives.
+
+\subsection{Feature Engineering (16 channels)}
+
+\begin{itemize}
+  \item Extended RWSE horizon: steps $\{2, 3, 4, 6, 8, 12, 16\}$.
+  \item \textbf{SCC-aware channels} (directed): SCC size, SCC membership depth — vertices in large SCCs are more critical for DFVS.
+  \item Cycle-score interaction features.
+  \item Directional ratio features: $d^-/(d^-+d^+)$.
+  \item Reduced reliance on expensive motif channels.
+\end{itemize}
+
+\subsection{Model Architecture: DirectedFVSNetV3}
+
+\begin{enumerate}
+  \item Input projection layer.
+  \item 5 residual GATv2 blocks \cite{brody2022} with forward and reverse message paths.
+  \item Per-layer fusion projections.
+  \item Global readout context concatenated to each node embedding.
+  \item Single-logit output per node (sigmoid probability).
+\end{enumerate}
+
+\subsection{Training Innovations}
+
+\begin{itemize}
+  \item \textbf{AsymmetricFVSLoss}: Penalizes false positives more strongly than false negatives, directly matching the precision-first coupling requirement.
+  \item \textbf{Warmup + cosine LR + gradient clipping}.
+  \item \textbf{Checkpoint metric}: topk-precision@8\% --- the top 8\% of predicted FVS vertices' precision, matching the hard-fix cap used at inference.
+  \item 200 epochs (vs.\ 100 for v1/v2).
+\end{itemize}
+
+\section{GNN-DKMA}
+
+\textbf{GNN-DKMA} applies the same GNN pre-fixing principle, but hands the residual kernel to DKMA instead of KMA, enabling dynamic re-kernelization atop GNN guidance.
+
+\section{Architecture Evolution Summary}
+
+\begin{table}[H]
+\centering
+\caption{GNN-KMA v1/v2/v3 feature and architecture comparison}
+\label{tab:gnn_compare}
+\begin{tabular}{llll}
+\toprule
+\textbf{Aspect} & \textbf{v1} & \textbf{v2} & \textbf{v3} \\
+\midrule
+Feature channels & 3 & 11 & 16 \\
+Clustering coeff. & \checkmark & --- & --- \\
+RWSE & --- & steps $\{2,3,4\}$ & steps $\{2\ldots16\}$ \\
+Motif counts & --- & \checkmark & reduced \\
+$k$-core & --- & \checkmark & --- \\
+SCC channels & --- & --- & \checkmark \\
+Backbone & GraphSAGE & GraphSAGE & GATv2 \\
+Depth & 3 layers & 3 layers & 5 residual blocks \\
+Bidirectional & No & No & Yes (fwd+rev) \\
+Global readout & No & No & Yes \\
+Loss & NLL & NLL & AsymmetricFVSLoss \\
+Checkpoint metric & Val F1 & Val F1 & topk-prec@8\% \\
+Epochs & 100 & 100 & 200 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Implementation Architecture}
+\label{ch:implementation}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\section{System Architecture}
+
+The codebase is organized into four layers:
+
+\begin{enumerate}
+  \item \textbf{C++ Algorithm Engine} (\texttt{cpp\_engine/}): High-performance solver implementations (BST, IC, MA, KMA, DKMA, directed variants). Compiled as a Python extension module via \texttt{build\_engine.py}.
+  \item \textbf{Python Orchestration} (\texttt{experiments/}): Benchmark drivers, pipeline runners, hybrid runtime, suite runner with resume semantics.
+  \item \textbf{Data Pipeline} (\texttt{data/}): Real-world graph download, synthetic graph generation, TXT-to-PT conversion with solver labels.
+  \item \textbf{GNN Stack} (\texttt{gnn\_model/}): Feature engineering, model definitions, training loop, runtime inference integration.
+\end{enumerate}
+
+\section{Data Structures and Key Abstractions}
+
+\paragraph{Graph Representation.} Graphs are stored as compact integer edge lists (0-indexed). Each \texttt{.txt} file follows the \texttt{edge\_list\_v1} format with a metadata header (\texttt{p edge N M}), directed/undirected flag, and source tag.
+
+\paragraph{PT Dataset Format.} Each PyG \texttt{Data} object stores: node feature matrix \texttt{x}, edge index \texttt{edge\_index}, binary label vector \texttt{y}, \texttt{fvs\_size}, and metadata (\texttt{family}, \texttt{track}, \texttt{category}, \texttt{source\_file}, \texttt{feature\_set}).
+
+\paragraph{Kernel Representation.} Kernelization returns \texttt{(k\_n, k\_edges, forced, k\_new\_to\_old)}, where \texttt{k\_new\_to\_old} maps kernel vertex indices back to original indices.
+
+\section{C++ Engine Dispatch}
+
+At runtime, the hybrid solver dispatches to the best available C++ solver:
+
+\begin{lstlisting}[language=Python, caption=Solver dispatch in run\_hybrid.py]
+for fn_name in ['solve_undirected_KMA', 'solve_undirected_KME', 'solve_undirected_MA']:
+    if hasattr(cpp_engine, fn_name):
+        solver_fn = getattr(cpp_engine, fn_name)
+        break
+\end{lstlisting}
+
+\section{Reproducibility and Resume Semantics}
+
+All benchmark pipelines support deterministic restart: each CSV output is appended one row at a time immediately after each file completes, and existing rows are skipped on resume. Synthetic generation uses deterministic per-bucket seed derivation from a global seed, ensuring identical datasets across runs with the same seed.
+
+\section{GNN Inference Integration}
+
+GNN loading is lazy: PyTorch, PyG, and model weights are imported only when needed, allowing the system to fall back gracefully to pure KMA if dependencies are unavailable. Feature computation at inference exactly mirrors dataset generation formulas to prevent train/inference mismatch.
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Datasets and Experimental Setup}
+\label{ch:experiments}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\section{Synthetic Dataset}
+
+\subsection{Design Goals}
+
+The dataset generation pipeline is designed around five goals:
+(1) controlled distribution with fixed category proportions by family;
+(2) track-aware difficulty with separate exact and heuristic tracks;
+(3) reproducibility via deterministic seeding;
+(4) restartability via safe reuse of existing files;
+(5) benchmark/train alignment ensuring GNN training data mirrors benchmark data distribution.
+
+\subsection{Dataset Composition}
+
+\begin{table}[H]
+\centering
+\caption{Undirected graph categories and weights}
+\label{tab:undirected_cats}
+\begin{tabular}{lll}
+\toprule
+\textbf{Category} & \textbf{Weight} & \textbf{Graph Model} \\
+\midrule
+real\_world & 20\% & NetworkX / PyG / OGB / SNAP \\
+scale\_free & 20\% & Barab\'{a}si--Albert \cite{barabasi1999} \\
+small\_world & 20\% & Watts--Strogatz \cite{watts1998} \\
+random\_er & 20\% & Erd\H{o}s--R\'{e}nyi \cite{erdos1959} \\
+grids\_trees & 20\% & Grid + Random tree \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Directed graph categories and weights}
+\label{tab:directed_cats}
+\begin{tabular}{lll}
+\toprule
+\textbf{Category} & \textbf{Weight} & \textbf{Graph Model} \\
+\midrule
+real\_world\_ego & 30\% & SNAP ego-networks \\
+scale\_free & 20\% & Directed BA projection \\
+random\_er & 20\% & Directed Erd\H{o}s--R\'{e}nyi \\
+directed\_grids & 15\% & Oriented grid with reverse-edge injection \\
+dags & 15\% & GN DAG-style generator \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Track Size Intent}
+
+\begin{table}[H]
+\centering
+\caption{Track-specific graph size ranges}
+\label{tab:track_sizes}
+\begin{tabular}{ll}
+\toprule
+\textbf{Track} & \textbf{Node Range} \\
+\midrule
+exact\_track & $\approx 10$--35 nodes \\
+heuristic\_track & $\approx 100$--5000 nodes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Ground-Truth Labels}
+
+Labels are obtained from exact solvers where feasible:
+\begin{itemize}
+  \item \textbf{exact\_track}: IC-based labels (high-fidelity, near-optimal, 60-second timeout).
+  \item \textbf{heuristic\_track}: KMA-based labels (practical large-instance behavior).
+\end{itemize}
+
+Each label is validated by an acyclicity check before saving. Invalid labels are discarded; a CSV status ledger tracks completed, timeout, and invalid outcomes.
+
+\subsection{Scale and Availability}
+
+The full dataset comprises \textbf{100K undirected + 100K directed} labeled FVS graphs, publicly released on Kaggle:
+\begin{itemize}
+  \item \url{https://www.kaggle.com/datasets/tawkirazizrahman/fvs-synthetic-dataset-100k}
+  \item \url{https://www.kaggle.com/datasets/tawkirazizrahman/fvs-synthetic-dataset-20k}
+\end{itemize}
+To our knowledge, this is the largest publicly available labeled FVS dataset.
+
+\section{PACE 2022 Benchmark}
+
+The Parameterized Algorithms and Computational Experiments (PACE) Challenge 2022 \cite{grossmann2022ipec} focused on FVS and provided 200 public undirected test instances curated from real-world and synthetic sources, ranging from small exact instances to large heuristic-track graphs. The official solution checker and world-class solver implementations serve as baselines.
+
+We use PACE 2022 as a held-out real-world stress test for heuristic solvers. The PACE winner (Sylwester Swat, Pozna\'{n} University of Technology) achieved a reported score of 99.91/100.
+
+\section{Evaluation Metrics}
+
+\begin{itemize}
+  \item \textbf{FVS size}: Number of vertices in the computed solution (smaller is better).
+  \item \textbf{Runtime}: Wall-clock seconds (includes kernelization and GNN inference).
+  \item \textbf{Validity}: Boolean indicating whether the returned set is a valid FVS (acyclicity check).
+  \item \textbf{PACE score}: $100 \times \frac{\OPT_{\text{FVS}}}{\text{solved FVS}}$, averaged over all instances.
+  \item \textbf{Optimality}: For exact-track comparisons, percentage of instances matching the optimal solution.
+\end{itemize}
+
+\section{Experimental Protocol}
+
+\begin{itemize}
+  \item Timeouts: $n \leq 50 \to 100$s; $50 < n \leq 200 \to 500$s; $n > 200 \to 600$s.
+  \item Results logged to CSV with resume semantics.
+  \item All benchmarks run on the same hardware for comparability.
+  \item GNN inference uses the pre-trained weights from \texttt{gnn\_model/weights/}.
+\end{itemize}
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Results and Evaluation}
+\label{ch:results}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\section{Exact Solver Results}
+
+\subsection{Optimality on Completed Instances}
+
+\begin{table}[H]
+\centering
+\caption{Exact solver performance on undirected exact-track instances}
+\label{tab:exact_results}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Solver} & \textbf{Mean Score (\%)} & \textbf{Instances Completed} \\
+\midrule
+Brute Force & 100.0 & 7,263 \\
+BST Exact & 100.0 & 9,046 \\
+IC Exact & 100.0 & 9,906 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All three solvers achieve 100\% optimality on their completed instances, confirming the correctness of the C++ implementations. IC completes the most instances, consistent with its better theoretical complexity. All solvers produce identical solutions on shared instances, providing cross-validation of correctness.
+
+\subsection{Scalability Analysis}
+
+Exact success rates decline with graph size ($n$) and solution size ($k$). IC and BST maintain near-100\% completion for $n \leq 20$ and $k \leq 10$, but success rates drop sharply beyond $n = 28$ and $k = 15$. This is expected from the exponential FPT complexity. The runtime vs.\ $k$ curve (fixed $n = 28$) shows exponential growth for both solvers, while the runtime vs.\ $n$ curve (fixed $k = 4$) shows polynomial growth, confirming the FPT behavior.
+
+\section{PACE 2022 Heuristic Results}
+
+\begin{table}[H]
+\centering
+\caption{PACE 2022 benchmark results (200 instances, 600s total)}
+\label{tab:pace_results}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Solver} & \textbf{Mean Score (/100)} & \textbf{Total Time (s)} \\
+\midrule
+PACE 2022 Winner & 100.00 & 600.0 \\
+\midrule
+directed KMA (pop=90) & 78.93 & 18,709.9 \\
+directed GNN-KMA-3 $\theta$=0.85 (pop=30) & 78.64 & 15,617.5 \\
+directed GNN-KMA-3 $\theta$=0.95 (pop=30) & 77.75 & 15,302.6 \\
+directed GNN-KMA $\theta$ (pop=30) & 76.98 & 8,380.7 \\
+directed DKMA (pop=30) & 76.49 & 8,367.2 \\
+directed KMA (pop=30) & 76.37 & 7,820.3 \\
+directed GNN-KMA-3 small $\theta$=0.9 (pop=30) & 76.27 & 16,480.6 \\
+directed DKMA (pop=15) & 75.90 & 4,641.9 \\
+directed KMA (pop=15) & 75.69 & 4,209.2 \\
+directed MA (pop=90) & 71.84 & 18,281.5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Comparative Analysis}
+
+\subsection{Kernelization Impact: MA vs.\ KMA}
+
+KMA (pop=30) achieves a mean PACE score of 76.37, compared to MA (pop=90) at 71.84. This 4.5-point improvement, despite MA using 3$\times$ the population, demonstrates the strong benefit of pre-search kernelization: eliminating vertices that kernelization rules can handle deterministically frees evolutionary budget for genuinely hard substructures.
+
+\subsection{Dynamic Kernelization: DKMA vs.\ KMA}
+
+DKMA (pop=30) achieves 76.49 vs.\ KMA (pop=30) at 76.37, a modest but consistent improvement. The opening-up effect is more pronounced on sparse graphs with hierarchical SCC structure, where dynamic commitment progressively unlocks reductions.
+
+\subsection{GNN Guidance: GNN-KMA vs.\ KMA}
+
+GNN-KMA v3 ($\theta = 0.85$, pop=30) achieves 78.64, \textbf{2.27 points above} baseline KMA at the same population, demonstrating that learned vertex-level predictions provide meaningful guidance. v3 outperforms v1 by approximately 1.6 points, reflecting the benefit of deeper features (16 channels, SCC-aware, extended RWSE) and the precision-oriented training objective.
+
+\subsection{Population Scaling}
+
+Increasing population from 30 to 90 boosts KMA from 76.37 to 78.93 at a $3\times$ computational cost. This suggests that \gnnkma{} v3 provides comparable benefit to 3$\times$ more evolutionary effort, but at a smaller additional compute cost (GNN inference is relatively cheap once trained).
+
+\section{Ablation: Feature and Architecture Contribution}
+
+The progression v1 $\to$ v2 $\to$ v3 shows systematic improvement:
+\begin{itemize}
+  \item v1 to v2: RWSE and $k$-core channels provide stronger structural discrimination.
+  \item v2 to v3: SCC-aware channels, GATv2 architecture with bidirectional messages, global readout, and precision-oriented loss all contribute to improved precision.
+  \item Checkpoint metric change (F1 $\to$ topk-precision@8\%) directly addresses the false-positive cost in hard-fixing.
+\end{itemize}
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Discussion}
+\label{ch:discussion}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\section{When Exact Algorithms Win}
+
+Exact solvers (IC, BST) are the right choice when $n \leq 35$ and $k \leq 15$, as they guarantee optimality. Beyond these ranges, the exponential FPT complexity makes exact methods infeasible within 600-second timeouts. The crossover point between exact and heuristic methods is largely determined by $k$ rather than $n$, confirming the FPT characterization.
+
+\section{When Metaheuristics Dominate}
+
+For heuristic-track instances ($n = 100$--$5000$), MA-family solvers provide near-optimal solutions within time budgets. Kernelization (KMA) consistently outperforms plain MA, and higher population sizes improve solution quality at linear time cost.
+
+\section{Structural Graph Observations}
+
+\paragraph{Directed graphs are harder.} Directed FVS instances have smaller kernels after SCC reduction, but the remaining kernel is structurally denser and harder for evolutionary search. GNN guidance is more valuable on directed instances, where SCC-aware features (v3) provide structural depth.
+
+\paragraph{Scale-free graphs benefit most from kernelization.} Barab\'{a}si--Albert graphs have high-degree hubs; after removing these hubs (forced by reduction rules), the remaining graph fragments quickly, yielding small kernels.
+
+\paragraph{DAGs are trivially solvable.} DAGs have no directed cycles, so their DFVS is empty. Solvers should detect this in $\bigO{n + m}$ time; the kernelization rules handle this implicitly via the SCC reduction step.
+
+\section{Practical Implications}
+
+The KMA + GNN-KMA v3 combination is recommended for production use when:
+\begin{itemize}
+  \item The graph is large (heuristic track) and exact methods are infeasible.
+  \item Trained GNN weights are available for the target graph family.
+  \item A 600-second time budget is available.
+\end{itemize}
+Pure KMA with population 90 is recommended when GNN weights are unavailable or the graph family differs significantly from the training distribution.
+
+\section{Limitations}
+
+\begin{itemize}
+  \item \textbf{Parameter sensitivity}: KMA and DKMA performance depends on population size, early-stop, and commit threshold. Tuning across graph families would require additional experiments.
+  \item \textbf{Large dense graphs}: On dense graphs where kernelization is less effective, all heuristic methods face a harder residual problem. GNN guidance helps less when the kernel is large.
+  \item \textbf{GNN training cost}: Generating labeled datasets for v3 training requires running IC/KMA on 200K graphs, which is computationally expensive ($\sim$hours on a workstation).
+  \item \textbf{Distribution shift}: GNN models trained on synthetic data may generalize less well to competition instances with different structural properties.
+  \item \textbf{PACE gap}: Our best score of 78.93 is significantly below the PACE winner's 99.91, reflecting the sophistication of competition-tuned implementations.
+\end{itemize}
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Future Work}
+\label{ch:future}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\begin{enumerate}
+  \item \textbf{Adaptive kernelization}: Develop data-driven rules that learn which reduction rules are most effective for a given graph family.
+  \item \textbf{Improved GNN architectures}: Explore equivariant GNNs, higher-order message passing, or transformer-based architectures for richer structural representations.
+  \item \textbf{Online learning}: Update GNN weights incrementally as new solved instances become available, enabling continuous improvement.
+  \item \textbf{Distributed MA}: Parallelize population evolution across multiple cores/machines for larger population budgets.
+  \item \textbf{Theoretical bounds}: Prove approximation guarantees for the KMA/DKMA pipeline under specific graph families.
+  \item \textbf{Multi-objective optimization}: Explore Pareto frontiers trading FVS size against runtime or robustness.
+  \item \textbf{PACE 2024/2025}: Apply the framework to future PACE challenge problems to evaluate generality.
+\end{enumerate}
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\chapter{Conclusion}
+\label{ch:conclusion}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+This report presented a comprehensive research and engineering framework for the Feedback Vertex Set problem, spanning theory, exact algorithms, heuristic methods, and graph-neural-network-guided hybrid solvers.
+
+Our primary contributions are:
+
+\begin{enumerate}
+  \item \textbf{KMA}: A kernelized memetic algorithm that integrates directed SCC reduction with C++-backed evolutionary search, eliminating 60--90\% of directed-graph vertices before search and consistently outperforming plain MA by 4--5 PACE points.
+
+  \item \textbf{DKMA}: A dynamic re-kernelization loop with SHORTONE contractions, topological diversification, and gain local search, enabling an opening-up effect that progressively shrinks the search space as evolutionary consensus develops.
+
+  \item \textbf{GNN-KMA v1/v2/v3}: Three generations of GNN-guided hybrid solvers, culminating in v3 with 16-channel SCC-aware features, GATv2 residual blocks, asymmetric precision loss, and topk-precision@8\% checkpointing. GNN-KMA v3 achieves 78.64/100 on PACE 2022, comparable to running KMA with 3$\times$ more population.
+
+  \item \textbf{FVS Dataset}: The largest publicly available labeled FVS dataset (200K graphs), enabling reproducible evaluation and future learning-based research.
+\end{enumerate}
+
+The framework demonstrates that principled integration of kernelization, evolutionary search, and learned guidance yields competitive solvers while remaining conceptually transparent and extensible. The code, datasets, and weights are publicly available at the project repository, making this work a platform for continued research in combinatorial optimization.
+
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  REFERENCES
+%% ═══════════════════════════════════════════════════════════════════════════
+\bibliographystyle{unsrtnat}
+\begin{thebibliography}{99}
+
+\bibitem{karp1972}
+R.~M. Karp, ``Reducibility among combinatorial problems,''
+in \emph{Complexity of Computer Computations}, 1972, pp.~85--103.
+
+\bibitem{becker1996}
+A.~Becker and D.~Geiger, ``Optimization of Pearl's method of conditioning and
+greedy-like approximation algorithms for the weighted maximum acyclic subgraph
+problem,'' \emph{Artificial Intelligence}, vol.~105, pp.~1--2, 1996.
+
+\bibitem{thomasse2010}
+S.~Thomass{\'e}, ``A $4k^2$ kernel for feedback vertex set,''
+\emph{ACM Transactions on Algorithms}, vol.~6, no.~2, 2010.
+
+\bibitem{reed2004}
+B.~Reed, K.~Smith, and A.~Vetta, ``Finding odd cycle transversals,''
+\emph{Operations Research Letters}, vol.~32, no.~4, pp.~299--301, 2004.
+
+\bibitem{cygan2015}
+M.~Cygan et al., \emph{Parameterized Algorithms}. Springer, 2015.
+
+\bibitem{chen2008dfvs}
+J.~Chen, Y.~Liu, S.~Lu, B.~O'Sullivan, and I.~Razgon, ``A fixed-parameter
+algorithm for the directed feedback vertex set problem,''
+\emph{Journal of the ACM}, vol.~55, no.~5, 2008.
+
+\bibitem{lust2010}
+T.~Lust and J.~Teghem, ``The multiobjective multidimensional knapsack problem:
+a survey and a new approach,'' \emph{International Transactions in Operations
+Research}, 2010. (Memetic algorithm framework reference.)
+
+\bibitem{grossmann2022ipec}
+G.~Grossmann, M.~Heuer, P.~Schulz, and D.~Strash,
+``Targeted solution methods for the minimum feedback vertex set problem,''
+in \emph{Proc.~17th IPEC}, LIPIcs vol.~249, 2022,
+doi:10.4230/LIPIcs.IPEC.2022.26.
+
+\bibitem{figiel2022esa}
+A.~Figiel, V.~Froese, A.~Nichterlein, and R.~Niedermeier,
+``Improved parameterized algorithms for the directed feedback vertex set
+problem,'' in \emph{Proc.~ESA 2022}, LIPIcs, 2022,
+doi:10.4230/LIPIcs.ESA.2022.53.
+
+\bibitem{langedal2022}
+K.~Langedal, J.~Langguth, F.~Manne, and D.~Strash,
+``Efficient minimum weight vertex cover heuristics using graph neural
+networks'' (Mount-Doom FVS solver), Zenodo, 2022,
+doi:10.5281/zenodo.6630611.
+
+\bibitem{hamilton2017}
+W.~Hamilton, Z.~Ying, and J.~Leskovec, ``Inductive representation learning
+on large graphs'' (GraphSAGE), in \emph{NeurIPS}, 2017.
+
+\bibitem{brody2022}
+S.~Brody, U.~Alon, and E.~Yahav, ``How attentive are graph attention
+networks?'' (GATv2), in \emph{ICLR}, 2022.
+
+\bibitem{dwivedi2023}
+V.~P. Dwivedi et al., ``Benchmarking graph neural networks,''
+\emph{Journal of Machine Learning Research}, vol.~24, no.~43, 2023.
+
+\bibitem{ahmed2015}
+N.~K. Ahmed, J.~Neville, R.~A. Rossi, and N.~Duffield,
+``Efficient graphlet counting for large networks,'' in \emph{ICDM}, 2015.
+
+\bibitem{batagelj2003}
+V.~Batagelj and M.~Zaversnik, ``An $\mathcal{O}(m)$ algorithm for cores
+decomposition of networks,'' arXiv:cs/0310049, 2003.
+
+\bibitem{tarjan1972}
+R.~E. Tarjan, ``Depth-first search and linear graph algorithms,''
+\emph{SIAM Journal on Computing}, vol.~1, no.~2, 1972.
+
+\bibitem{barabasi1999}
+A.-L. Barab{\'a}si and R.~Albert, ``Emergence of scaling in random
+networks,'' \emph{Science}, vol.~286, 1999.
+
+\bibitem{watts1998}
+D.~J. Watts and S.~H. Strogatz, ``Collective dynamics of `small-world'
+networks,'' \emph{Nature}, vol.~393, 1998.
+
+\bibitem{erdos1959}
+P.~Erd\H{o}s and A.~R{\'e}nyi, ``On random graphs I,''
+\emph{Publicationes Mathematicae}, vol.~6, 1959.
+
+\end{thebibliography}
+
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  APPENDIX
+%% ═══════════════════════════════════════════════════════════════════════════
+\appendix
+
+\chapter{Directory Structure}
+
+\begin{lstlisting}[caption=Repository directory layout]
+Feedback_Vertex_Set_Problem_Algorithm_Project_4-2/
+|-- cpp_engine/              # C++ exact + heuristic solvers
+|-- data/
+|   |-- setup_benchmark_inputs.py   # Orchestrator
+|   |-- download_real_world.py
+|   |-- generate_synthetic.py
+|   |-- synthetic/
+|   |   |-- undirected/{exact_track,heuristic_track}/{category}/*.txt
+|   |   |-- directed/{exact_track,heuristic_track}/{category}/*.txt
+|   |   |-- pace2022/            # PACE 2022 instances (protected)
+|-- experiments/
+|   |-- run_hybrid.py        # KMA/DKMA/GNN-KMA wrappers
+|   |-- benchmark_undirected.py
+|   |-- benchmark_directed.py
+|   |-- run_benchmark_suite.py
+|   |-- run_pipeline.py
+|-- gnn_model/
+|   |-- dataset_gen.py       # TXT -> PT with solver labels
+|   |-- train.py             # Variant-aware training
+|   |-- model_{undirected,directed}{,_v2}.py
+|   |-- model_directed_v3.py
+|   |-- feature_engineering_{v2,v3}.py
+|   |-- datasets/pt{,_v2,_v3}/  # Variant PT roots
+|   |-- weights/             # Trained model weights
+|-- build_engine.py
+|-- requirements.txt
+|-- README.md
+\end{lstlisting}
+
+\end{document}

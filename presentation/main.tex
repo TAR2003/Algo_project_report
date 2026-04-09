@@ -966,6 +966,766 @@
 \end{frame}
 
 
+
+
+% ============================================
+% PART 2: EXISTING ALGORITHMS (COMPLETE)
+% ============================================
+
+\section{Existing Algorithms Survey}
+
+
+% --------------------------------------------
+\begin{frame}{Approaches to Solving FVS: Algorithmic Survey}
+
+
+\begin{block}{Major Categories of Solution Approaches}
+\begin{itemize}
+    \item Exact Exponential Algorithms
+    \item Approximation Algorithms
+    \item Randomized Algorithms
+    \item Heuristic Methods
+    \item Metaheuristic Techniques
+\end{itemize}
+\end{block}
+
+\vspace{0.3cm}
+
+\begin{alertblock}{Objective}
+Provide a comprehensive overview of existing algorithms,
+their complexity, and practical trade-offs.
+\end{alertblock}
+
+\end{frame}
+
+% =====================================================
+% EXACT EXPONENTIAL
+% =====================================================
+
+\begin{frame}{Exact Exponential Algorithms}
+
+\begin{block}{Idea}
+Guarantee optimal solutions using exhaustive search or parameterized techniques.
+\end{block}
+
+\vspace{0.2cm}
+
+\begin{exampleblock}{Use Cases}
+\begin{itemize}
+\item When exact solution is required
+\item Small graphs or small parameter $k$
+\end{itemize}
+\end{exampleblock}
+
+\vspace{0.2cm}
+
+\begin{alertblock}{Algorithms}
+
+\begin{columns}[T] % T = top alignment
+\column{0.5\textwidth}
+\begin{itemize}
+\item Naive Brute Force
+\item DP on Subsets
+\item Iterative Compression
+\end{itemize}
+
+\column{0.5\textwidth}
+\begin{itemize}
+\item Bounded Search Tree
+\item Current Best FPT
+\item Inclusion-Exclusion DP
+\end{itemize}
+
+\end{columns}
+
+\end{alertblock}
+
+\end{frame}
+
+
+
+% --------------------------------------------
+\begin{frame}{Naive Brute Force}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Generate all subsets of vertices
+\item For each subset, remove vertices from graph
+\item Check if resulting graph is acyclic
+\item Return smallest valid subset
+\end{itemize}
+\end{block}
+
+\vspace{0.2cm}
+
+\begin{exampleblock}{Complexity}
+$O(2^n \cdot n^3)$
+\end{exampleblock}
+
+\vspace{0.2cm}
+
+\begin{alertblock}{Reference}
+\href{https://perso.limos.fr/~palafour/PAPERS/PDF/Garey-Johnson79.pdf}{Garey \& Johnson (1979)}
+\end{alertblock}
+
+\end{frame}
+% --------------------------------------------
+\begin{frame}{DP on Subsets}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Enumerate subsets of vertices
+\item Store intermediate results using DP
+\item Avoid recomputation of overlapping subsets
+\item Select minimum valid FVS
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(2^n \cdot n^2)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://mimuw.edu.pl/~malcin/book/parameterized-algorithms.pdf}{Cygan et al., Parameterized Algorithms (2015)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Iterative Compression}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Start with small subgraph solution
+\item Add vertices incrementally
+\item Maintain solution of size $k+1$
+\item Compress solution to size $k$
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(5^k \cdot kn^2)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://dehne73176131.wordpress.com/wp-content/uploads/2017/12/1-45.pdf}{Dehne et al., Theory of Computing Systems (2007)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Bounded Search Tree}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Detect a cycle in the graph
+\item Select a vertex from the cycle
+\item Branch by removing each possible vertex
+\item Recurse until graph becomes acyclic or $k$ exhausted
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(4^k \cdot n^2)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+  % 1
+\href{https://doi.org/10.1007/s00453-008-9215-6}{Chen et al. (2008)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Current Best FPT}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Apply reduction and kernelization rules
+\item Use advanced branching strategies
+\item Reduce problem size iteratively
+\item Solve using optimized search tree
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(3.619^k \cdot n^4)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://doi.org/10.1016/j.jcss.2008.05.002}{Chen et al., Journal of Computer and System Sciences (2008)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Inclusion-Exclusion DP}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Enumerate subsets using inclusion-exclusion principle
+\item Count valid configurations using DP
+\item Avoid overcounting via inclusion-exclusion
+\item Select subset forming valid FVS
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(2^n \cdot n)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://epubs.siam.org/doi/10.1137/1.9781611973099.139}{Björklund et al. (2010)}
+\end{alertblock}
+
+\end{frame}
+
+% =====================================================
+% APPROXIMATION
+% =====================================================
+
+\begin{frame}{Approximation Algorithms}
+
+\begin{block}{Idea}
+Provide near-optimal solutions with provable approximation guarantees.
+\end{block}
+
+\vspace{0.2cm}
+
+\begin{exampleblock}{Use Cases}
+\begin{itemize}
+\item When exact solution is computationally infeasible
+\item Large graphs where guarantees are required
+\end{itemize}
+\end{exampleblock}
+
+\vspace{0.2cm}
+
+\begin{alertblock}{Algorithms}
+
+\begin{columns}[T]
+\column{0.5\textwidth}
+\begin{itemize}
+\item 2-Approximation (VC-based)
+\item Log-Approximation
+\end{itemize}
+
+\column{0.5\textwidth}
+\begin{itemize}
+\item LP Rounding
+\item Primal-Dual
+\end{itemize}
+
+\end{columns}
+
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{2-Approximation (VC-based)}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Find a cycle in the graph
+\item Select an edge from the cycle
+\item Remove both endpoints of the edge
+\item Repeat until graph becomes acyclic
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Approximation Guarantee}
+$\leq 2 \times OPT$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://csaws.cs.technion.ac.il/~reuven/SAVE/OTHERS/vfs_bafna.pdf}{Bafna et al. (1999)}
+\end{alertblock}
+
+\end{frame}
+% --------------------------------------------
+\begin{frame}{Log-Approximation}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Convert problem into hitting set formulation
+\item Identify sets corresponding to cycles
+\item Apply greedy/log approximation algorithm
+\item Select vertices covering all cycles
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Approximation Guarantee}
+$O(\log n)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://doi.org/10.1137/S0097539796303400}{Bar-Yehuda (Approximation for FVS)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{LP Rounding}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Formulate FVS as integer linear program
+\item Relax constraints to linear program
+\item Solve LP to obtain fractional solution
+\item Round values to obtain integer solution
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(n^{3.5})$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://doi.org/10.1145/227234.227238}{Bar-Yehuda \& Even (1985)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Primal-Dual}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Initialize primal and dual solutions
+\item Increase dual variables iteratively
+\item Select vertices when constraints become tight
+\item Construct feasible FVS solution
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(n^2)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+  \href{https://dl.acm.org/doi/pdf/10.1145/227683.227684}{Goemans \& Williamson (1995)}
+\end{alertblock}
+
+\end{frame}
+
+% =====================================================
+% RANDOMIZED
+% =====================================================
+
+\begin{frame}{Randomized Algorithms}
+
+\begin{block}{Idea}
+Use randomness to achieve good expected performance and scalability.
+\end{block}
+
+\vspace{0.2cm}
+
+\begin{exampleblock}{Use Cases}
+\begin{itemize}
+\item When probabilistic guarantees are acceptable
+\item Large-scale graphs with time constraints
+\end{itemize}
+\end{exampleblock}
+
+\vspace{0.2cm}
+
+\begin{alertblock}{Algorithms}
+
+\begin{columns}[T]
+\column{0.5\textwidth}
+\begin{itemize}
+\item Random Sampling
+\item Randomized Rounding
+\end{itemize}
+
+\column{0.5\textwidth}
+\begin{itemize}
+\item Color Coding
+\end{itemize}
+
+\end{columns}
+
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Random Sampling}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Randomly select a vertex from graph
+\item Check if it belongs to a cycle
+\item Add it to solution if needed
+\item Repeat multiple times and choose best result
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Performance}
+Expected $O(\log n)$ approximation
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://doi.org/10.1017/CBO9780511814075}{Motwani \& Raghavan, Randomized Algorithms}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Randomized Rounding}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Solve LP relaxation
+\item Interpret fractional values as probabilities
+\item Randomly select vertices based on probability
+\item Repeat and select best solution
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Guarantee}
+Expected 2-approximation
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://doi.org/10.1007/978-3-662-04565-7}{Vazirani (2001)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Color Coding}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Assign random colors to vertices
+\item Identify colorful structures
+\item Use dynamic programming to detect solutions
+\item Repeat to improve probability
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(2^{O(k)} \cdot n)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://doi.org/10.1145/210332.210337}{Alon, Yuster, Zwick (1995)}
+\end{alertblock}
+
+\end{frame}
+
+% =====================================================
+% HEURISTIC
+% =====================================================
+
+\begin{frame}{Heuristic Algorithms}
+
+\begin{block}{Idea}
+Provide fast and practical solutions without theoretical guarantees.
+\end{block}
+
+\vspace{0.2cm}
+
+\begin{exampleblock}{Use Cases}
+\begin{itemize}
+\item Real-world applications requiring fast solutions
+\item Very large graphs where exact methods fail
+\end{itemize}
+\end{exampleblock}
+
+\vspace{0.2cm}
+
+\begin{alertblock}{Algorithms}
+
+\begin{columns}[T]
+\column{0.5\textwidth}
+\begin{itemize}
+\item Greedy Vertex Selection
+\item Cycle-Based Greedy
+\item Maximum Degree Heuristic
+\end{itemize}
+
+\column{0.5\textwidth}
+\begin{itemize}
+\item Core-Periphery Decomposition
+\item Reduction Rules + Greedy
+\end{itemize}
+
+\end{columns}
+
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Greedy Vertex Selection}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Compute degrees of all vertices
+\item Select highest-degree vertex
+\item Remove it from graph
+\item Repeat until no cycles remain
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(n^2 \log n)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://doi.org/10.1016/j.tcs.2004.12.001}{Festa et al., Theoretical Computer Science (2004)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Cycle-Based Greedy}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Detect cycles using DFS/BFS
+\item Count vertex participation in cycles
+\item Select most frequent vertex
+\item Remove and repeat
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(n^3)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://doi.org/10.1016/j.ejor.2007.01.060}{Festa et al., European Journal of Operational Research (2008)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Maximum Degree Heuristic}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Compute vertex degrees
+\item Apply tie-breaking rules
+\item Remove highest scoring vertex
+\item Repeat until acyclic
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(n^2 \log n)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://doi.org/10.1016/j.dam.2005.05.007}{Fomin et al., Discrete Applied Mathematics (2006)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Core-Periphery Decomposition}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Compute k-core decomposition
+\item Identify dense core region
+\item Focus removal on core vertices
+\item Apply greedy selection
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(n + m)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+  %2
+\href{https://doi.org/10.1137/1.9781611972832.4}{Batagelj \& Zaversnik, SIAM (2003)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Reduction Rules + Greedy}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Remove degree $\leq 1$ vertices
+\item Contract degree-2 vertices
+\item Apply preprocessing rules
+\item Run greedy on reduced graph
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(n^2)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+  %3
+\href{https://link.springer.com/chapter/10.1007/978-3-642-11269-0_2}{Kernelization: New Upper and Lower Bound Techniques}
+\end{alertblock}
+
+\end{frame}
+
+% =====================================================
+% METAHEURISTIC
+% =====================================================
+
+\begin{frame}{Metaheuristic Algorithms}
+
+\begin{block}{Idea}
+Use global optimization techniques to explore large solution spaces.
+\end{block}
+
+\vspace{0.2cm}
+
+\begin{exampleblock}{Use Cases}
+\begin{itemize}
+\item Complex large-scale graphs
+\item When near-optimal solutions are acceptable
+\end{itemize}
+\end{exampleblock}
+
+\vspace{0.2cm}
+
+\begin{alertblock}{Algorithms}
+
+\begin{columns}[T]
+\column{0.5\textwidth}
+\begin{itemize}
+\item Genetic Algorithm
+\item Simulated Annealing
+\item Ant Colony Optimization
+\end{itemize}
+
+\column{0.5\textwidth}
+\begin{itemize}
+\item Tabu Search
+\item Particle Swarm Optimization
+\end{itemize}
+
+\end{columns}
+
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Genetic Algorithm}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Initialize population randomly
+\item Evaluate fitness of solutions
+\item Apply crossover and mutation
+\item Select best individuals iteratively
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(g \cdot p \cdot n^2)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://mitpress.mit.edu/9780262031417/genetic-algorithms-in-search-optimization-and-machine-learning/}{Goldberg (1989)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Simulated Annealing}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Start with initial solution
+\item Generate neighboring solution
+\item Accept worse solutions probabilistically
+\item Gradually decrease temperature
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(i \cdot n^2)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://www.science.org/doi/10.1126/science.220.4598.671}{Kirkpatrick et al. (1983)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Ant Colony Optimization}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Initialize pheromone levels
+\item Construct solutions probabilistically
+\item Update pheromones based on quality
+\item Repeat for multiple iterations
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(\text{ants} \cdot i \cdot n^2)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://ieeexplore.ieee.org/document/585892}{Dorigo \& Gambardella (1997)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Tabu Search}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Start with initial solution
+\item Explore neighborhood solutions
+\item Maintain tabu list to avoid repetition
+\item Update best solution found
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(i \cdot n^2)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://pubsonline.informs.org/doi/pdf/10.1287/ijoc.1.3.190}{Glover (1989)}
+\end{alertblock}
+
+\end{frame}
+
+% --------------------------------------------
+\begin{frame}{Particle Swarm Optimization}
+
+\begin{block}{Algorithm Steps}
+\begin{itemize}
+\item Initialize swarm of particles
+\item Update velocity and position
+\item Share global and local best
+\item Iterate until convergence
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Complexity}
+$O(\text{particles} \cdot i \cdot n^2)$
+\end{exampleblock}
+
+\begin{alertblock}{Reference}
+\href{https://ieeexplore.ieee.org/document/488968}{Kennedy \& Eberhart (1995)}
+\end{alertblock}
+
+\end{frame}
+
+\section{Our implementations}
+
 \begin{frame}{Algorithm Selection Criteria}
 	\begin{columns}[T]
 		\column{0.36\textwidth}
