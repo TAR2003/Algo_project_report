@@ -203,7 +203,7 @@ It is a fundamental combinatorial problem with applications in operating system 
 While the decision version of \fvs{} is classically NP-Complete, fixed-parameter tractable (FPT) algorithms exist parameterized by the solution size $k$, making it tractable for small $k$.
 
 This report presents a comprehensive research and implementation framework addressing both the undirected \fvs{} problem and the Directed Feedback Vertex Set (\dfvs{}) problem.
-We implement three classes of solvers: \emph{exact FPT solvers} (Bounded Search Tree and Iterative Compression), \emph{heuristic evolutionary solvers} (Memetic Algorithm), and novel \emph{hybrid ML-combinatorial solvers} (GNN-KMA and GNN-DKMA).
+We implement three classes of solvers: \emph{exact FPT solvers} (Bounded Search Tree and Iterative Compression), \emph{heuristic evolutionary solvers} (Memetic Algorithm), and novel \emph{hybrid ML-combinatorial solvers} (GNN-KMA).
 
 Our primary algorithmic contributions are: (i) the \textbf{Kernelized Memetic Algorithm (KMA)}, which integrates graph-theoretic reduction rules --- including SCC-based directed reduction that eliminates 60--90\% of vertices --- with a C++-backed evolutionary search; (ii) the \textbf{Dynamic Kernelized Memetic Algorithm (DKMA)}, which interleaves population-based search with progressive commitment and re-kernelization, enabling an \emph{opening-up} effect that standard static kernelization cannot exploit; and (iii) three generations of \textbf{GNN-KMA} models (v1, v2, v3), where graph neural networks predict high-confidence \fvs{} vertices that are hard-fixed prior to KMA, under a precision-first coupling strategy that caps false-positive risk.
 
@@ -274,7 +274,7 @@ This project pursues the following objectives:
 	\item Implement exact FPT solvers (Iterative Compression and Bounded Search Tree) for both undirected and directed \fvs{}.
 	\item Design, implement, and evaluate the \kma{} algorithm, integrating graph-theoretic kernelization with a population-based memetic search.
 	\item Design and evaluate \dkma{}, a dynamic extension of \kma{} that interleaves search and re-kernelization.
-	\item Design and evaluate three generations of GNN-guided hybrid solvers (\gnnkma{} v1/v2/v3 and GNN-DKMA) that use learned vertex-level predictions to guide combinatorial search.
+	\item Design and evaluate three generations of GNN-guided hybrid solvers (\gnnkma{} v1/v2/v3) that use learned vertex-level predictions to guide combinatorial search.
 	\item Construct and release the largest labeled \fvs{} dataset publicly available, comprising 200K graphs across diverse families.
 	\item Benchmark all solvers on synthetic datasets and the PACE 2022 competition instances, with comparison against the official PACE winner.
 \end{enumerate}
@@ -287,7 +287,6 @@ This report makes the following contributions:
 	\item \textbf{KMA:} First-class integration of kernelization (including directed SCC reduction) into a C++ memetic algorithm, eliminating 60--90\% of directed-graph vertices before search begins.
 	\item \textbf{DKMA:} A dynamic re-kernelization loop with SHORTONE contractions, topological diversification, and 1-1/2-1 gain local search, inspired by PACE 2022 winning strategies.
 	\item \textbf{GNN-KMA v1/v2/v3:} Three generations of GNN architectures (GraphSAGE $\to$ GATv2, 3 $\to$ 16 feature channels, NLL $\to$ asymmetric precision loss), coupled to \kma{} under a precision-first strategy that caps the hard-fix ratio at 8\%.
-	\item \textbf{GNN-DKMA:} Combination of GNN pre-fixing with DKMA's dynamic kernelization.
 	\item \textbf{FVS Dataset:} 200K labeled graphs (100K undirected, 100K directed) spanning five graph families, two difficulty tracks, with ground-truth solver labels, publicly released on Kaggle.
 	\item \textbf{Comprehensive Evaluation:} Benchmarking on synthetic data and PACE 2022, achieving 78.93/100 on 200 competition instances.
 \end{enumerate}
@@ -1862,10 +1861,6 @@ v3 is designed for precision-first hybrid coupling, with every architectural and
 	\item \textbf{Checkpoint metric}: topk-precision@8\% --- the top 8\% of predicted FVS vertices' precision, matching the hard-fix cap used at inference.
 	\item 200 epochs (vs.\ 100 for v1/v2).
 \end{itemize}
-
-\section{GNN-DKMA}
-
-\textbf{GNN-DKMA} applies the same GNN pre-fixing principle, but hands the residual kernel to DKMA instead of KMA, enabling dynamic re-kernelization atop GNN guidance.
 
 \section{Architecture Evolution Summary}
 
