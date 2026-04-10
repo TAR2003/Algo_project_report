@@ -2131,6 +2131,165 @@ The progression v1 $\to$ v2 $\to$ v3 shows systematic improvement:
 	\item Checkpoint metric change (F1 $\to$ topk-precision@8\%) directly addresses the false-positive cost in hard-fixing.
 \end{itemize}
 
+\section{Results Figures}
+
+This section presents all generated result figures referenced by the experimental pipeline. Together, these plots provide visual evidence for exact-solver scalability, heuristic-score trends, model-specific behavior, timeout sensitivity, and score-time trade-offs.
+
+\subsection{Exact Solver Success and Runtime Trends}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/brute_force_success_percentage_by_n.png}
+	\caption{Brute-force exact solver success percentage as a function of graph size $n$.}
+	\label{fig:bruteforce-success-n}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/BST_exact_success_percentage_by_n.png}
+	\caption{BST exact solver success percentage by graph size $n$.}
+	\label{fig:bst-success-n}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/BST_exact_success_percentage_by_k.png}
+	\caption{BST exact solver success percentage by parameter $k$.}
+	\label{fig:bst-success-k}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/undirected_ic_success_percentage_by_n.png}
+	\caption{Iterative Compression success percentage by graph size $n$ on undirected exact-track instances.}
+	\label{fig:ic-success-n}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/undirected_ic_success_percentage_by_k.png}
+	\caption{Iterative Compression success percentage by parameter $k$ on undirected exact-track instances.}
+	\label{fig:ic-success-k}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/undirected_runtime_vs_k_for_n_28.png}
+	\caption{Undirected exact-solver runtime versus $k$ for fixed graph size $n=28$.}
+	\label{fig:runtime-vs-k}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/undirected_runtime_vs_n_for_k_4.png}
+	\caption{Undirected exact-solver runtime versus $n$ for fixed parameter $k=4$.}
+	\label{fig:runtime-vs-n}
+\end{figure}
+
+\subsection{PACE and Solver-Level Score Comparisons}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/all_solvers_mean_score.png}
+	\caption{Mean PACE score comparison across all evaluated solver configurations.}
+	\label{fig:all-solvers-mean-score}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/gnn_models_mean_score.png}
+	\caption{Mean PACE score for GNN-guided model variants.}
+	\label{fig:gnn-models-mean-score}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/gnn_comparison_directed.csv.png}
+	\caption{Directed-track comparison of GNN-based solver variants from the aggregated evaluation CSV.}
+	\label{fig:gnn-comparison-directed}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/pareto_analysis.png}
+	\caption{Pareto analysis showing quality-time trade-offs among solver configurations.}
+	\label{fig:pareto-analysis}
+\end{figure}
+
+\subsection{Timeout-Grouped Performance}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/group_15_mean_score.png}
+	\caption{Mean score for the 15-second timeout group (\texttt{group\_15}, where 15 seconds is the timeout budget).}
+	\label{fig:group-15-mean-score}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/group_30_mean_score.png}
+	\caption{Mean score for the 30-second timeout group (\texttt{group\_30}, where 30 seconds is the timeout budget).}
+	\label{fig:group-30-mean-score}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/group_60_mean_score.png}
+	\caption{Mean score for the 60-second timeout group (\texttt{group\_60}).}
+	\label{fig:group-60-mean-score}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/group_90_mean_score.png}
+	\caption{Mean score for the 90-second timeout group (\texttt{group\_90}).}
+	\label{fig:group-90-mean-score}
+\end{figure}
+
+\subsection{Model-Family Mean Score Breakdown}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/models_0_mean_score.png}
+	\caption{Mean score for model group \texttt{models\_0}.}
+	\label{fig:models-0-mean-score}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/models_3_mean_score.png}
+	\caption{Mean score for model group \texttt{models\_3}.}
+	\label{fig:models-3-mean-score}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/models_DKMA_mean_score.png}
+	\caption{Mean score for \texttt{DKMA}-based configurations.}
+	\label{fig:models-dkma-mean-score}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/models_GNN_mean_score.png}
+	\caption{Mean score for GNN-guided configurations (\texttt{models\_GNN}).}
+	\label{fig:models-gnn-mean-score}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/models_KMA_mean_score.png}
+	\caption{Mean score for \texttt{KMA}-based configurations.}
+	\label{fig:models-kma-mean-score}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/models_MA_mean_score.png}
+	\caption{Mean score for \texttt{MA}-based configurations.}
+	\label{fig:models-ma-mean-score}
+\end{figure}
+
 %% ═══════════════════════════════════════════════════════════════════════════
 \chapter{Discussion}
 \label{ch:discussion}
