@@ -207,7 +207,7 @@ We implement three classes of solvers: \emph{exact FPT solvers} (Bounded Search 
 
 Our primary algorithmic contributions are: (i) the \textbf{Kernelized Memetic Algorithm (KMA)}, which integrates graph-theoretic reduction rules --- including SCC-based directed reduction that eliminates 60--90\% of vertices --- with a C++-backed evolutionary search; (ii) the \textbf{Dynamic Kernelized Memetic Algorithm (DKMA)}, which interleaves population-based search with progressive commitment and re-kernelization, enabling an \emph{opening-up} effect that standard static kernelization cannot exploit; and (iii) three generations of \textbf{GNN-KMA} models (v1, v2, v3), where graph neural networks predict high-confidence \fvs{} vertices that are hard-fixed prior to KMA, under a precision-first coupling strategy that caps false-positive risk.
 
-Experimentally, we generate and publicly release the largest labeled \fvs{} dataset to our knowledge: 100K undirected and 100K directed graphs spanning five graph families and two difficulty tracks, with solver-verified ground-truth labels. On the PACE 2022 benchmark, our best configuration (KMA with population 90) achieves a mean score of 78.93 out of 100, while GNN-KMA v3 reaches 78.64, competitive with world-class solvers. All exact solvers achieve 100\% optimality on their completed instances.
+Experimentally, we generate and publicly release the largest labeled \fvs{} dataset to our knowledge: 100K undirected and 100K directed graphs spanning five graph families and two difficulty tracks, with solver-verified ground-truth labels. On the PACE 2022 benchmark, our best configuration (directed GNN-KMA-3 with $\theta = 0.85$, timeout=60s) achieves a mean score of 79.1917 out of 100, while directed GNN-KMA-3 with $\theta = 0.70$ and timeout=30s reaches 78.6449, competitive with world-class solvers. All exact solvers achieve 100\% optimality on their completed instances.
 
 This work demonstrates that integrating kernelization, evolutionary search, and graph neural network guidance into a unified pipeline yields competitive solutions across both small exact instances and large heuristic-track graphs.
 
@@ -288,7 +288,7 @@ This report makes the following contributions:
 	\item \textbf{DKMA:} A dynamic re-kernelization loop with SHORTONE contractions, topological diversification, and 1-1/2-1 gain local search, inspired by PACE 2022 winning strategies.
 	\item \textbf{GNN-KMA v1/v2/v3:} Three generations of GNN architectures (GraphSAGE $\to$ GATv2, 3 $\to$ 16 feature channels, NLL $\to$ asymmetric precision loss), coupled to \kma{} under a precision-first strategy that caps the hard-fix ratio at 8\%.
 	\item \textbf{FVS Dataset:} 200K labeled graphs (100K undirected, 100K directed) spanning five graph families, two difficulty tracks, with ground-truth solver labels, publicly released on Kaggle.
-	\item \textbf{Comprehensive Evaluation:} Benchmarking on synthetic data and PACE 2022, achieving 78.93/100 on 200 competition instances.
+	\item \textbf{Comprehensive Evaluation:} Benchmarking on synthetic data and PACE 2022, achieving 79.1917/100 on 200 competition instances.
 \end{enumerate}
 
 \section{Report Organization}
@@ -2078,24 +2078,32 @@ Exact success rates decline with graph size ($n$) and solution size ($k$). IC an
 
 \begin{table}[H]
 	\centering
-	\caption{PACE 2022 benchmark results (200 instances, 600s total)}
+	\caption{PACE 2022 benchmark results (200 instances)}
 	\label{tab:pace_results}
 	\begin{tabular}{lcc}
 		\toprule
-		\textbf{Solver}                                & \textbf{Mean Score (/100)} & \textbf{Total Time (s)} \\
+		\textbf{Solver}                                & \textbf{Mean Score (/100)} & \textbf{Instances Completed} \\
 		\midrule
-		PACE 2022 Winner                               & 100.00                     & 600.0                   \\
+		PACE 2022 Winner                               & 100.00                     & 200                        \\
 		\midrule
-		directed KMA (pop=90)                          & 78.93                      & 18,709.9                \\
-		directed GNN-KMA-3 $\theta$=0.85 (pop=30)      & 78.64                      & 15,617.5                \\
-		directed GNN-KMA-3 $\theta$=0.95 (pop=30)      & 77.75                      & 15,302.6                \\
-		directed GNN-KMA $\theta$ (pop=30)             & 76.98                      & 8,380.7                 \\
-		directed DKMA (pop=30)                         & 76.49                      & 8,367.2                 \\
-		directed KMA (pop=30)                          & 76.37                      & 7,820.3                 \\
-		directed GNN-KMA-3 small $\theta$=0.9 (pop=30) & 76.27                      & 16,480.6                \\
-		directed DKMA (pop=15)                         & 75.90                      & 4,641.9                 \\
-		directed KMA (pop=15)                          & 75.69                      & 4,209.2                 \\
-		directed MA (pop=90)                           & 71.84                      & 18,281.5                \\
+		directed GNN-KMA-3 $\theta$=0.85 (timeout=60s)      & 79.1917                    & 200                        \\
+		directed GNN-KMA-3 $\theta$=0.70 (timeout=30s)      & 78.6449                    & 200                        \\
+		directed GNN-KMA-3 $\theta$=0.85 (timeout=30s)      & 78.6449                    & 200                        \\
+		directed GNN-KMA-3 $\theta$=0.65 (timeout=30s)      & 78.3435                    & 200                        \\
+		directed GNN-KMA-3 $\theta$=0.90 (timeout=30s)      & 78.2237                    & 200                        \\
+		directed GNN-KMA-3 $\theta$=0.50 (timeout=30s)      & 77.5645                    & 200                        \\
+		directed GNN-KMA-3 $\theta$=0.95 (timeout=30s)      & 77.7510                    & 200                        \\
+		directed GNN-KMA-2 (timeout=30s)                    & 76.8530                    & 200                        \\
+		directed GNN-KMA $\theta$ (timeout=30s)             & 76.9814                    & 200                        \\
+		directed DKMA (timeout=30s)                         & 76.4942                    & 200                        \\
+		directed DKMA (timeout=15s)                         & 75.8974                    & 200                        \\
+		directed KMA (timeout=90s)                          & 78.9312                    & 200                        \\
+		directed KMA (timeout=60s)                          & 78.0611                    & 200                        \\
+		directed KMA (timeout=30s)                          & 76.3657                    & 200                        \\
+		directed KMA (timeout=15s)                          & 75.6944                    & 200                        \\
+		directed MA (timeout=90s)                           & 71.8443                    & 200                        \\
+		directed MA (timeout=60s)                           & 70.6738                    & 200                        \\
+		directed MA (timeout=30s)                           & 68.6420                    & 200                        \\
 		\bottomrule
 	\end{tabular}
 \end{table}
@@ -2104,15 +2112,15 @@ Exact success rates decline with graph size ($n$) and solution size ($k$). IC an
 
 \subsection{Kernelization Impact: MA vs.\ KMA}
 
-KMA (pop=30) achieves a mean PACE score of 76.37, compared to MA (pop=90) at 71.84. This 4.5-point improvement, despite MA using 3$\times$ the population, demonstrates the strong benefit of pre-search kernelization: eliminating vertices that kernelization rules can handle deterministically frees evolutionary budget for genuinely hard substructures.
+KMA (timeout=30s) achieves a mean PACE score of 76.37, compared to MA (timeout=90s) at 71.84. This 4.5-point improvement, despite MA using a longer timeout, demonstrates the strong benefit of pre-search kernelization: eliminating vertices that kernelization rules can handle deterministically frees evolutionary budget for genuinely hard substructures.
 
 \subsection{Dynamic Kernelization: DKMA vs.\ KMA}
 
-DKMA (pop=30) achieves 76.49 vs.\ KMA (pop=30) at 76.37, a modest but consistent improvement. The opening-up effect is more pronounced on sparse graphs with hierarchical SCC structure, where dynamic commitment progressively unlocks reductions.
+DKMA (timeout=30s) achieves 76.49 vs.\ KMA (timeout=30s) at 76.37, a modest but consistent improvement. The opening-up effect is more pronounced on sparse graphs with hierarchical SCC structure, where dynamic commitment progressively unlocks reductions.
 
 \subsection{GNN Guidance: GNN-KMA vs.\ KMA}
 
-GNN-KMA v3 ($\theta = 0.85$, pop=30) achieves 78.64, \textbf{2.27 points above} baseline KMA at the same population, demonstrating that learned vertex-level predictions provide meaningful guidance. v3 outperforms v1 by approximately 1.6 points, reflecting the benefit of deeper features (16 channels, SCC-aware, extended RWSE) and the precision-oriented training objective.
+GNN-KMA v3 ($\theta = 0.85$, timeout=30s) achieves 78.64, \textbf{2.27 points above} baseline KMA at the same timeout, demonstrating that learned vertex-level predictions provide meaningful guidance. v3 outperforms v1 by approximately 1.6 points, reflecting the benefit of deeper features (16 channels, SCC-aware, extended RWSE) and the precision-oriented training objective.
 
 \subsection{Population Scaling}
 
@@ -2324,7 +2332,7 @@ Pure KMA with population 90 is recommended when GNN weights are unavailable or t
 	\item \textbf{Large dense graphs}: On dense graphs where kernelization is less effective, all heuristic methods face a harder residual problem. GNN guidance helps less when the kernel is large.
 	\item \textbf{GNN training cost}: Generating labeled datasets for v3 training requires running IC/KMA on 200K graphs, which is computationally expensive ($\sim$hours on a workstation).
 	\item \textbf{Distribution shift}: GNN models trained on synthetic data may generalize less well to competition instances with different structural properties.
-	\item \textbf{PACE gap}: Our best score of 78.93 is significantly below the PACE winner's 99.91, reflecting the sophistication of competition-tuned implementations.
+	\item \textbf{PACE gap}: Our best score of 79.1917 is significantly below the PACE winner's 99.91, reflecting the sophistication of competition-tuned implementations.
 \end{itemize}
 
 %% ═══════════════════════════════════════════════════════════════════════════
