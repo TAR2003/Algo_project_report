@@ -88,6 +88,8 @@
 
 %% ─── Code Style ──────────────────────────────────────────────────────────────
 \lstset{
+  inputencoding=utf8,
+  extendedchars=true,
   backgroundcolor=\color{codebg},
   basicstyle=\ttfamily\small,
   breaklines=true,
@@ -137,56 +139,56 @@
 %%  TITLE PAGE
 %% ═══════════════════════════════════════════════════════════════════════════
 \begin{titlepage}
-  \centering
-  \vspace*{1cm}
+	\centering
+	\vspace*{1cm}
 
-  {\color{buetblue}\rule{\linewidth}{2pt}}
-  \vspace{0.6cm}
+	{\color{buetblue}\rule{\linewidth}{2pt}}
+	\vspace{0.6cm}
 
-  {\Huge\bfseries\color{buetblue}
-    The Feedback Vertex Set Problem:\\[8pt]
-    Theory, Algorithms, and Applications
-  }
+	{\Huge\bfseries\color{buetblue}
+		The Feedback Vertex Set Problem:\\[8pt]
+		Theory, Algorithms, and Applications
+	}
 
-  \vspace{0.5cm}
-  {\color{buetblue}\rule{\linewidth}{2pt}}
+	\vspace{0.5cm}
+	{\color{buetblue}\rule{\linewidth}{2pt}}
 
-  \vspace{1.2cm}
+	\vspace{1.2cm}
 
-  {\Large\textit{CSE472 --- Design and Analysis of Algorithms}}\\[0.4cm]
-  {\large Project Report --- Group 06}
+	{\Large\textit{CSE472 --- Algorithm Engineering Sessional}}\\[0.4cm]
+	{\large Project Report --- Group 06}
 
-  \vspace{1.4cm}
+	\vspace{1.4cm}
 
-  \begin{center}
-    \begin{tabular}{ll}
-      \textbf{2005090} & Tawkir Aziz Rahman \\[4pt]
-      \textbf{2005068} & Suman Hossain \\[4pt]
-      \textbf{2005074} & Dipanta Kumar Roy Nobo \\[4pt]
-      \textbf{2005091} & Waseem Mustak Zisan \\[4pt]
-      \textbf{2005104} & Hasin Arafat \\[4pt]
-      \textbf{2005109} & Noushin Tabassum Aoishy \\
-    \end{tabular}
-  \end{center}
+	\begin{center}
+		\begin{tabular}{ll}
+			\textbf{2005090} & Tawkir Aziz Rahman       \\[4pt]
+			\textbf{2005068} & Suman Hossain            \\[4pt]
+			\textbf{2005074} & Dipanta Kumar Roy Nobo   \\[4pt]
+			\textbf{2005091} & Waseem Mustak Zisan      \\[4pt]
+			\textbf{2005104} & Md Hasin Arafat Al Sifat \\[4pt]
+			\textbf{2005109} & Noushin Tabassum Aoishy  \\
+		\end{tabular}
+	\end{center}
 
-  \vspace{1.4cm}
+	\vspace{1.4cm}
 
-  {\large
-    \textbf{Department of Computer Science and Engineering}\\[0.3cm]
-    Bangladesh University of Engineering and Technology (BUET)\\[0.3cm]
-    Dhaka 1000, Bangladesh
-  }
+	{\large
+		\textbf{Department of Computer Science and Engineering}\\[0.3cm]
+		Bangladesh University of Engineering and Technology (BUET)\\[0.3cm]
+		Dhaka, Bangladesh
+	}
 
-  \vspace{1.2cm}
+	\vspace{1.2cm}
 
-  {\large April 2026}
+	{\large April 2026}
 
-  \vfill
+	\vfill
 
-  \begin{center}
-    \small\textit{GitHub Repository:}\\
-    \url{https://github.com/TAR2003/Feedback_Vertex_Set_Problem_Algorithm_Project_4-2}
-  \end{center}
+	\begin{center}
+		\small\textit{GitHub Repository:}\\
+		\url{https://github.com/TAR2003/Feedback_Vertex_Set_Problem_Algorithm_Project_4-2}
+	\end{center}
 \end{titlepage}
 
 %% ═══════════════════════════════════════════════════════════════════════════
@@ -215,11 +217,11 @@ This work demonstrates that integrating kernelization, evolutionary search, and 
 %%  TABLE OF CONTENTS
 %% ═══════════════════════════════════════════════════════════════════════════
 \begingroup
-  \let\clearpage\relax
-  \let\cleardoublepage\relax
-  \tableofcontents
-  \listoffigures
-  \listoftables
+\let\clearpage\relax
+\let\cleardoublepage\relax
+\tableofcontents
+\listoffigures
+\listoftables
 \endgroup
 
 %% ═══════════════════════════════════════════════════════════════════════════
@@ -234,17 +236,17 @@ Cyclic structures create dependencies, feedback loops, and deadlocks in real sys
 
 The \textbf{Feedback Vertex Set} (\fvs{}) problem formalizes this cycle-elimination task:
 \begin{quote}
-\textit{Given a graph $G = (V, E)$, find a minimum-cardinality set $S \subseteq V$ such that the graph $G - S$ induced on $V \setminus S$ is acyclic.}
+	\textit{Given a graph $G = (V, E)$, find a minimum-cardinality set $S \subseteq V$ such that the graph $G - S$ induced on $V \setminus S$ is acyclic.}
 \end{quote}
 
 If $G$ is undirected, acyclicity means a forest. If $G$ is directed, acyclicity means a directed acyclic graph (DAG). The directed variant, \dfvs{}, is similarly defined.
 
 The problem arises concretely in:
 \begin{itemize}
-  \item \textbf{Operating system deadlocks}: A resource-allocation graph where processes and resources form cycles must have critical processes removed to resolve deadlock.
-  \item \textbf{Dependency resolution}: Software packages with circular dependencies require one dependency to be removed to restore a valid install order.
-  \item \textbf{Circuit stabilization}: Feedback loops in electronic circuits, if uncontrolled, cause oscillations; removing cycle-forming components stabilizes the circuit.
-  \item \textbf{Bayesian network structure learning}: Ensuring a learned graphical model is a DAG requires breaking directed cycles in candidate structures.
+	\item \textbf{Operating system deadlocks}: A resource-allocation graph where processes and resources form cycles must have critical processes removed to resolve deadlock.
+	\item \textbf{Dependency resolution}: Software packages with circular dependencies require one dependency to be removed to restore a valid install order.
+	\item \textbf{Circuit stabilization}: Feedback loops in electronic circuits, if uncontrolled, cause oscillations; removing cycle-forming components stabilizes the circuit.
+	\item \textbf{Bayesian network structure learning}: Ensuring a learned graphical model is a DAG requires breaking directed cycles in candidate structures.
 \end{itemize}
 
 Despite its practical importance, \fvs{} is computationally challenging. The decision version --- does a feedback vertex set of size at most $k$ exist? --- is NP-Complete \cite{karp1972}, and the optimization version is NP-Hard. This complexity gap motivates a multi-strategy approach: exact algorithms for small instances, heuristic algorithms for large instances, and hybrid methods that combine the strengths of both.
@@ -252,15 +254,15 @@ Despite its practical importance, \fvs{} is computationally challenging. The dec
 \section{Problem Statement}
 
 \begin{definition}[Feedback Vertex Set]
-Let $G = (V, E)$ be an undirected graph. A \textbf{Feedback Vertex Set} of $G$ is a subset $S \subseteq V$ such that $G[V \setminus S]$ is acyclic (a forest). A \textbf{minimum FVS} minimizes $|S|$.
+	Let $G = (V, E)$ be an undirected graph. A \textbf{Feedback Vertex Set} of $G$ is a subset $S \subseteq V$ such that $G[V \setminus S]$ is acyclic (a forest). A \textbf{minimum FVS} minimizes $|S|$.
 \end{definition}
 
 \begin{definition}[Directed Feedback Vertex Set]
-Let $G = (V, E)$ be a directed graph. A \textbf{Directed Feedback Vertex Set} of $G$ is a subset $S \subseteq V$ such that $G[V \setminus S]$ is a directed acyclic graph (DAG). A \textbf{minimum DFVS} minimizes $|S|$.
+	Let $G = (V, E)$ be a directed graph. A \textbf{Directed Feedback Vertex Set} of $G$ is a subset $S \subseteq V$ such that $G[V \setminus S]$ is a directed acyclic graph (DAG). A \textbf{minimum DFVS} minimizes $|S|$.
 \end{definition}
 
 \begin{definition}[Decision and Optimization Versions]
-The \textbf{decision version} of \fvs{} is: given $G = (V, E)$ and a non-negative integer $k$, does there exist $S \subseteq V$ with $|S| \leq k$ such that $G - S$ is acyclic? The \textbf{optimization version} seeks a minimum-size $S$.
+	The \textbf{decision version} of \fvs{} is: given $G = (V, E)$ and a non-negative integer $k$, does there exist $S \subseteq V$ with $|S| \leq k$ such that $G - S$ is acyclic? The \textbf{optimization version} seeks a minimum-size $S$.
 \end{definition}
 
 \section{Objectives of This Project}
@@ -268,12 +270,12 @@ The \textbf{decision version} of \fvs{} is: given $G = (V, E)$ and a non-negativ
 This project pursues the following objectives:
 
 \begin{enumerate}
-  \item Implement exact FPT solvers (Iterative Compression and Bounded Search Tree) for both undirected and directed \fvs{}.
-  \item Design, implement, and evaluate the \kma{} algorithm, integrating graph-theoretic kernelization with a population-based memetic search.
-  \item Design and evaluate \dkma{}, a dynamic extension of \kma{} that interleaves search and re-kernelization.
-  \item Design and evaluate three generations of GNN-guided hybrid solvers (\gnnkma{} v1/v2/v3 and GNN-DKMA) that use learned vertex-level predictions to guide combinatorial search.
-  \item Construct and release the largest labeled \fvs{} dataset publicly available, comprising 200K graphs across diverse families.
-  \item Benchmark all solvers on synthetic datasets and the PACE 2022 competition instances, with comparison against the official PACE winner.
+	\item Implement exact FPT solvers (Iterative Compression and Bounded Search Tree) for both undirected and directed \fvs{}.
+	\item Design, implement, and evaluate the \kma{} algorithm, integrating graph-theoretic kernelization with a population-based memetic search.
+	\item Design and evaluate \dkma{}, a dynamic extension of \kma{} that interleaves search and re-kernelization.
+	\item Design and evaluate three generations of GNN-guided hybrid solvers (\gnnkma{} v1/v2/v3 and GNN-DKMA) that use learned vertex-level predictions to guide combinatorial search.
+	\item Construct and release the largest labeled \fvs{} dataset publicly available, comprising 200K graphs across diverse families.
+	\item Benchmark all solvers on synthetic datasets and the PACE 2022 competition instances, with comparison against the official PACE winner.
 \end{enumerate}
 
 \section{Summary of Contributions}
@@ -281,17 +283,18 @@ This project pursues the following objectives:
 This report makes the following contributions:
 
 \begin{enumerate}
-  \item \textbf{KMA:} First-class integration of kernelization (including directed SCC reduction) into a C++ memetic algorithm, eliminating 60--90\% of directed-graph vertices before search begins.
-  \item \textbf{DKMA:} A dynamic re-kernelization loop with SHORTONE contractions, topological diversification, and 1-1/2-1 gain local search, inspired by PACE 2022 winning strategies.
-  \item \textbf{GNN-KMA v1/v2/v3:} Three generations of GNN architectures (GraphSAGE $\to$ GATv2, 3 $\to$ 16 feature channels, NLL $\to$ asymmetric precision loss), coupled to \kma{} under a precision-first strategy that caps the hard-fix ratio at 8\%.
-  \item \textbf{GNN-DKMA:} Combination of GNN pre-fixing with DKMA's dynamic kernelization.
-  \item \textbf{FVS Dataset:} 200K labeled graphs (100K undirected, 100K directed) spanning five graph families, two difficulty tracks, with ground-truth solver labels, publicly released on Kaggle.
-  \item \textbf{Comprehensive Evaluation:} Benchmarking on synthetic data and PACE 2022, achieving 78.93/100 on 200 competition instances.
+	\item \textbf{KMA:} First-class integration of kernelization (including directed SCC reduction) into a C++ memetic algorithm, eliminating 60--90\% of directed-graph vertices before search begins.
+	\item \textbf{DKMA:} A dynamic re-kernelization loop with SHORTONE contractions, topological diversification, and 1-1/2-1 gain local search, inspired by PACE 2022 winning strategies.
+	\item \textbf{GNN-KMA v1/v2/v3:} Three generations of GNN architectures (GraphSAGE $\to$ GATv2, 3 $\to$ 16 feature channels, NLL $\to$ asymmetric precision loss), coupled to \kma{} under a precision-first strategy that caps the hard-fix ratio at 8\%.
+	\item \textbf{GNN-DKMA:} Combination of GNN pre-fixing with DKMA's dynamic kernelization.
+	\item \textbf{FVS Dataset:} 200K labeled graphs (100K undirected, 100K directed) spanning five graph families, two difficulty tracks, with ground-truth solver labels, publicly released on Kaggle.
+	\item \textbf{Comprehensive Evaluation:} Benchmarking on synthetic data and PACE 2022, achieving 78.93/100 on 200 competition instances.
 \end{enumerate}
 
 \section{Report Organization}
 
 Chapter~\ref{ch:background} provides theoretical prerequisites including graph theory, complexity theory, and the FPT framework. Chapter~\ref{ch:relatedwork} reviews related work. Chapters~\ref{ch:exact}--\ref{ch:gnnkma} present the algorithms in detail. Chapter~\ref{ch:implementation} covers implementation architecture. Chapter~\ref{ch:experiments} presents datasets and experimental evaluation. Chapter~\ref{ch:discussion} discusses insights and limitations. Chapter~\ref{ch:conclusion} concludes.
+
 
 
 % ================== Start of Zisan and Aoishy ======================
@@ -300,68 +303,722 @@ Chapter~\ref{ch:background} provides theoretical prerequisites including graph t
 \label{ch:background}
 %% ═══════════════════════════════════════════════════════════════════════════
 
-\section{Graph Theory Preliminaries}
+\section{Graph-Theoretic Foundations}
 
 \begin{definition}[Graph]
-A \textbf{graph} $G = (V, E)$ consists of a finite set of \textbf{vertices} $V$ and a set of \textbf{edges} $E \subseteq \binom{V}{2}$ (for undirected graphs) or $E \subseteq V \times V$ (for directed graphs).
+	A \textbf{graph} is a pair $G=(V,E)$ where $V$ is a finite vertex set and $E$ is an edge set. For undirected graphs, $E \subseteq \binom{V}{2}$; for directed graphs, $E \subseteq V \times V$.
 \end{definition}
 
-\begin{definition}[Cycle and Acyclicity]
-In an undirected graph, a \textbf{cycle} is a path $v_1, v_2, \ldots, v_\ell, v_1$ of distinct vertices with edges $(v_i, v_{i+1}) \in E$ and $(v_\ell, v_1) \in E$, with $\ell \geq 3$. A graph with no cycles is \textbf{acyclic}. A connected acyclic graph is a \textbf{tree}; a disjoint union of trees is a \textbf{forest}. In a directed graph, a cycle requires directed edges; acyclicity means no directed cycle exists, yielding a DAG.
+\begin{definition}[Cycle, Tree, and Forest]
+	An undirected \textbf{cycle} is a closed path $v_1,v_2,\dots,v_\ell,v_1$ with $\ell\ge 3$ and distinct internal vertices. A graph without cycles is \textbf{acyclic}. A connected acyclic graph is a \textbf{tree}, and a disjoint union of trees is a \textbf{forest}.
 \end{definition}
+
+\begin{definition}[Feedback Vertex Set]
+	Given an undirected graph $G=(V,E)$, a set $S\subseteq V$ is a \textbf{Feedback Vertex Set} if $G[V - S]$ is acyclic. The optimization goal is to minimize $|S|$.
+\end{definition}
+
+\begin{definition}[Directed Feedback Vertex Set]
+	Given a directed graph $G=(V,E)$, a set $S\subseteq V$ is a \textbf{Directed Feedback Vertex Set} if $G[V - S]$ is a directed acyclic graph (DAG).
+\end{definition}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[scale=1.0]
+		% Left: cycle graph
+		\node at (-3,2.4) {\textbf{Cycle Present}};
+		\node[circle,draw,fill=red!40] (a) at (-3,1.2) {$1$};
+		\node[circle,draw] (b) at (-4,0) {$2$};
+		\node[circle,draw] (c) at (-2,0) {$3$};
+		\draw[thick] (a)--(b)--(c)--(a);
+
+		% Arrow
+		\draw[->,thick] (-0.8,0.7)--(0.8,0.7);
+		\node at (0,1.2) {remove $\{1\}$};
+
+		% Right: forest
+		\node at (3,2.4) {\textbf{Acyclic (Forest)}};
+		\node[circle,draw] (d) at (2,0) {$2$};
+		\node[circle,draw] (e) at (4,0) {$3$};
+		\draw[thick] (d)--(e);
+	\end{tikzpicture}
+	\caption{Basic FVS intuition: removing a vertex from every cycle makes the graph acyclic.}
+	\label{fig:fvs-intuition}
+\end{figure}
+
+\paragraph{Intuition.}
+The FVS objective can be interpreted as a cycle-hitting problem: every cycle must contain at least one removed vertex. The minimum FVS is the smallest set that intersects all cycles.
+
+\subsection{Core Observations}
+
+Three observations from the visual examples are fundamental for algorithm design:
+\begin{enumerate}
+	\item Every cycle must contain at least one selected (removed) vertex.
+	\item The objective is combinatorial minimization: fewer removed vertices is always better.
+	\item Denser and more overlapping cycle structures typically increase search difficulty.
+\end{enumerate}
+
+\subsection{Additional Visual Examples}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}[t]{0.31\textwidth}
+		\centering
+		\vspace{0pt}
+		\vspace{0.25cm}
+		\begin{tikzpicture}[scale=0.72]
+			\node[circle,draw] (1) at (0,1.5) {1};
+			\node[circle,draw] (2) at (-1,0.5) {2};
+			\node[circle,draw] (3) at (1,0.5) {3};
+			\node[circle,draw] (4) at (-1.5,-0.5) {4};
+			\node[circle,draw] (5) at (1.5,-0.5) {5};
+			\draw[thick] (1)--(2);
+			\draw[thick] (1)--(3);
+			\draw[thick] (2)--(4);
+			\draw[thick] (3)--(5);
+		\end{tikzpicture}
+		\caption{A tree (already acyclic): $\mathrm{FVS}=\emptyset$.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.31\textwidth}
+		\centering
+		\vspace{0pt}
+		\vspace{0.25cm}
+		\begin{tikzpicture}[scale=0.72]
+			\node[circle,draw,fill=red!40] (1) at (0,1.5) {1};
+			\node[circle,draw] (2) at (-1,0) {2};
+			\node[circle,draw] (3) at (1,0) {3};
+			\draw[thick] (1)--(2)--(3)--(1);
+		\end{tikzpicture}
+		\caption{Single triangle: removing one vertex breaks all cycles.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.31\textwidth}
+		\centering
+		\vspace{0pt}
+		\vspace{0.25cm}
+		\begin{tikzpicture}[scale=0.72]
+			\node[circle,draw,fill=red!40] (1) at (0,1.5) {1};
+			\node[circle,draw,fill=red!40] (2) at (-1,0) {2};
+			\node[circle,draw] (3) at (1,0) {3};
+			\node[circle,draw] (4) at (0,-1) {4};
+			\draw[thick] (1)--(2)--(4)--(3)--(1);
+			\draw[thick] (1)--(4);
+			\draw[thick] (2)--(3);
+		\end{tikzpicture}
+		\caption{Overlapping cycles may require multiple removals.}
+	\end{subfigure}
+	\caption{From simple to harder structures: cycle interaction determines FVS size.}
+	\label{fig:fvs-small-visuals}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\vspace{0pt}
+		\vspace{0.35cm}
+		\begin{tikzpicture}[scale=0.82]
+			\node[circle,draw] (B1) at (0,2.2) {1};
+			\node[circle,draw] (B2) at (-1.2,1.3) {2};
+			\node[circle,draw] (B3) at (1.2,1.3) {3};
+			\node[circle,draw] (B4) at (-2.0,0.2) {4};
+			\node[circle,draw,fill=red!40] (B5) at (0,0.2) {5};
+			\node[circle,draw] (B6) at (2.0,0.2) {6};
+			\node[circle,draw] (B7) at (-1.2,-0.9) {7};
+
+			\draw[thick] (B1)--(B2)--(B4)--(B7);
+			\draw[thick] (B2)--(B5)--(B6);
+			\draw[thick] (B3)--(B5);
+			\draw[thick] (B1)--(B3)--(B6);
+			\draw[thick] (B5)--(B7);
+		\end{tikzpicture}
+		\caption{Original complex graph. Vertex 5 is the selected feedback vertex.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\vspace{0pt}
+		\vspace{0.35cm}
+		\begin{tikzpicture}[scale=0.82]
+			\node[circle,draw] (A1) at (0,2.2) {1};
+			\node[circle,draw] (A2) at (-1.2,1.3) {2};
+			\node[circle,draw] (A3) at (1.2,1.3) {3};
+			\node[circle,draw] (A4) at (-2.0,0.2) {4};
+			\node[circle,draw] (A6) at (2.0,0.2) {6};
+			\node[circle,draw] (A7) at (-1.2,-0.9) {7};
+
+			\draw[thick] (A1)--(A2)--(A4)--(A7);
+			\draw[thick] (A1)--(A3)--(A6);
+		\end{tikzpicture}
+		\caption{Graph after removing $\{5\}$: two tree components, hence a forest.}
+	\end{subfigure}
+	\caption{Complex graph example where removing only node 5 makes the graph acyclic.}
+	\label{fig:fvs-complex-before-after}
+\end{figure}
+
+In the left graph of Figure~\ref{fig:fvs-complex-before-after}, every cycle goes through vertex 5 (for example, $1\!\to\!2\!\to\!5\!\to\!3\!\to\!1$ , $3\!\to\!5\!\to\!6\!\to\!3 $ and $2\!\to\!4\!\to\!7\!\to\!5\!\to\!2$ in undirected notation). Therefore, removing node 5 alone destroys all cycles. The resulting graph on the right is a forest, so this example demonstrates a single-vertex solution with $S=\{5\}$.
+
+\section{Problem Formulations}
+
+\begin{definition}[Decision Version]
+	Input: a graph $G=(V,E)$ and an integer $k\ge 0$. Question: does there exist a set $S\subseteq V$ with $|S|\le k$ such that $G[V - S]$ is acyclic?
+\end{definition}
+
+\begin{definition}[Optimization Version]
+	Find a minimum-cardinality feedback vertex set.
+\end{definition}
+
+The decision and optimization versions are tightly related: binary search on $k$ with a decision oracle solves the optimization version. In complexity terms, the decision version is NP-Complete, and the optimization version is NP-Hard.
+
+\section{Complexity-Theoretic Background}
+
+\begin{definition}[Class P]
+	Class \textbf{P} contains decision problems solvable in polynomial time.
+\end{definition}
+
+\begin{definition}[Class NP]
+	Class \textbf{NP} contains decision problems for which a proposed solution can be verified in polynomial time.
+\end{definition}
+
+\begin{definition}[NP-Complete]
+	A decision problem is \textbf{NP-Complete} if it is in NP and every problem in NP can be polynomially reduced to it.
+\end{definition}
+
+\subsection{Why FVS Is in NP}
+
+Given a candidate set $S$, we can verify in polynomial time whether $|S|\le k$ and whether $G[V - S]$ is acyclic using DFS/BFS. This takes $\bigO{|V|+|E|}$ time. Hence, FVS belongs to NP.
+
+\subsection{NP-Hardness via Reduction from Vertex Cover}
+
+To prove NP-Completeness, we reduce from \textsc{Vertex Cover}, which is NP-Complete.
+
+\begin{theorem}
+	The decision version of \fvs{} is NP-Complete.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+	Membership in NP was shown above. For NP-hardness, let $(G,k)$ be a \textsc{Vertex Cover} instance with $G=(V,E)$. Construct a graph $G'=(V',E')$ as follows:
+	\begin{itemize}
+		\item Start with all original vertices and edges of $G$.
+		\item For each edge $e=(u,v)\in E$, add a fresh vertex $w_e$ and edges $(u,w_e)$ and $(v,w_e)$.
+	\end{itemize}
+	Each original edge now belongs to a triangle $(u,v,w_e)$. Keep $k'=k$.
+
+	If $C\subseteq V$ is a vertex cover of size at most $k$, then every edge $(u,v)$ has at least one endpoint in $C$, so every triangle $(u,v,w_e)$ is hit by $C$; thus $C$ is an FVS of $G'$. Conversely, let $S'$ be an FVS of $G'$ with $|S'|\le k$. Any selected gadget vertex $w_e$ can be replaced by either $u$ or $v$ without increasing size; therefore there exists an equal-size FVS $S\subseteq V$. Since triangle $(u,v,w_e)$ must be hit by $S$ and $w_e\notin S$, at least one of $u,v$ lies in $S$. Hence, $S$ is a vertex cover of $G$ of size at most $k$.
+
+	Therefore, $(G,k)$ is a YES-instance of \textsc{Vertex Cover} iff $(G',k)$ is a YES-instance of \fvs{}. The reduction is polynomial, so \fvs{} is NP-Hard. Combining both parts, \fvs{} is NP-Complete \cite{karp1972}.
+\end{proof}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[scale=1.0]
+		\node at (-3,2.1) {\textbf{Original Edge in VC}};
+		\node[circle,draw] (u) at (-4,0.2) {$u$};
+		\node[circle,draw] (v) at (-2,0.2) {$v$};
+		\draw[thick] (u)--(v);
+
+		\draw[->,thick] (-0.9,0.2)--(0.9,0.2);
+
+		\node at (3,2.1) {\textbf{Triangle Gadget in FVS}};
+		\node[circle,draw] (u2) at (2,0.2) {$u$};
+		\node[circle,draw] (v2) at (4,0.2) {$v$};
+		\node[circle,draw,fill=blue!30] (w) at (3,1.3){$w_e$};
+		\draw[thick] (u2)--(v2)--(w)--(u2);
+	\end{tikzpicture}
+	\caption{Edge-to-triangle gadget used in the reduction \textsc{Vertex Cover} $\leq_p$ \fvs{}.}
+	\label{fig:vc-fvs-gadget}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[scale=0.85]
+		\node at (-4.2,4.0) {\textbf{Original graph $G$ (VC)}};
+		\node[circle,draw,fill=blue!30] (1) at (-5,2.0) {1};
+		\node[circle,draw] (2) at (-3.1,2.0) {2};
+		\node[circle,draw] (3) at (-5,0.2) {3};
+		\node[circle,draw,fill=blue!30] (4) at (-3.1,0.2) {4};
+		\draw[thick] (1)--(2)--(4)--(3)--(1);
+		\node at (-4.05,-0.7) {\small A VC is $\{1,4\}$};
+
+		\draw[->,thick] (-1.7,1.0)--(-0.2,1.0);
+
+		\node at (3.2,4.0) {\textbf{Transformed graph $G'$ (FVS)}};
+		\node[circle,draw,fill=blue!30] (a1) at (1.6,2.0) {1};
+		\node[circle,draw] (a2) at (3.5,2.0) {2};
+		\node[circle,draw] (a3) at (1.6,0.3) {3};
+		\node[circle,draw,fill=blue!30] (a4) at (3.5,0.3) {4};
+		\node[circle,draw,fill=red!40] (w12) at (2.55,3.1) {$w_{12}$};
+		\node[circle,draw,fill=red!40] (w24) at (4.4,1.25) {$w_{24}$};
+		\node[circle,draw,fill=red!40] (w43) at (2.55,-0.6) {$w_{43}$};
+		\node[circle,draw,fill=red!40] (w31) at (0.7,1.25) {$w_{31}$};
+
+		\draw[thick] (a1)--(a2)--(w12)--(a1);
+		\draw[thick] (a2)--(a4)--(w24)--(a2);
+		\draw[thick] (a4)--(a3)--(w43)--(a4);
+		\draw[thick] (a3)--(a1)--(w31)--(a3);
+	\end{tikzpicture}
+	\caption{Full reduction illustration: each original edge is converted to a triangle gadget. Breaking all triangles corresponds to covering all original edges.}
+	\label{fig:vc-fvs-full}
+\end{figure}
+
+\paragraph{Correctness intuition for the reduction.}
+The forward direction is immediate: a vertex cover intersects every edge, hence intersects every triangle in $G'$. For the backward direction, an FVS must hit every triangle, so at least one endpoint of each original edge must be selected (after replacing gadget vertices by endpoints when needed). Therefore, selecting a minimum FVS in $G'$ captures the same combinatorial constraint as selecting a minimum vertex cover in $G$.
+
+\subsection{Reverse Reduction Insight (FVS $\rightarrow$ VC)}
+
+A reverse construction idea showing close structural relation between the problems: replace each original vertex $v$ by a triangle $\{v_1,v_2,v_3\}$, and encode original edges via cross-links between corresponding gadgets. Intuitively, selecting all three vertices of a triangle corresponds to placing $v$ in FVS, while selecting only two corresponds to keeping $v$. This yields the parameter relation $k' = 2|V| + k$.
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[scale=0.9]
+
+		%---------------- LEFT: ORIGINAL ----------------%
+		\node at (-5.5,4.0) {\textbf{Original graph for FVS}};
+		\node[circle,draw] (a) at (-6.5,2.5) {$a$};
+		\node[circle,draw] (b) at (-4.5,2.5) {$b$};
+		\node[circle,draw] (c) at (-4.5,0.5) {$c$};
+		\node[circle,draw,fill=blue!30] (d) at (-6.5,0.5) {$d$};
+		\draw[thick] (a)--(b)--(c)--(d)--(a);
+		\node at (-5.5,-0.3) {\small Example FVS: $\{d\}$};
+
+		% Arrow
+		\draw[->,thick] (-3.2,1.5)--(-1.5,1.5);
+
+		%---------------- RIGHT: TRANSFORMED ----------------%
+		\node at (4.0,4.0) {\textbf{Transformed Graph $G'$}};
+
+		%---- TOP LEFT (a triangle) ----%
+		\node[circle,draw,fill=blue!30] (a1) at (1.5,2.8) {$a_1$};
+		\node[circle,draw] (a2) at (0.8,1.8) {$a_2$};
+		\node[circle,draw,fill=blue!30] (a3) at (2.2,1.8) {$a_3$};
+		\draw[thick] (a1)--(a2)--(a3)--(a1);
+
+		%---- TOP RIGHT (b triangle) ----%
+		\node[circle,draw,fill=blue!30] (b1) at (6.5,2.8) {$b_1$};
+		\node[circle,draw] (b2) at (5.8,1.8) {$b_2$};
+		\node[circle,draw,fill=blue!30] (b3) at (7.2,1.8) {$b_3$};
+		\draw[thick] (b1)--(b2)--(b3)--(b1);
+
+		%---- BOTTOM RIGHT (c triangle) ----%
+		\node[circle,draw,fill=blue!30] (c1) at (6.5,-0.8) {$c_1$};
+		\node[circle,draw] (c2) at (5.8,-1.8) {$c_2$};
+		\node[circle,draw,fill=blue!30] (c3) at (7.2,-1.8) {$c_3$};
+		\draw[thick] (c1)--(c2)--(c3)--(c1);
+
+		%---- BOTTOM LEFT (d triangle) ----%
+		\node[circle,draw,fill=red!40] (d1) at (1.5,-0.8) {$d_1$};
+		\node[circle,draw,fill=blue!30] (d2) at (0.8,-1.8) {$d_2$};
+		\node[circle,draw,fill=blue!30] (d3) at (2.2,-1.8) {$d_3$};
+		\draw[thick] (d1)--(d2)--(d3)--(d1);
+
+		%---- CROSS EDGES (aligned cleanly) ----%
+		\draw[dashed,red] (a3)--(b2);
+		\draw[dashed,red] (b3)--(c1);
+		\draw[dashed,red] (c2)--(d3);
+		\draw[dashed,red] (d2)--(a2);
+
+		\node[text width=5cm,align=center,font=\scriptsize]
+		at (4.0,-2.8) {Dashed edges encode the original adjacency pattern};
+
+	\end{tikzpicture}
+	\caption{Reverse Reduction Insight: FVS to VC gadget construction with triangle replacements and cross-edges.}
+\end{figure}
+\section{Directed Graph Perspective (SCC View)}
 
 \begin{definition}[Strongly Connected Component (SCC)]
-In a directed graph, a \textbf{strongly connected component} (SCC) is a maximal set $C \subseteq V$ such that for every $u, v \in C$, there exists a directed path from $u$ to $v$ and from $v$ to $u$. An SCC is \textbf{nontrivial} if $|C| > 1$ or it contains a self-loop.
+	In a directed graph, an SCC is a maximal vertex set $C$ such that for every $u,v\in C$, there are directed paths $u\leadsto v$ and $v\leadsto u$.
 \end{definition}
 
-The SCC structure of a directed graph is central to \dfvs{}: every directed cycle lies entirely within some nontrivial SCC, so vertices not belonging to any nontrivial SCC are irrelevant to \dfvs{} and can be safely removed during kernelization.
+\begin{proposition}
+	Every directed cycle is fully contained in a nontrivial SCC.
+\end{proposition}
 
-\section{Complexity Theory}
+Hence, vertices outside nontrivial SCCs cannot participate in directed cycles and are irrelevant for \dfvs{}. This observation is the basis of several practical reductions.
 
-\subsection{P, NP, and NP-Completeness}
+% \section{Parameteried View and Kernelization}
+% z
+% \begin{definition}[Fixed-Parameter Tractability]
+% A parameterized problem is \textbf{FPT} if it is solvable in time $f(k)\cdot n^{\mathcal{O}(1)}$, where $k$ is a parameter and $f$ depends only on $k$.
+% \end{definition}
 
-% Explain what is P, what is NP, and what is NP Complete. And then Proof that FVS is NP Complete. By using the graphs present in the original presentation.
+% \begin{theorem}[FPT results for FVS \cite{reed2004,cygan2015,chen2008dfvs}]
+% \fvs{} and \dfvs{}, parameterized by solution size $k$, admit FPT algorithms.
+% \end{theorem}
 
-\subsection{Fixed-Parameter Tractability}
+% \begin{definition}[Kernelization]
+% Kernelization is a polynomial-time preprocessing that maps $(I,k)$ to an equivalent $(I',k')$ with size bounded by a function of $k$ only.
+% \end{definition}
 
-For NP-Hard problems, fixed-parameter tractability (FPT) offers a refined complexity lens: instead of requiring polynomial time in $|V|$, an FPT algorithm runs in $f(k) \cdot \mathrm{poly}(n)$ time, where $k$ is a problem parameter (e.g., solution size) and $f$ is a computable function.
+% \begin{theorem}[Quadratic kernel for FVS \cite{thomasse2010}]
+% Undirected \fvs{} admits a kernel with $\bigO{k^2}$ vertices.
+% \end{theorem}
 
-\begin{theorem}[\fvs{} is FPT \cite{reed2004,cygan2015}]
-\fvs{} parameterized by solution size $k$ admits algorithms running in $\bigO{5^k \cdot k \cdot n^2}$ and $\bigO{4^k \cdot n^2}$ time. Similarly, \dfvs{} is FPT \cite{chen2008dfvs}.
-\end{theorem}
-
-This makes exact solvers practical for $k \leq 30$--40, which covers many real-world instances on the exact track.
-
-\section{Kernelization}
-
-\begin{definition}[Kernelization]
-A \textbf{kernelization algorithm} for a parameterized problem $(I, k)$ is a polynomial-time algorithm that produces an equivalent instance $(I', k')$ with $|I'| \leq g(k)$ for some computable function $g$. The instance $(I', k')$ is the \textbf{kernel}.
-\end{definition}
-
-\begin{theorem}[Quadratic Kernel for \fvs{} \cite{thomasse2010}]
-\fvs{} admits a kernel with $\bigO{k^2}$ vertices, achieved by the 4$k^2$ kernel of Thomass\'{e}.
-\end{theorem}
-
-Kernelization is a core component of all our heuristic and hybrid algorithms, as described in subsequent chapters.
+% This parameterized viewpoint motivates the exact and hybrid algorithms in the later chapters: reduction rules shrink difficult instances before branching, local search, and learning-guided steps are applied.
 
 
 % ============== End of Part of Zisan and Aoishy =============
-
-
-
-% ============== start of Arafat and Suman ===================
 
 %% ═══════════════════════════════════════════════════════════════════════════
 \chapter{Related Work}
 \label{ch:relatedwork}
 %% ═══════════════════════════════════════════════════════════════════════════
 
-% add new type as sections, like \sectioon{Exact Algorithms}, \section{Heuristic Algorithms}, and then mention the each of the algorithms inside it as the subsections, mention the time complexity of them, and also copy paste the table you give in the presentation
+\section{Overview}
 
+The Feedback Vertex Set (\fvs{}) problem has been studied extensively due to its theoretical importance and wide range of practical applications.
+Since the problem is NP-Complete, no known polynomial-time algorithm exists for solving it optimally in general graphs.
+As a result, researchers have explored multiple classes of algorithms, each making different trade-offs between optimality, efficiency, and scalability.
+
+Broadly, existing approaches can be categorized into:
+\begin{itemize}
+  \item Exact exponential and parameterized algorithms
+  \item Approximation algorithms
+  \item Randomized algorithms
+  \item Heuristic methods
+  \item Metaheuristic techniques
+\end{itemize}
+
+Each category is discussed in detail below.
+
+% ============================================================
+\section{Exact Exponential and Parameterized Algorithms}
+
+\subsection{Motivation}
+
+Exact algorithms aim to compute the \emph{optimal} solution, i.e., the smallest possible feedback vertex set.
+These methods are theoretically important, but their computational cost grows exponentially with input size.
+
+They are most useful when:
+\begin{itemize}
+  \item Graph size is small, or
+  \item Solution size $k$ is small (FPT setting)
+\end{itemize}
+
+% ------------------------------------------------------------
+\subsection{Naive Brute Force}
+
+The simplest approach is to try all possible subsets of vertices.
+
+\begin{itemize}
+  \item For each subset $S \subseteq V$, remove $S$
+  \item Check whether $G - S$ is acyclic
+  \item Return the smallest valid set
+\end{itemize}
+
+\textbf{Insight:} This guarantees optimality but is computationally infeasible.
+
+\textbf{Complexity:} $\bigO{2^n \cdot n^3}$
+
+% ------------------------------------------------------------
+\subsection{Dynamic Programming on Subsets}
+
+Dynamic programming improves brute force by avoiding redundant computations.
+
+\begin{itemize}
+  \item Store results for previously evaluated subsets
+  \item Reuse computations for overlapping subproblems
+\end{itemize}
+
+\textbf{Complexity:} $\bigO{2^n \cdot n^2}$
+
+\textbf{Observation:} Still exponential, but more efficient than naive enumeration.
+
+% ------------------------------------------------------------
+\subsection{Iterative Compression}
+
+Iterative Compression is one of the most important techniques for \fvs{}.
+
+\textbf{Core Idea:}
+\begin{itemize}
+  \item Start with a small graph and known solution
+  \item Add vertices one by one
+  \item Maintain a solution of size $k+1$
+  \item Compress it to size $k$
+\end{itemize}
+
+\textbf{Why it works:} The compression step transforms the problem into a structured subproblem.
+
+\textbf{Complexity:} $\bigO{5^k \cdot k n^2}$
+
+\textbf{Key Strength:} Highly effective for small parameter $k$.
+
+% ------------------------------------------------------------
+\subsection{Bounded Search Tree}
+
+This method explores possible solutions using branching.
+
+\begin{itemize}
+  \item Find a cycle in the graph
+  \item Select a vertex from the cycle
+  \item Recursively branch on removing each vertex
+\end{itemize}
+
+\textbf{Key Insight:} Every cycle must contain at least one vertex in the FVS.
+
+\textbf{Complexity:} $\bigO{4^k \cdot n^2}$
+
+% ------------------------------------------------------------
+\subsection{Advanced FPT Algorithms}
+
+Modern algorithms combine:
+\begin{itemize}
+  \item Kernelization
+  \item Sophisticated branching strategies
+  \item Structural graph reductions
+\end{itemize}
+
+\textbf{Best known complexity:} $\bigO{3.619^k \cdot n^4}$
+
+\textbf{Observation:} These methods are state-of-the-art for exact solutions.
+
+% ============================================================
+\section{Approximation Algorithms}
+
+\subsection{Motivation}
+
+Approximation algorithms sacrifice optimality in exchange for efficiency.
+They guarantee solutions close to optimal within a provable bound.
+
+% ------------------------------------------------------------
+\subsection{2-Approximation Algorithm}
+
+\textbf{Idea:}
+\begin{itemize}
+  \item Find a cycle
+  \item Pick an edge from the cycle
+  \item Remove both endpoints
+\end{itemize}
+
+\textbf{Why it works:} At least one endpoint must be in the optimal solution.
+
+\textbf{Guarantee:} $|S| \leq 2 \cdot OPT$
+
+% ------------------------------------------------------------
+\subsection{Logarithmic Approximation}
+
+This method reduces \fvs{} to a hitting set problem.
+
+\begin{itemize}
+  \item Each cycle is treated as a set
+  \item Select vertices that hit all sets
+\end{itemize}
+
+\textbf{Guarantee:} $\mathcal{O}(\log n)$
+
+% ------------------------------------------------------------
+\subsection{LP Relaxation and Rounding}
+
+\begin{itemize}
+  \item Formulate as Integer Linear Program (ILP)
+  \item Relax to Linear Program (LP)
+  \item Round fractional values to integers
+\end{itemize}
+
+\textbf{Complexity:} $\bigO{n^{3.5}}$
+
+\textbf{Advantage:} Provides systematic approximation.
+
+\textbf{Limitation:} High computational cost.
+
+% ============================================================
+\section{Randomized Algorithms}
+
+\subsection{Motivation}
+
+Randomized algorithms use probabilistic decisions to improve performance.
+
+\textbf{Key Idea:} Instead of deterministic choices, use randomness to explore solution space.
+
+% ------------------------------------------------------------
+\subsection{Random Sampling}
+
+\begin{itemize}
+  \item Randomly select vertices
+  \item Evaluate whether they break cycles
+  \item Repeat multiple times
+\end{itemize}
+
+\textbf{Benefit:} Fast in practice.
+
+\textbf{Expected Performance:} $\mathcal{O}(\log n)$ approximation
+
+% ------------------------------------------------------------
+\subsection{Randomized Rounding}
+
+\begin{itemize}
+  \item Use LP solution
+  \item Interpret fractional values as probabilities
+  \item Randomly choose vertices
+\end{itemize}
+
+\textbf{Expected Guarantee:} 2-approximation
+
+% ------------------------------------------------------------
+\subsection{Color Coding}
+
+\textbf{Idea:}
+\begin{itemize}
+  \item Assign random colors to vertices
+  \item Identify specific substructures
+\end{itemize}
+
+\textbf{Complexity:} $\bigO{2^{O(k)} \cdot n}$
+
+% ============================================================
+\section{Heuristic Algorithms}
+
+\subsection{Motivation}
+
+Heuristic algorithms aim for fast and practical solutions without guarantees.
+
+They are widely used in real-world applications where:
+\begin{itemize}
+  \item Graphs are large
+  \item Exact solutions are infeasible
+\end{itemize}
+
+% ------------------------------------------------------------
+\subsection{Greedy Vertex Selection}
+
+\begin{itemize}
+  \item Select highest-degree vertex
+  \item Remove it
+  \item Repeat until no cycles remain
+\end{itemize}
+
+\textbf{Insight:} High-degree vertices are likely part of many cycles.
+
+\textbf{Complexity:} $\bigO{n^2 \log n}$
+
+% ------------------------------------------------------------
+\subsection{Cycle-Based Greedy}
+
+\begin{itemize}
+  \item Detect cycles
+  \item Count vertex frequency
+  \item Remove most frequent vertex
+\end{itemize}
+
+\textbf{Advantage:} More cycle-aware than degree-based methods.
+
+\textbf{Complexity:} $\bigO{n^3}$
+
+% ------------------------------------------------------------
+\subsection{Core-Based Methods}
+
+\begin{itemize}
+  \item Compute $k$-core decomposition
+  \item Focus on dense regions
+\end{itemize}
+
+\textbf{Insight:} Cycles are more likely in dense subgraphs.
+
+\textbf{Complexity:} $\bigO{n + m}$
+
+% ------------------------------------------------------------
+\subsection{Reduction Rules + Greedy}
+
+\begin{itemize}
+  \item Remove degree $\leq 1$ vertices
+  \item Apply kernelization rules
+  \item Run greedy on reduced graph
+\end{itemize}
+
+\textbf{Benefit:} Significantly reduces problem size.
+
+\textbf{Complexity:} $\bigO{n^2}$
+
+% ============================================================
+\section{Metaheuristic Algorithms}
+
+\subsection{Motivation}
+
+Metaheuristics are global optimization techniques designed to explore large solution spaces.
+
+They are particularly effective for:
+\begin{itemize}
+  \item Large-scale graphs
+  \item Complex optimization landscapes
+\end{itemize}
+
+% ------------------------------------------------------------
+\subsection{Genetic Algorithms}
+
+\begin{itemize}
+  \item Maintain population of solutions
+  \item Apply crossover and mutation
+  \item Select best individuals
+\end{itemize}
+
+\textbf{Strength:} Explores diverse solutions.
+
+\textbf{Complexity:} $\bigO{g \cdot p \cdot n^2}$
+
+% ------------------------------------------------------------
+\subsection{Simulated Annealing}
+
+\begin{itemize}
+  \item Accept worse solutions probabilistically
+  \item Gradually reduce randomness
+\end{itemize}
+
+\textbf{Advantage:} Escapes local minima.
+
+\textbf{Complexity:} $\bigO{i \cdot n^2}$
+
+% ------------------------------------------------------------
+\subsection{Ant Colony Optimization}
+
+\begin{itemize}
+  \item Simulate ants constructing solutions
+  \item Use pheromone trails to guide search
+\end{itemize}
+
+\textbf{Strength:} Collective learning behavior.
+
+\textbf{Complexity:} $\bigO{\text{ants} \cdot i \cdot n^2}$
+
+% ------------------------------------------------------------
+\subsection{Tabu Search}
+
+\begin{itemize}
+  \item Explore neighborhood solutions
+  \item Maintain tabu list to avoid repetition
+\end{itemize}
+
+\textbf{Complexity:} $\bigO{i \cdot n^2}$
+
+% ------------------------------------------------------------
+\subsection{Particle Swarm Optimization}
+
+\begin{itemize}
+  \item Represent solutions as particles
+  \item Update based on global and local best
+\end{itemize}
+
+\textbf{Complexity:} $\bigO{\text{particles} \cdot i \cdot n^2}$
+
+% ============================================================
+\section{Summary and Positioning of Our Work}
+
+From the above survey, we observe a clear trade-off:
+
+\begin{itemize}
+  \item Exact methods: optimal but slow
+  \item Heuristic methods: fast but approximate
+  \item Metaheuristics: scalable but not guaranteed
+\end{itemize}
+
+Our work builds upon these approaches by combining:
+\begin{itemize}
+  \item Kernelization (from parameterized algorithms)
+  \item Evolutionary search (from metaheuristics)
+  \item Learning-based guidance (Graph Neural Networks)
+\end{itemize}
+
+This hybrid framework aims to achieve both scalability and high-quality solutions, bridging the gap between theoretical optimality and practical performance.
 
 
 % =========================   End of Arafat and Suman ==========================
-
 
 %% ================= Start of Dipanta ============================
 %% ═══════════════════════════════════════════════════════════════════════════
@@ -376,30 +1033,30 @@ Kernelization is a core component of all our heuristic and hybrid algorithms, as
 Iterative Compression (IC) is an FPT algorithm for \fvs{} that builds a solution incrementally, compressing an $(k+1)$-sized FVS to a $k$-sized FVS at each step.
 
 \begin{algorithm}[H]
-\caption{Iterative Compression for \fvs{}}
-\label{alg:ic}
-\begin{algorithmic}[1]
-\Require Graph $G = (V, E)$, parameter $k$
-\Ensure Minimum FVS of size $\leq k$, or NO
-\State Order vertices $v_1, v_2, \ldots, v_n$
-\State $F \leftarrow \{v_1\}$
-\For{$i = 2$ to $n$}
-  \State $F \leftarrow F \cup \{v_i\}$
-  \If{$|F| = k + 1$}
-    \State Enumerate all partitions $(F_1, F_2)$ of $F$
-    \For{each partition $(F_1, F_2)$}
-      \State Find $Y \subseteq V \setminus F_2$ such that $F_1 \cup Y$ is an FVS of $G[V \setminus F_2]$ of size $\leq k - |F_1|$
-      \If{such $Y$ exists}
-        \State $F \leftarrow F_1 \cup Y$; \textbf{break}
-      \EndIf
-    \EndFor
-    \If{no valid partition found}
-      \Return NO
-    \EndIf
-  \EndIf
-\EndFor
-\Return $F$ if $|F| \leq k$
-\end{algorithmic}
+	\caption{Iterative Compression for \fvs{}}
+	\label{alg:ic}
+	\begin{algorithmic}[1]
+		\Require Graph $G = (V, E)$, parameter $k$
+		\Ensure Minimum FVS of size $\leq k$, or NO
+		\State Order vertices $v_1, v_2, \ldots, v_n$
+		\State $F \leftarrow \{v_1\}$
+		\For{$i = 2$ to $n$}
+		\State $F \leftarrow F \cup \{v_i\}$
+		\If{$|F| = k + 1$}
+		\State Enumerate all partitions $(F_1, F_2)$ of $F$
+		\For{each partition $(F_1, F_2)$}
+		\State Find $Y \subseteq V \setminus F_2$ such that $F_1 \cup Y$ is an FVS of $G[V \setminus F_2]$ of size $\leq k - |F_1|$
+		\If{such $Y$ exists}
+		\State $F \leftarrow F_1 \cup Y$; \textbf{break}
+		\EndIf
+		\EndFor
+		\If{no valid partition found}
+		\Return NO
+		\EndIf
+		\EndIf
+		\EndFor
+		\Return $F$ if $|F| \leq k$
+	\end{algorithmic}
 \end{algorithm}
 
 \subsection{Complexity Analysis}
@@ -412,6 +1069,121 @@ The IC solver is implemented in C++ in the \texttt{cpp\_engine} module. It is ex
 
 IC provides a guaranteed optimal solution and is theoretically well-grounded. Its limitation is the exponential dependence on $k$: for $k > 30$, it becomes infeasible within practical time budgets. On the exact track (graph sizes 10--35 nodes), it performs well.
 
+\subsection{Simulation}
+\textbf{Simulation of FVS (k=2) on 5 vertices}
+
+% ---------- STEP 1 ----------
+\textbf{Step 1: $F=\{A\}$}
+\begin{center}
+
+	\begin{tikzpicture}[node distance=2cm]
+		\node[draw, circle, fill=red!30] (A) {A};
+		\node[draw, circle, right of=A] (B) {B};
+		\node[draw, circle, below of=B] (C) {C};
+		\node[draw, circle, left of=C] (D) {D};
+		\node[draw, circle, below of=D] (E) {E};
+
+		\draw (A)--(B)--(C)--(A);
+		\draw (C)--(E)--(D);
+	\end{tikzpicture}
+\end{center}
+
+
+{Step 2: $F=\{A,B\}$}
+
+
+% ---------- STEP 2 ----------
+\begin{center}
+
+	\begin{tikzpicture}[node distance=2cm]
+		\node[draw, circle, fill=red!30] (A) {A};
+		\node[draw, circle, fill=red!30, right of=A] (B) {B};
+		\node[draw, circle, below of=B] (C) {C};
+		\node[draw, circle, left of=C] (D) {D};
+		\node[draw, circle, below of=D] (E) {E};
+
+		\draw (A)--(B)--(C)--(A);
+		\draw (C)--(E)--(D);
+	\end{tikzpicture}
+\end{center}
+
+{Step 3: $F=\{A,B,C\}$ (overflow)}
+
+% ---------- STEP 3 ----------
+\begin{center}
+
+	\begin{tikzpicture}[node distance=2cm]
+		\node[draw, circle, fill=red!30] (A) {A};
+		\node[draw, circle, fill=red!30, right of=A] (B) {B};
+		\node[draw, circle, fill=red!30, below of=B] (C) {C};
+		\node[draw, circle, left of=C] (D) {D};
+		\node[draw, circle, below of=D] (E) {E};
+
+		\draw (A)--(B)--(C)--(A);
+		\draw (C)--(E)--(D);
+	\end{tikzpicture}
+
+\end{center}
+
+\textbf{Fix: Remove C $\Rightarrow F=\{A,B\}$}
+
+% -------- Slide 4 --------
+{Step 4: Add D (Overflow)}
+\begin{center}
+
+	\begin{tikzpicture}[node distance=2cm]
+		\node[draw, circle, fill=red!30] (A) {A};
+		\node[draw, circle, fill=red!30, right of=A] (B) {B};
+		\node[draw, circle, below of=B] (C) {C};
+		\node[draw, circle, fill=red!30, left of=C] (D) {D};
+		\node[draw, circle, below of=D] (E) {E};
+
+		\draw (A)--(B)--(C)--(A);
+		\draw (C)--(E)--(D);
+	\end{tikzpicture}
+\end{center}
+
+\textbf{Fix: Remove D $\Rightarrow F=\{A,B\}$}
+
+
+% -------- Slide 5 --------
+{Step 5: Add E (Overflow)}
+\begin{center}
+	\begin{tikzpicture}[node distance=2cm]
+		\node[draw, circle, fill=red!30] (A) {A};
+		\node[draw, circle, fill=red!30, right of=A] (B) {B};
+		\node[draw, circle, below of=B] (C) {C};
+		\node[draw, circle, left of=C] (D) {D};
+		\node[draw, circle, fill=red!30, below of=D] (E) {E};
+
+		\draw (A)--(B)--(C)--(A);
+		\draw (C)--(E)--(D);
+	\end{tikzpicture}
+\end{center}
+
+
+\textbf{Fix: Remove E $\Rightarrow F=\{A,B\}$}
+
+
+% -------- Final Slide --------
+{Final Answer}
+
+\begin{center}
+	\begin{tikzpicture}[node distance=2cm]
+
+		\node[draw, circle, below of=B] (C) {C};
+		\node[draw, circle, left of=C] (D) {D};
+		\node[draw, circle, below of=D] (E) {E};
+
+		\draw (C)--(E)--(D);
+	\end{tikzpicture}
+\end{center}
+
+\textbf{$F=\{A,B\}$}
+
+
+
+
 \section{Bounded Search Tree (BST)}
 
 \subsection{Algorithm Description}
@@ -419,28 +1191,28 @@ IC provides a guaranteed optimal solution and is theoretically well-grounded. It
 The Bounded Search Tree algorithm applies kernelization as preprocessing, reducing the graph to a smaller equivalent kernel, then exhaustively branches over remaining cycles.
 
 \begin{algorithm}[H]
-\caption{Kernelization + Bounded Search Tree}
-\label{alg:bst}
-\begin{algorithmic}[1]
-\Require Graph $G$, parameter $k$
-\Ensure Minimum FVS, or NO
-\State \textbf{Apply reduction rules:}
-  \Statex \hspace*{1em}Remove vertices of degree $\leq 1$ (cannot be in any cycle)
-  \Statex \hspace*{1em}Contract degree-2 vertices via bypass rule
-  \Statex \hspace*{1em}Force self-loop vertices into FVS and remove
-\State Obtain kernel $(G', k')$
-\Function{Search}{$G', k'$}
-  \If{$G'$ is acyclic} \Return $\emptyset$ \EndIf
-  \If{$k' < 0$} \Return NO \EndIf
-  \State Find a cycle $C$ in $G'$
-  \State $\text{best} \leftarrow \infty$
-  \For{each $v \in C$}
-    \State $\text{sol} \leftarrow v \cup \textsc{Search}(G' - v, k' - 1)$
-    \State $\text{best} \leftarrow \min(\text{best}, \text{sol})$
-  \EndFor
-  \Return best
-\EndFunction
-\end{algorithmic}
+	\caption{Kernelization + Bounded Search Tree}
+	\label{alg:bst}
+	\begin{algorithmic}[1]
+		\Require Graph $G$, parameter $k$
+		\Ensure Minimum FVS, or NO
+		\State \textbf{Apply reduction rules:}
+		\Statex \hspace*{1em}Remove vertices of degree $\leq 1$ (cannot be in any cycle)
+		\Statex \hspace*{1em}Contract degree-2 vertices via bypass rule
+		\Statex \hspace*{1em}Force self-loop vertices into FVS and remove
+		\State Obtain kernel $(G', k')$
+		\Function{Search}{$G', k'$}
+		\If{$G'$ is acyclic} \Return $\emptyset$ \EndIf
+		\If{$k' < 0$} \Return NO \EndIf
+		\State Find a cycle $C$ in $G'$
+		\State $\text{best} \leftarrow \infty$
+		\For{each $v \in C$}
+		\State $\text{sol} \leftarrow v \cup \textsc{Search}(G' - v, k' - 1)$
+		\State $\text{best} \leftarrow \min(\text{best}, \text{sol})$
+		\EndFor
+		\Return best
+		\EndFunction
+	\end{algorithmic}
 \end{algorithm}
 
 \subsection{Complexity Analysis}
@@ -448,6 +1220,143 @@ The Bounded Search Tree algorithm applies kernelization as preprocessing, reduci
 After kernelization, the kernel has $\bigO{k^2}$ vertices \cite{thomasse2010}. The search tree branches on a cycle (branching factor $\leq |C|$), with depth $k$. The total complexity is $\bigO{4^k + n^2}$ in the combined kernel + search-tree analysis.
 
 BST completes 9,046 exact-track instances with 100\% optimality before timeout in our evaluation.
+
+\subsection{Simulation}
+{Step 1: Original Graph}
+\begin{center}
+
+
+	\begin{tikzpicture}[every node/.style={circle,draw,minimum size=7mm}]
+		\node (1) at (0,0) {1};
+		\node (2) at (2,0) {2};
+		\node (3) at (1,1.5) {3};
+		\node (4) at (3,1.5) {4};
+		\node (5) at (4,0) {5};
+		\node (6) at (6,0) {6};
+
+		\draw (1)--(2)--(3)--(1);
+		\draw (2)--(4)--(5)--(2);
+		\draw (5)--(6);
+	\end{tikzpicture}
+\end{center}
+
+%-------------------------------
+% Frame 2: Check degree <=1
+%-------------------------------
+{Step 2: Remove degree $\leq$ 1 vertices}
+\begin{center}
+	\textbf{Vertex 6 removed}
+
+	\vspace{0.5cm}
+
+	\begin{tikzpicture}[every node/.style={circle,draw,minimum size=7mm}]
+		\node (1) at (0,0) {1};
+		\node (2) at (2,0) {2};
+		\node (3) at (1,1.5) {3};
+		\node (4) at (3,1.5) {4};
+		\node (5) at (4,0) {5};
+
+		\draw (1)--(2)--(3)--(1);
+		\draw (2)--(4)--(5)--(2);
+	\end{tikzpicture}
+\end{center}
+
+
+%-------------------------------
+% Frame 3: Contract vertex 4
+%-------------------------------
+{Step 3: Contract degree-2 vertex (4)}
+\begin{center}
+	\begin{tikzpicture}[every node/.style={circle,draw,minimum size=7mm}]
+		\node (1) at (0,0) {1};
+		\node (2) at (2,0) {2};
+		\node (3) at (1,1.5) {3};
+		\node (5) at (3.5,0.5) {5};
+
+		\draw (1)--(2)--(3)--(1);
+		\draw (2)--(5);
+	\end{tikzpicture}
+\end{center}
+
+%-------------------------------
+% Frame 4: Contract vertex 5
+%-------------------------------
+{Step 4: Remove degree $\leq$ 1 vertex (5)}
+\begin{center}
+	\begin{tikzpicture}[every node/.style={circle,draw,minimum size=7mm}]
+		\node (1) at (0,0) {1};
+		\node (2) at (2,0) {2};
+		\node (3) at (1,1.5) {3};
+
+		\draw (1)--(2)--(3)--(1);
+	\end{tikzpicture}
+\end{center}
+
+%-------------------------------
+% Frame 5: Kernel obtained
+%-------------------------------
+{Step 5: Kernel Graph (G')}
+\begin{center}
+	\textbf{Remaining cycle}
+
+	\vspace{0.5cm}
+
+	\begin{tikzpicture}[every node/.style={circle,draw,minimum size=7mm}]
+		\node (1) at (0,0) {1};
+		\node (2) at (2,0) {2};
+		\node (3) at (1,1.5) {3};
+
+		\draw[red, thick] (1)--(2)--(3)--(1);
+	\end{tikzpicture}
+\end{center}
+
+%-------------------------------
+% Frame 6: Branch remove 1
+%-------------------------------
+{Step 6: Branch - Remove vertex 1}
+\begin{center}
+	\begin{tikzpicture}[every node/.style={circle,draw,minimum size=7mm}]
+		\node (2) at (2,0) {2};
+		\node (3) at (1,1.5) {3};
+
+		\draw (2)--(3);
+	\end{tikzpicture}
+
+	\vspace{0.5cm}
+	Graph becomes acyclic
+\end{center}
+
+%-------------------------------
+% Frame 7: Branch remove 2
+%-------------------------------
+{Step 7: Branch - Remove vertex 2}
+\begin{center}
+	\begin{tikzpicture}[every node/.style={circle,draw,minimum size=7mm}]
+		\node (1) at (0,0) {1};
+		\node (3) at (1,1.5) {3};
+
+		\draw (1)--(3);
+	\end{tikzpicture}
+
+	\vspace{0.5cm}
+	Graph becomes acyclic
+\end{center}
+
+%-------------------------------
+% Frame 8: Branch remove 3
+%-------------------------------
+{Step 8: Branch - Remove vertex 3}
+\begin{center}
+	\begin{tikzpicture}[every node/.style={circle,draw,minimum size=7mm}]
+		\node (1) at (0,0) {1};
+		\node (2) at (2,0) {2};
+
+		\draw (1)--(2);
+	\end{tikzpicture}
+
+	\vspace{0.5cm}
+	Graph becomes acyclic
+\end{center}
 
 %% ═══════════════════════════════════════════════════════════════════════════
 \chapter{The Memetic Algorithm}
@@ -459,25 +1368,25 @@ BST completes 9,046 exact-track instances with 100\% optimality before timeout i
 The Memetic Algorithm (\ma{}) is an evolutionary heuristic that combines genetic-algorithm population dynamics with problem-specific local search. It is designed for large instances ($n > 1000$) where exact methods are infeasible.
 
 \begin{algorithm}[H]
-\caption{Memetic Algorithm for \fvs{}}
-\label{alg:ma}
-\begin{algorithmic}[1]
-\Require Graph $G$, population size $P$, max generations $G_{\max}$, early-stop $T$
-\Ensure Near-optimal FVS
-\State Encode solutions as vertex permutations
-\State Initialize population: $P/2$ greedy, $P/2$ random individuals
-\For{$g = 1$ to $G_{\max}$}
-  \State Evaluate fitness: $-|$FVS$(ind)|$ for each individual $ind$
-  \State Select parents via tournament selection
-  \State Produce offspring via cycle-aware crossover
-  \State Apply mutation (swap cycle-heavy vertices)
-  \State Apply local search (hill-climbing on each offspring)
-  \State Repair: restore FVS validity via greedy cycle cover
-  \State Update population via tournament replacement
-  \If{no improvement for $T$ generations} \textbf{break} \EndIf
-\EndFor
-\Return best individual decoded as FVS
-\end{algorithmic}
+	\caption{Memetic Algorithm for \fvs{}}
+	\label{alg:ma}
+	\begin{algorithmic}[1]
+		\Require Graph $G$, population size $P$, max generations $G_{\max}$, early-stop $T$
+		\Ensure Near-optimal FVS
+		\State Encode solutions as vertex permutations
+		\State Initialize population: $P/2$ greedy, $P/2$ random individuals
+		\For{$g = 1$ to $G_{\max}$}
+		\State Evaluate fitness: $-|$FVS$(ind)|$ for each individual $ind$
+		\State Select parents via tournament selection
+		\State Produce offspring via cycle-aware crossover
+		\State Apply mutation (swap cycle-heavy vertices)
+		\State Apply local search (hill-climbing on each offspring)
+		\State Repair: restore FVS validity via greedy cycle cover
+		\State Update population via tournament replacement
+		\If{no improvement for $T$ generations} \textbf{break} \EndIf
+		\EndFor
+		\Return best individual decoded as FVS
+	\end{algorithmic}
 \end{algorithm}
 
 \section{Encoding and Decoding}
@@ -497,25 +1406,195 @@ Each individual encodes a \textbf{permutation} of vertices $\pi = (\pi_1, \pi_2,
 The MA runs in $\bigO{P \cdot G_{\max} \cdot |V|^2}$ per generation due to cycle detection. Default parameters are given in Table~\ref{tab:ma_params}.
 
 \begin{table}[H]
-\centering
-\caption{Default MA / KMA parameters}
-\label{tab:ma_params}
-\begin{tabular}{llll}
-\toprule
-Parameter & Flag & Default & Description \\
-\midrule
-Population & \texttt{--pop} & 20 & Individuals per generation \\
-Generations & \texttt{--gens} & 100 & Max evolutionary iterations \\
-Early-stop & \texttt{--earlystop} & 30 & Gens without improvement \\
-Timeout & \texttt{--timeout} & 600s & Hard wall-clock limit \\
-\bottomrule
-\end{tabular}
+	\centering
+	\caption{Default MA / KMA parameters}
+	\label{tab:ma_params}
+	\begin{tabular}{llll}
+		\toprule
+		Parameter   & Flag                 & Default & Description                 \\
+		\midrule
+		Population  & \texttt{--pop}       & 20      & Individuals per generation  \\
+		Generations & \texttt{--gens}      & 100     & Max evolutionary iterations \\
+		Early-stop  & \texttt{--earlystop} & 30      & Gens without improvement    \\
+		Timeout     & \texttt{--timeout}   & 600s    & Hard wall-clock limit       \\
+		\bottomrule
+	\end{tabular}
 \end{table}
+
+\subsection{Simulation}
+%-------------------------------
+% Frame 1: Original Graph
+%-------------------------------
+{Step 1: Original Graph}
+\begin{center}
+	\begin{tikzpicture}[every node/.style={circle,draw,minimum size=7mm}]
+		\node (1) at (0,0) {1};
+		\node (2) at (2,0) {2};
+		\node (3) at (1,1.5) {3};
+		\node (4) at (3,1.5) {4};
+		\node (5) at (4,0) {5};
+
+		\draw (1)--(2)--(3)--(1);
+		\draw (2)--(4)--(5)--(2);
+	\end{tikzpicture}
+\end{center}
+
+%-------------------------------
+% Frame 2: Encoding (Permutation)
+%-------------------------------
+{Step 2: Encode Solution}
+\begin{center}
+	Example permutation:
+
+	\vspace{0.5cm}
+	\Huge
+	[3, 1, 5, 2, 4]
+\end{center}
+
+%-------------------------------
+% Frame 3: Decoding (Remove 3)
+%-------------------------------
+{Step 3: Remove vertex 3}
+\begin{center}
+	\begin{tikzpicture}[every node/.style={circle,draw,minimum size=7mm}]
+		\node (1) at (0,0) {1};
+		\node (2) at (2,0) {2};
+		\node (4) at (3,1.5) {4};
+		\node (5) at (4,0) {5};
+
+		\draw (1)--(2);
+		\draw (2)--(4)--(5)--(2);
+	\end{tikzpicture}
+\end{center}
+
+%-------------------------------
+% Frame 4: Remove 1
+%-------------------------------
+{Step 4: Remove vertex 1}
+\begin{center}
+	\begin{tikzpicture}[every node/.style={circle,draw,minimum size=7mm}]
+		\node (2) at (2,0) {2};
+		\node (4) at (3,1.5) {4};
+		\node (5) at (4,0) {5};
+
+		\draw (2)--(4)--(5)--(2);
+	\end{tikzpicture}
+\end{center}
+
+%-------------------------------
+% Frame 5: Remove 5 (graph becomes acyclic)
+%-------------------------------
+{Step 5: Remove vertex 5}
+\begin{center}
+	\begin{tikzpicture}[every node/.style={circle,draw,minimum size=7mm}]
+		\node (2) at (2,0) {2};
+		\node (4) at (3,1.5) {4};
+
+		\draw (2)--(4);
+	\end{tikzpicture}
+
+	\vspace{0.5cm}
+	Graph is now acyclic → Stop decoding
+\end{center}
+
+%-------------------------------
+% Frame 6: Fitness Evaluation
+%-------------------------------
+{Step 6: Fitness Evaluation}
+\begin{center}
+	Removed vertices = \{3,1,5\}
+
+	\vspace{0.5cm}
+	Fitness = $-|FVS| = -3$
+\end{center}
+
+%-------------------------------
+% Frame 7: Selection
+%-------------------------------
+{Step 7: Selection (Tournament)}
+\begin{center}
+	Select best solutions from population
+
+	\vspace{0.5cm}
+	Example:
+	\[
+		[3,1,5,2,4],\quad [2,4,1,5,3]
+	\]
+\end{center}
+
+%-------------------------------
+% Frame 8: Crossover
+%-------------------------------
+{Step 8: Crossover}
+\begin{center}
+	Parent 1: [3,1,5,2,4]
+
+	Parent 2: [2,4,1,5,3]
+
+	\vspace{0.5cm}
+	Child:
+
+	\Huge
+	[3,4,1,2,5]
+\end{center}
+
+%-------------------------------
+% Frame 9: Mutation
+%-------------------------------
+{Step 9: Mutation}
+\begin{center}
+	Before:
+
+	\[
+		[3,4,1,2,5]
+	\]
+
+	\vspace{0.5cm}
+	After swap:
+
+	\Huge
+	[3,1,4,2,5]
+\end{center}
+
+%-------------------------------
+% Frame 10: Local Search
+%-------------------------------
+{Step 10: Local Search}
+\begin{center}
+	Try improving solution:
+
+	\vspace{0.5cm}
+	Remove fewer vertices if possible
+
+	\vspace{0.5cm}
+	Example improvement:
+
+	\Huge
+	FVS size: 3 → 2
+\end{center}
+
+%-------------------------------
+% Frame 11: Final Solution
+%-------------------------------
+{Step 11: Best Solution}
+\begin{center}
+	Best FVS found:
+
+	\vspace{0.5cm}
+	\Huge
+	\{3,2\}
+
+	\vspace{0.5cm}
+	Graph becomes acyclic
+\end{center}
 
 
 % ================  End of Dipanta Kumar Roy Nobo =======================
 
 %% ═══════════════════════════════════════════════════════════════════════════
+
+
+
 \chapter{KMA: Kernelized Memetic Algorithm}
 \label{ch:kma}
 %% ═══════════════════════════════════════════════════════════════════════════
@@ -529,23 +1608,23 @@ The plain Memetic Algorithm operates on the full input graph, wasting effort on 
 The KMA pipeline has three phases:
 
 \begin{enumerate}
-  \item \textbf{Kernelization}: Apply safe reduction rules, collecting forced vertices.
-  \item \textbf{MA on kernel}: Run the C++ MA solver on the reduced kernel $G'$.
-  \item \textbf{Reconstruction}: Map kernel-vertex indices back to original indices and union with forced vertices.
+	\item \textbf{Kernelization}: Apply safe reduction rules, collecting forced vertices.
+	\item \textbf{MA on kernel}: Run the C++ MA solver on the reduced kernel $G'$.
+	\item \textbf{Reconstruction}: Map kernel-vertex indices back to original indices and union with forced vertices.
 \end{enumerate}
 
 \begin{algorithm}[H]
-\caption{KMA: Kernelized Memetic Algorithm}
-\label{alg:kma}
-\begin{algorithmic}[1]
-\Require Graph $G = (V, E)$, MA parameters
-\Ensure Near-optimal FVS
-\State $(G', k', F_{\text{forced}}, \phi) \leftarrow \textsc{Kernelize}(G)$ \Comment{$\phi$: kernel-to-original map}
-\If{$|V(G')| = 0$} \Return $F_{\text{forced}}$ \EndIf
-\State $S' \leftarrow \textsc{MA}(G', \text{parameters})$ \Comment{C++ solver on kernel}
-\State $S \leftarrow F_{\text{forced}} \cup \{\phi(v) : v \in S'\}$
-\Return $\mathrm{deduplicate}(S)$
-\end{algorithmic}
+	\caption{KMA: Kernelized Memetic Algorithm}
+	\label{alg:kma}
+	\begin{algorithmic}[1]
+		\Require Graph $G = (V, E)$, MA parameters
+		\Ensure Near-optimal FVS
+		\State $(G', k', F_{\text{forced}}, \phi) \leftarrow \textsc{Kernelize}(G)$ \Comment{$\phi$: kernel-to-original map}
+		\If{$|V(G')| = 0$} \Return $F_{\text{forced}}$ \EndIf
+		\State $S' \leftarrow \textsc{MA}(G', \text{parameters})$ \Comment{C++ solver on kernel}
+		\State $S \leftarrow F_{\text{forced}} \cup \{\phi(v) : v \in S'\}$
+		\Return $\mathrm{deduplicate}(S)$
+	\end{algorithmic}
 \end{algorithm}
 
 \section{Kernelization Rules}
@@ -555,9 +1634,9 @@ The KMA pipeline has three phases:
 The function \texttt{kernelize\_undirected\_graph} applies the following rules iteratively to quiescence:
 
 \begin{enumerate}
-  \item \textbf{Self-loop rule}: If $(v,v) \in E$, force $v$ into FVS and remove.
-  \item \textbf{Degree-0/1 rule}: If $\deg(v) \leq 1$, remove $v$ (cannot be in any cycle).
-  \item \textbf{Degree-2 bypass rule}: If $\deg(v) = 2$ with neighbors $a, b$ and $\{a,b\} \notin E$, replace $v$ and its edges with a single edge $(a,b)$.
+	\item \textbf{Self-loop rule}: If $(v,v) \in E$, force $v$ into FVS and remove.
+	\item \textbf{Degree-0/1 rule}: If $\deg(v) \leq 1$, remove $v$ (cannot be in any cycle).
+	\item \textbf{Degree-2 bypass rule}: If $\deg(v) = 2$ with neighbors $a, b$ and $\{a,b\} \notin E$, replace $v$ and its edges with a single edge $(a,b)$.
 \end{enumerate}
 
 These rules are safe: no optimal FVS excludes forced vertices, and removed vertices never need to be included. The theoretical basis is the $\bigO{k^2}$ kernel of Thomass\'{e} \cite{thomasse2010}.
@@ -567,22 +1646,22 @@ These rules are safe: no optimal FVS excludes forced vertices, and removed verti
 The function \texttt{kernelize\_directed\_graph} applies stronger directed rules:
 
 \begin{enumerate}
-  \item \textbf{Self-loop rule}: If $(v,v) \in E$, force $v$ into DFVS and remove.
-  \item \textbf{Source/Sink rule}: If $\text{in-deg}(v) = 0$ or $\text{out-deg}(v) = 0$, remove $v$ (not on any directed cycle).
-  \item \textbf{Degree-1 bypass}: If $\text{in-deg}(v) = 1$ or $\text{out-deg}(v) = 1$, shortcut its predecessor(s) to its successor(s) and remove.
-  \item \textbf{SCC reduction}: Compute SCCs via Tarjan's algorithm \cite{tarjan1972}; remove all vertices not in nontrivial SCCs. A nontrivial SCC has $|C| > 1$ or contains a self-loop.
+	\item \textbf{Self-loop rule}: If $(v,v) \in E$, force $v$ into DFVS and remove.
+	\item \textbf{Source/Sink rule}: If $\text{in-deg}(v) = 0$ or $\text{out-deg}(v) = 0$, remove $v$ (not on any directed cycle).
+	\item \textbf{Degree-1 bypass}: If $\text{in-deg}(v) = 1$ or $\text{out-deg}(v) = 1$, shortcut its predecessor(s) to its successor(s) and remove.
+	\item \textbf{SCC reduction}: Compute SCCs via Tarjan's algorithm \cite{tarjan1972}; remove all vertices not in nontrivial SCCs. A nontrivial SCC has $|C| > 1$ or contains a self-loop.
 \end{enumerate}
 
 \infobox{Key Impact of SCC Reduction}{
-SCC-based directed reduction alone eliminates 60--90\% of vertices on sparse real-world directed graphs before any search begins, dramatically shrinking the kernel and making DFVS tractable at scales impossible for undirected FVS with comparable vertex counts.
+	SCC-based directed reduction alone eliminates 60--90\% of vertices on sparse real-world directed graphs before any search begins, dramatically shrinking the kernel and making DFVS tractable at scales impossible for undirected FVS with comparable vertex counts.
 }
 
 \section{C++ Backend Solver}
 
 The MA on the kernel is dispatched to the C++ engine (\texttt{cpp\_engine}), which exposes:
 \begin{itemize}
-  \item \texttt{cpp\_engine.solve\_undirected\_KMA} / \texttt{solve\_directed\_KMA}
-  \item Fallback chain: KMA $\to$ KME $\to$ MA
+	\item \texttt{cpp\_engine.solve\_undirected\_KMA} / \texttt{solve\_directed\_KMA}
+	\item Fallback chain: KMA $\to$ KME $\to$ MA
 \end{itemize}
 
 The C++ solver enforces a hard wall-clock timeout internally, returning the best solution found within the budget.
@@ -600,26 +1679,26 @@ Consider a directed graph where, after one generation of MA, 80\% of individuals
 \section{DKMA Algorithm}
 
 \begin{algorithm}[H]
-\caption{DKMA: Dynamic Kernelized Memetic Algorithm}
-\label{alg:dkma}
-\begin{algorithmic}[1]
-\Require Graph $G$, threshold $\tau$, MA parameters
-\Ensure Near-optimal FVS
-\State $(G', F, \phi) \leftarrow \textsc{StaticKernelize}(G)$
-\If{directed} Apply \textsc{ShortonePas}($G'$) \EndIf
-\State $\mathcal{P} \leftarrow \textsc{InitPopulation}(G')$
-\Repeat
-  \State $\mathcal{P} \leftarrow \textsc{RunOneGeneration}(\mathcal{P}, G')$
-  \State $C \leftarrow \textsc{CommitVertices}(\mathcal{P}, G', \tau)$ \Comment{Vertices in $\geq \tau$ fraction}
-  \State $F \leftarrow F \cup \phi(C)$; remove $C$ from $G'$
-  \State $(G', \phi') \leftarrow \textsc{DynamicKernelize}(G')$ \Comment{Re-kernelize residual}
-  \State $\phi \leftarrow \phi \circ \phi'$
-  \If{every 5 generations} $\mathcal{P} \leftarrow \textsc{TopologicalDiversify}(\mathcal{P}, G')$ \EndIf
-\Until{convergence or timeout}
-\State $S \leftarrow \textsc{GainLocalSearch}(F \cup \phi(\text{best}({\mathcal{P}})), G)$ \Comment{1-1 and 2-1 swaps}
-\State Verify acyclicity; fallback to KMA if invalid
-\Return $S$
-\end{algorithmic}
+	\caption{DKMA: Dynamic Kernelized Memetic Algorithm}
+	\label{alg:dkma}
+	\begin{algorithmic}[1]
+		\Require Graph $G$, threshold $\tau$, MA parameters
+		\Ensure Near-optimal FVS
+		\State $(G', F, \phi) \leftarrow \textsc{StaticKernelize}(G)$
+		\If{directed} Apply \textsc{ShortonePas}($G'$) \EndIf
+		\State $\mathcal{P} \leftarrow \textsc{InitPopulation}(G')$
+		\Repeat
+		\State $\mathcal{P} \leftarrow \textsc{RunOneGeneration}(\mathcal{P}, G')$
+		\State $C \leftarrow \textsc{CommitVertices}(\mathcal{P}, G', \tau)$ \Comment{Vertices in $\geq \tau$ fraction}
+		\State $F \leftarrow F \cup \phi(C)$; remove $C$ from $G'$
+		\State $(G', \phi') \leftarrow \textsc{DynamicKernelize}(G')$ \Comment{Re-kernelize residual}
+		\State $\phi \leftarrow \phi \circ \phi'$
+		\If{every 5 generations} $\mathcal{P} \leftarrow \textsc{TopologicalDiversify}(\mathcal{P}, G')$ \EndIf
+		\Until{convergence or timeout}
+		\State $S \leftarrow \textsc{GainLocalSearch}(F \cup \phi(\text{best}({\mathcal{P}})), G)$ \Comment{1-1 and 2-1 swaps}
+		\State Verify acyclicity; fallback to KMA if invalid
+		\Return $S$
+	\end{algorithmic}
 \end{algorithm}
 
 \section{Key Innovations}
@@ -628,8 +1707,8 @@ Consider a directed graph where, after one generation of MA, 80\% of individuals
 
 The function \texttt{\_commit\_vertices\_from\_population} selects consensus vertices:
 \begin{itemize}
-  \item A vertex $v$ is committed if it appears in $\geq \tau$ fraction of population individuals (default $\tau = 0.8$).
-  \item If too many vertices would be committed, cap at the top 30\% by frequency to prevent over-committing and loss of diversity.
+	\item A vertex $v$ is committed if it appears in $\geq \tau$ fraction of population individuals (default $\tau = 0.8$).
+	\item If too many vertices would be committed, cap at the top 30\% by frequency to prevent over-committing and loss of diversity.
 \end{itemize}
 This is based on the DFVS approach from Grossmann et al.\ \cite{grossmann2022ipec}.
 
@@ -641,46 +1720,46 @@ Inspired by the Mount-Doom PACE 2022 solver \cite{langedal2022}, the function \t
 
 Every 5 generations, \texttt{\_diversify\_with\_topological\_ordering} is called to prevent premature convergence \cite{lust2010}:
 \begin{itemize}
-  \item \textbf{Directed}: Randomized Kahn's algorithm with tie-breaking on cycle-heavy vertices.
-  \item \textbf{Undirected}: Random spanning-tree with cycle-breaking insertion.
+	\item \textbf{Directed}: Randomized Kahn's algorithm with tie-breaking on cycle-heavy vertices.
+	\item \textbf{Undirected}: Random spanning-tree with cycle-breaking insertion.
 \end{itemize}
 
 \subsection{Gain Local Search}
 
 After the main loop, \texttt{\_gain\_local\_search} applies improvement swaps:
 \begin{itemize}
-  \item \textbf{1-1 swap}: Remove one FVS vertex and add another; accept if FVS remains valid and size decreases.
-  \item \textbf{2-1 swap}: Replace two FVS vertices with one; accept if valid.
+	\item \textbf{1-1 swap}: Remove one FVS vertex and add another; accept if FVS remains valid and size decreases.
+	\item \textbf{2-1 swap}: Replace two FVS vertices with one; accept if valid.
 \end{itemize}
 
 \subsection{Correctness Safeguards}
 
 DKMA enforces:
 \begin{enumerate}
-  \item Deduplicated final solution indices.
-  \item All forced vertices (static + dynamic) are included.
-  \item Final acyclicity verification on the \emph{original} graph: directed uses iterative DFS back-edge detection; undirected uses union-find.
-  \item Fallback to KMA if final verification fails.
+	\item Deduplicated final solution indices.
+	\item All forced vertices (static + dynamic) are included.
+	\item Final acyclicity verification on the \emph{original} graph: directed uses iterative DFS back-edge detection; undirected uses union-find.
+	\item Fallback to KMA if final verification fails.
 \end{enumerate}
 
 \section{KMA vs.\ DKMA: Comparison}
 
 \begin{table}[H]
-\centering
-\caption{Feature comparison between KMA and DKMA}
-\label{tab:kma_dkma_compare}
-\begin{tabular}{lll}
-\toprule
-\textbf{Feature} & \textbf{KMA} & \textbf{DKMA} \\
-\midrule
-Kernelization & Once (static) & Per-generation loop (dynamic) \\
-Vertex commitment & None & Consensus-based ($\tau = 0.8$) \\
-SHORTONE pass & No & Yes (directed only) \\
-Topological diversification & No & Every 5 generations \\
-Post-loop local search & No & Gain 1-1 / 2-1 swaps \\
-Final validity check & End & End + KMA fallback \\
-\bottomrule
-\end{tabular}
+	\centering
+	\caption{Feature comparison between KMA and DKMA}
+	\label{tab:kma_dkma_compare}
+	\begin{tabular}{lll}
+		\toprule
+		\textbf{Feature}            & \textbf{KMA}  & \textbf{DKMA}                  \\
+		\midrule
+		Kernelization               & Once (static) & Per-generation loop (dynamic)  \\
+		Vertex commitment           & None          & Consensus-based ($\tau = 0.8$) \\
+		SHORTONE pass               & No            & Yes (directed only)            \\
+		Topological diversification & No            & Every 5 generations            \\
+		Post-loop local search      & No            & Gain 1-1 / 2-1 swaps           \\
+		Final validity check        & End           & End + KMA fallback             \\
+		\bottomrule
+	\end{tabular}
 \end{table}
 
 %% ═══════════════════════════════════════════════════════════════════════════
@@ -697,16 +1776,16 @@ Both KMA and DKMA apply reduction rules and evolutionary search but are agnostic
 The core coupling design is \textbf{precision-first soft-hint}:
 
 \begin{enumerate}
-  \item Kernelize the input graph $G$ to obtain kernel $G'$.
-  \item Run GNN inference on $G'$ to obtain per-vertex probabilities $p(v)$.
-  \item Hard-fix only vertices with $p(v) \geq \theta$ (default $\theta = 0.65$).
-  \item Cap hard-fix ratio at 8\% of kernel size.
-  \item Run KMA on the residual kernel $G'' = G' \setminus \{\text{hard-fixed}\}$.
-  \item Reconstruct: $S = F_{\text{forced}} \cup F_{\text{GNN}} \cup \phi(\text{KMA}(G''))$.
+	\item Kernelize the input graph $G$ to obtain kernel $G'$.
+	\item Run GNN inference on $G'$ to obtain per-vertex probabilities $p(v)$.
+	\item Hard-fix only vertices with $p(v) \geq \theta$ (default $\theta = 0.65$).
+	\item Cap hard-fix ratio at 8\% of kernel size.
+	\item Run KMA on the residual kernel $G'' = G' \setminus \{\text{hard-fixed}\}$.
+	\item Reconstruct: $S = F_{\text{forced}} \cup F_{\text{GNN}} \cup \phi(\text{KMA}(G''))$.
 \end{enumerate}
 
 \infobox{Why Precision-First?}{
-False positives in hard-fixing are catastrophic: a wrongly fixed vertex inflates the final FVS size and cannot be removed within that solve branch. Capping at 8\% of the kernel and requiring $\theta \geq 0.65$ ensures the GNN only commits when highly confident. If no vertex exceeds $\theta$, the system automatically falls back to pure KMA.
+	False positives in hard-fixing are catastrophic: a wrongly fixed vertex inflates the final FVS size and cannot be removed within that solve branch. Capping at 8\% of the kernel and requiring $\theta \geq 0.65$ ensures the GNN only commits when highly confident. If no vertex exceeds $\theta$, the system automatically falls back to pure KMA.
 }
 
 \section{GNN-KMA v1: Baseline Architecture}
@@ -715,14 +1794,14 @@ False positives in hard-fixing are catastrophic: a wrongly fixed vertex inflates
 
 \paragraph{Undirected:}
 \begin{align}
-  x_1(v) &= \frac{\deg(v)}{\max(n-1, 1)} & &\text{(normalized degree)} \\
-  x_2(v) &= c(v) & &\text{(clustering coefficient)} \\
-  x_3(v) &= \frac{\log(\deg(v)+1)}{\log(n+1)} & &\text{(normalized log-degree)}
+	x_1(v) & = \frac{\deg(v)}{\max(n-1, 1)}      &  & \text{(normalized degree)}      \\
+	x_2(v) & = c(v)                              &  & \text{(clustering coefficient)} \\
+	x_3(v) & = \frac{\log(\deg(v)+1)}{\log(n+1)} &  & \text{(normalized log-degree)}
 \end{align}
 
 \paragraph{Directed:}
 \begin{align}
-  x_1(v) &= \frac{d^-(v)}{\max(n-1, 1)}, \quad x_2(v) = \frac{d^+(v)}{\max(n-1, 1)}, \quad x_3(v) = \frac{\min(d^-(v),d^+(v))}{\max(n-1,1)}
+	x_1(v) & = \frac{d^-(v)}{\max(n-1, 1)}, \quad x_2(v) = \frac{d^+(v)}{\max(n-1, 1)}, \quad x_3(v) = \frac{\min(d^-(v),d^+(v))}{\max(n-1,1)}
 \end{align}
 
 The clustering coefficient \cite{watts1998} captures local cycle density, making it a natural predictor for FVS membership.
@@ -742,10 +1821,10 @@ Weighted NLL loss with class weights $w_c = n / (2 \cdot |C_c|)$, cosine anneali
 v2 extends the feature set to 11 channels:
 
 \begin{enumerate}
-  \item Degree-like channels (same as v1).
-  \item \textbf{RWSE} \cite{dwivedi2023}: Random Walk Structural Encodings --- short-range return probabilities at steps $\{2, 3, 4\}$.
-  \item \textbf{Motif counts} \cite{ahmed2015}: triangle count, 4-cycle participation, 4-clique-style counts.
-  \item \textbf{$k$-core number} $\kappa(v)$ \cite{batagelj2003}: vertices deep in dense cores are more likely to be in any FVS.
+	\item Degree-like channels (same as v1).
+	\item \textbf{RWSE} \cite{dwivedi2023}: Random Walk Structural Encodings --- short-range return probabilities at steps $\{2, 3, 4\}$.
+	\item \textbf{Motif counts} \cite{ahmed2015}: triangle count, 4-cycle participation, 4-clique-style counts.
+	\item \textbf{$k$-core number} $\kappa(v)$ \cite{batagelj2003}: vertices deep in dense cores are more likely to be in any FVS.
 \end{enumerate}
 
 The model architecture retains the GraphSAGE backbone but with upgraded input (in\_channels = 11). RWSE directly captures short-range cycle return probability, providing a continuous proxy for FVS membership likelihood.
@@ -757,30 +1836,30 @@ v3 is designed for precision-first hybrid coupling, with every architectural and
 \subsection{Feature Engineering (16 channels)}
 
 \begin{itemize}
-  \item Extended RWSE horizon: steps $\{2, 3, 4, 6, 8, 12, 16\}$.
-  \item \textbf{SCC-aware channels} (directed): SCC size, SCC membership depth — vertices in large SCCs are more critical for DFVS.
-  \item Cycle-score interaction features.
-  \item Directional ratio features: $d^-/(d^-+d^+)$.
-  \item Reduced reliance on expensive motif channels.
+	\item Extended RWSE horizon: steps $\{2, 3, 4, 6, 8, 12, 16\}$.
+	\item \textbf{SCC-aware channels} (directed): SCC size, SCC membership depth — vertices in large SCCs are more critical for DFVS.
+	\item Cycle-score interaction features.
+	\item Directional ratio features: $d^-/(d^-+d^+)$.
+	\item Reduced reliance on expensive motif channels.
 \end{itemize}
 
 \subsection{Model Architecture: DirectedFVSNetV3}
 
 \begin{enumerate}
-  \item Input projection layer.
-  \item 5 residual GATv2 blocks \cite{brody2022} with forward and reverse message paths.
-  \item Per-layer fusion projections.
-  \item Global readout context concatenated to each node embedding.
-  \item Single-logit output per node (sigmoid probability).
+	\item Input projection layer.
+	\item 5 residual GATv2 blocks \cite{brody2022} with forward and reverse message paths.
+	\item Per-layer fusion projections.
+	\item Global readout context concatenated to each node embedding.
+	\item Single-logit output per node (sigmoid probability).
 \end{enumerate}
 
 \subsection{Training Innovations}
 
 \begin{itemize}
-  \item \textbf{AsymmetricFVSLoss}: Penalizes false positives more strongly than false negatives, directly matching the precision-first coupling requirement.
-  \item \textbf{Warmup + cosine LR + gradient clipping}.
-  \item \textbf{Checkpoint metric}: topk-precision@8\% --- the top 8\% of predicted FVS vertices' precision, matching the hard-fix cap used at inference.
-  \item 200 epochs (vs.\ 100 for v1/v2).
+	\item \textbf{AsymmetricFVSLoss}: Penalizes false positives more strongly than false negatives, directly matching the precision-first coupling requirement.
+	\item \textbf{Warmup + cosine LR + gradient clipping}.
+	\item \textbf{Checkpoint metric}: topk-precision@8\% --- the top 8\% of predicted FVS vertices' precision, matching the hard-fix cap used at inference.
+	\item 200 epochs (vs.\ 100 for v1/v2).
 \end{itemize}
 
 \section{GNN-DKMA}
@@ -790,28 +1869,28 @@ v3 is designed for precision-first hybrid coupling, with every architectural and
 \section{Architecture Evolution Summary}
 
 \begin{table}[H]
-\centering
-\caption{GNN-KMA v1/v2/v3 feature and architecture comparison}
-\label{tab:gnn_compare}
-\begin{tabular}{llll}
-\toprule
-\textbf{Aspect} & \textbf{v1} & \textbf{v2} & \textbf{v3} \\
-\midrule
-Feature channels & 3 & 11 & 16 \\
-Clustering coeff. & \checkmark & --- & --- \\
-RWSE & --- & steps $\{2,3,4\}$ & steps $\{2\ldots16\}$ \\
-Motif counts & --- & \checkmark & reduced \\
-$k$-core & --- & \checkmark & --- \\
-SCC channels & --- & --- & \checkmark \\
-Backbone & GraphSAGE & GraphSAGE & GATv2 \\
-Depth & 3 layers & 3 layers & 5 residual blocks \\
-Bidirectional & No & No & Yes (fwd+rev) \\
-Global readout & No & No & Yes \\
-Loss & NLL & NLL & AsymmetricFVSLoss \\
-Checkpoint metric & Val F1 & Val F1 & topk-prec@8\% \\
-Epochs & 100 & 100 & 200 \\
-\bottomrule
-\end{tabular}
+	\centering
+	\caption{GNN-KMA v1/v2/v3 feature and architecture comparison}
+	\label{tab:gnn_compare}
+	\begin{tabular}{llll}
+		\toprule
+		\textbf{Aspect}   & \textbf{v1} & \textbf{v2}       & \textbf{v3}           \\
+		\midrule
+		Feature channels  & 3           & 11                & 16                    \\
+		Clustering coeff. & \checkmark  & ---               & ---                   \\
+		RWSE              & ---         & steps $\{2,3,4\}$ & steps $\{2\ldots16\}$ \\
+		Motif counts      & ---         & \checkmark        & reduced               \\
+		$k$-core          & ---         & \checkmark        & ---                   \\
+		SCC channels      & ---         & ---               & \checkmark            \\
+		Backbone          & GraphSAGE   & GraphSAGE         & GATv2                 \\
+		Depth             & 3 layers    & 3 layers          & 5 residual blocks     \\
+		Bidirectional     & No          & No                & Yes (fwd+rev)         \\
+		Global readout    & No          & No                & Yes                   \\
+		Loss              & NLL         & NLL               & AsymmetricFVSLoss     \\
+		Checkpoint metric & Val F1      & Val F1            & topk-prec@8\%         \\
+		Epochs            & 100         & 100               & 200                   \\
+		\bottomrule
+	\end{tabular}
 \end{table}
 
 %% ═══════════════════════════════════════════════════════════════════════════
@@ -824,10 +1903,10 @@ Epochs & 100 & 100 & 200 \\
 The codebase is organized into four layers:
 
 \begin{enumerate}
-  \item \textbf{C++ Algorithm Engine} (\texttt{cpp\_engine/}): High-performance solver implementations (BST, IC, MA, KMA, DKMA, directed variants). Compiled as a Python extension module via \texttt{build\_engine.py}.
-  \item \textbf{Python Orchestration} (\texttt{experiments/}): Benchmark drivers, pipeline runners, hybrid runtime, suite runner with resume semantics.
-  \item \textbf{Data Pipeline} (\texttt{data/}): Real-world graph download, synthetic graph generation, TXT-to-PT conversion with solver labels.
-  \item \textbf{GNN Stack} (\texttt{gnn\_model/}): Feature engineering, model definitions, training loop, runtime inference integration.
+	\item \textbf{C++ Algorithm Engine} (\texttt{cpp\_engine/}): High-performance solver implementations (BST, IC, MA, KMA, DKMA, directed variants). Compiled as a Python extension module via \texttt{build\_engine.py}.
+	\item \textbf{Python Orchestration} (\texttt{experiments/}): Benchmark drivers, pipeline runners, hybrid runtime, suite runner with resume semantics.
+	\item \textbf{Data Pipeline} (\texttt{data/}): Real-world graph download, synthetic graph generation, TXT-to-PT conversion with solver labels.
+	\item \textbf{GNN Stack} (\texttt{gnn\_model/}): Feature engineering, model definitions, training loop, runtime inference integration.
 \end{enumerate}
 
 \section{Data Structures and Key Abstractions}
@@ -876,61 +1955,61 @@ The dataset generation pipeline is designed around five goals:
 \subsection{Dataset Composition}
 
 \begin{table}[H]
-\centering
-\caption{Undirected graph categories and weights}
-\label{tab:undirected_cats}
-\begin{tabular}{lll}
-\toprule
-\textbf{Category} & \textbf{Weight} & \textbf{Graph Model} \\
-\midrule
-real\_world & 20\% & NetworkX / PyG / OGB / SNAP \\
-scale\_free & 20\% & Barab\'{a}si--Albert \cite{barabasi1999} \\
-small\_world & 20\% & Watts--Strogatz \cite{watts1998} \\
-random\_er & 20\% & Erd\H{o}s--R\'{e}nyi \cite{erdos1959} \\
-grids\_trees & 20\% & Grid + Random tree \\
-\bottomrule
-\end{tabular}
+	\centering
+	\caption{Undirected graph categories and weights}
+	\label{tab:undirected_cats}
+	\begin{tabular}{lll}
+		\toprule
+		\textbf{Category} & \textbf{Weight} & \textbf{Graph Model}                     \\
+		\midrule
+		real\_world       & 20\%            & NetworkX / PyG / OGB / SNAP              \\
+		scale\_free       & 20\%            & Barab\'{a}si--Albert \cite{barabasi1999} \\
+		small\_world      & 20\%            & Watts--Strogatz \cite{watts1998}         \\
+		random\_er        & 20\%            & Erd\H{o}s--R\'{e}nyi \cite{erdos1959}    \\
+		grids\_trees      & 20\%            & Grid + Random tree                       \\
+		\bottomrule
+	\end{tabular}
 \end{table}
 
 \begin{table}[H]
-\centering
-\caption{Directed graph categories and weights}
-\label{tab:directed_cats}
-\begin{tabular}{lll}
-\toprule
-\textbf{Category} & \textbf{Weight} & \textbf{Graph Model} \\
-\midrule
-real\_world\_ego & 30\% & SNAP ego-networks \\
-scale\_free & 20\% & Directed BA projection \\
-random\_er & 20\% & Directed Erd\H{o}s--R\'{e}nyi \\
-directed\_grids & 15\% & Oriented grid with reverse-edge injection \\
-dags & 15\% & GN DAG-style generator \\
-\bottomrule
-\end{tabular}
+	\centering
+	\caption{Directed graph categories and weights}
+	\label{tab:directed_cats}
+	\begin{tabular}{lll}
+		\toprule
+		\textbf{Category} & \textbf{Weight} & \textbf{Graph Model}                      \\
+		\midrule
+		real\_world\_ego  & 30\%            & SNAP ego-networks                         \\
+		scale\_free       & 20\%            & Directed BA projection                    \\
+		random\_er        & 20\%            & Directed Erd\H{o}s--R\'{e}nyi             \\
+		directed\_grids   & 15\%            & Oriented grid with reverse-edge injection \\
+		dags              & 15\%            & GN DAG-style generator                    \\
+		\bottomrule
+	\end{tabular}
 \end{table}
 
 \subsection{Track Size Intent}
 
 \begin{table}[H]
-\centering
-\caption{Track-specific graph size ranges}
-\label{tab:track_sizes}
-\begin{tabular}{ll}
-\toprule
-\textbf{Track} & \textbf{Node Range} \\
-\midrule
-exact\_track & $\approx 10$--35 nodes \\
-heuristic\_track & $\approx 100$--5000 nodes \\
-\bottomrule
-\end{tabular}
+	\centering
+	\caption{Track-specific graph size ranges}
+	\label{tab:track_sizes}
+	\begin{tabular}{ll}
+		\toprule
+		\textbf{Track}   & \textbf{Node Range}       \\
+		\midrule
+		exact\_track     & $\approx 10$--35 nodes    \\
+		heuristic\_track & $\approx 100$--5000 nodes \\
+		\bottomrule
+	\end{tabular}
 \end{table}
 
 \subsection{Ground-Truth Labels}
 
 Labels are obtained from exact solvers where feasible:
 \begin{itemize}
-  \item \textbf{exact\_track}: IC-based labels (high-fidelity, near-optimal, 60-second timeout).
-  \item \textbf{heuristic\_track}: KMA-based labels (practical large-instance behavior).
+	\item \textbf{exact\_track}: IC-based labels (high-fidelity, near-optimal, 60-second timeout).
+	\item \textbf{heuristic\_track}: KMA-based labels (practical large-instance behavior).
 \end{itemize}
 
 Each label is validated by an acyclicity check before saving. Invalid labels are discarded; a CSV status ledger tracks completed, timeout, and invalid outcomes.
@@ -939,8 +2018,8 @@ Each label is validated by an acyclicity check before saving. Invalid labels are
 
 The full dataset comprises \textbf{100K undirected + 100K directed} labeled FVS graphs, publicly released on Kaggle:
 \begin{itemize}
-  \item \url{https://www.kaggle.com/datasets/tawkirazizrahman/fvs-synthetic-dataset-100k}
-  \item \url{https://www.kaggle.com/datasets/tawkirazizrahman/fvs-synthetic-dataset-20k}
+	\item \url{https://www.kaggle.com/datasets/tawkirazizrahman/fvs-synthetic-dataset-100k}
+	\item \url{https://www.kaggle.com/datasets/tawkirazizrahman/fvs-synthetic-dataset-20k}
 \end{itemize}
 To our knowledge, this is the largest publicly available labeled FVS dataset.
 
@@ -953,20 +2032,20 @@ We use PACE 2022 as a held-out real-world stress test for heuristic solvers. The
 \section{Evaluation Metrics}
 
 \begin{itemize}
-  \item \textbf{FVS size}: Number of vertices in the computed solution (smaller is better).
-  \item \textbf{Runtime}: Wall-clock seconds (includes kernelization and GNN inference).
-  \item \textbf{Validity}: Boolean indicating whether the returned set is a valid FVS (acyclicity check).
-  \item \textbf{PACE score}: $100 \times \frac{\OPT_{\text{FVS}}}{\text{solved FVS}}$, averaged over all instances.
-  \item \textbf{Optimality}: For exact-track comparisons, percentage of instances matching the optimal solution.
+	\item \textbf{FVS size}: Number of vertices in the computed solution (smaller is better).
+	\item \textbf{Runtime}: Wall-clock seconds (includes kernelization and GNN inference).
+	\item \textbf{Validity}: Boolean indicating whether the returned set is a valid FVS (acyclicity check).
+	\item \textbf{PACE score}: $100 \times \frac{\OPT_{\text{FVS}}}{\text{solved FVS}}$, averaged over all instances.
+	\item \textbf{Optimality}: For exact-track comparisons, percentage of instances matching the optimal solution.
 \end{itemize}
 
 \section{Experimental Protocol}
 
 \begin{itemize}
-  \item Timeouts: $n \leq 50 \to 100$s; $50 < n \leq 200 \to 500$s; $n > 200 \to 600$s.
-  \item Results logged to CSV with resume semantics.
-  \item All benchmarks run on the same hardware for comparability.
-  \item GNN inference uses the pre-trained weights from \texttt{gnn\_model/weights/}.
+	\item Timeouts: $n \leq 50 \to 100$s; $50 < n \leq 200 \to 500$s; $n > 200 \to 600$s.
+	\item Results logged to CSV with resume semantics.
+	\item All benchmarks run on the same hardware for comparability.
+	\item GNN inference uses the pre-trained weights from \texttt{gnn\_model/weights/}.
 \end{itemize}
 
 %% ═══════════════════════════════════════════════════════════════════════════
@@ -979,18 +2058,18 @@ We use PACE 2022 as a held-out real-world stress test for heuristic solvers. The
 \subsection{Optimality on Completed Instances}
 
 \begin{table}[H]
-\centering
-\caption{Exact solver performance on undirected exact-track instances}
-\label{tab:exact_results}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Solver} & \textbf{Mean Score (\%)} & \textbf{Instances Completed} \\
-\midrule
-Brute Force & 100.0 & 7,263 \\
-BST Exact & 100.0 & 9,046 \\
-IC Exact & 100.0 & 9,906 \\
-\bottomrule
-\end{tabular}
+	\centering
+	\caption{Exact solver performance on undirected exact-track instances}
+	\label{tab:exact_results}
+	\begin{tabular}{lcc}
+		\toprule
+		\textbf{Solver} & \textbf{Mean Score (\%)} & \textbf{Instances Completed} \\
+		\midrule
+		Brute Force     & 100.0                    & 7,263                        \\
+		BST Exact       & 100.0                    & 9,046                        \\
+		IC Exact        & 100.0                    & 9,906                        \\
+		\bottomrule
+	\end{tabular}
 \end{table}
 
 All three solvers achieve 100\% optimality on their completed instances, confirming the correctness of the C++ implementations. IC completes the most instances, consistent with its better theoretical complexity. All solvers produce identical solutions on shared instances, providing cross-validation of correctness.
@@ -1002,27 +2081,27 @@ Exact success rates decline with graph size ($n$) and solution size ($k$). IC an
 \section{PACE 2022 Heuristic Results}
 
 \begin{table}[H]
-\centering
-\caption{PACE 2022 benchmark results (200 instances, 600s total)}
-\label{tab:pace_results}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Solver} & \textbf{Mean Score (/100)} & \textbf{Total Time (s)} \\
-\midrule
-PACE 2022 Winner & 100.00 & 600.0 \\
-\midrule
-directed KMA (pop=90) & 78.93 & 18,709.9 \\
-directed GNN-KMA-3 $\theta$=0.85 (pop=30) & 78.64 & 15,617.5 \\
-directed GNN-KMA-3 $\theta$=0.95 (pop=30) & 77.75 & 15,302.6 \\
-directed GNN-KMA $\theta$ (pop=30) & 76.98 & 8,380.7 \\
-directed DKMA (pop=30) & 76.49 & 8,367.2 \\
-directed KMA (pop=30) & 76.37 & 7,820.3 \\
-directed GNN-KMA-3 small $\theta$=0.9 (pop=30) & 76.27 & 16,480.6 \\
-directed DKMA (pop=15) & 75.90 & 4,641.9 \\
-directed KMA (pop=15) & 75.69 & 4,209.2 \\
-directed MA (pop=90) & 71.84 & 18,281.5 \\
-\bottomrule
-\end{tabular}
+	\centering
+	\caption{PACE 2022 benchmark results (200 instances, 600s total)}
+	\label{tab:pace_results}
+	\begin{tabular}{lcc}
+		\toprule
+		\textbf{Solver}                                & \textbf{Mean Score (/100)} & \textbf{Total Time (s)} \\
+		\midrule
+		PACE 2022 Winner                               & 100.00                     & 600.0                   \\
+		\midrule
+		directed KMA (pop=90)                          & 78.93                      & 18,709.9                \\
+		directed GNN-KMA-3 $\theta$=0.85 (pop=30)      & 78.64                      & 15,617.5                \\
+		directed GNN-KMA-3 $\theta$=0.95 (pop=30)      & 77.75                      & 15,302.6                \\
+		directed GNN-KMA $\theta$ (pop=30)             & 76.98                      & 8,380.7                 \\
+		directed DKMA (pop=30)                         & 76.49                      & 8,367.2                 \\
+		directed KMA (pop=30)                          & 76.37                      & 7,820.3                 \\
+		directed GNN-KMA-3 small $\theta$=0.9 (pop=30) & 76.27                      & 16,480.6                \\
+		directed DKMA (pop=15)                         & 75.90                      & 4,641.9                 \\
+		directed KMA (pop=15)                          & 75.69                      & 4,209.2                 \\
+		directed MA (pop=90)                           & 71.84                      & 18,281.5                \\
+		\bottomrule
+	\end{tabular}
 \end{table}
 
 \section{Comparative Analysis}
@@ -1047,9 +2126,9 @@ Increasing population from 30 to 90 boosts KMA from 76.37 to 78.93 at a $3\times
 
 The progression v1 $\to$ v2 $\to$ v3 shows systematic improvement:
 \begin{itemize}
-  \item v1 to v2: RWSE and $k$-core channels provide stronger structural discrimination.
-  \item v2 to v3: SCC-aware channels, GATv2 architecture with bidirectional messages, global readout, and precision-oriented loss all contribute to improved precision.
-  \item Checkpoint metric change (F1 $\to$ topk-precision@8\%) directly addresses the false-positive cost in hard-fixing.
+	\item v1 to v2: RWSE and $k$-core channels provide stronger structural discrimination.
+	\item v2 to v3: SCC-aware channels, GATv2 architecture with bidirectional messages, global readout, and precision-oriented loss all contribute to improved precision.
+	\item Checkpoint metric change (F1 $\to$ topk-precision@8\%) directly addresses the false-positive cost in hard-fixing.
 \end{itemize}
 
 %% ═══════════════════════════════════════════════════════════════════════════
@@ -1077,20 +2156,20 @@ For heuristic-track instances ($n = 100$--$5000$), MA-family solvers provide nea
 
 The KMA + GNN-KMA v3 combination is recommended for production use when:
 \begin{itemize}
-  \item The graph is large (heuristic track) and exact methods are infeasible.
-  \item Trained GNN weights are available for the target graph family.
-  \item A 600-second time budget is available.
+	\item The graph is large (heuristic track) and exact methods are infeasible.
+	\item Trained GNN weights are available for the target graph family.
+	\item A 600-second time budget is available.
 \end{itemize}
 Pure KMA with population 90 is recommended when GNN weights are unavailable or the graph family differs significantly from the training distribution.
 
 \section{Limitations}
 
 \begin{itemize}
-  \item \textbf{Parameter sensitivity}: KMA and DKMA performance depends on population size, early-stop, and commit threshold. Tuning across graph families would require additional experiments.
-  \item \textbf{Large dense graphs}: On dense graphs where kernelization is less effective, all heuristic methods face a harder residual problem. GNN guidance helps less when the kernel is large.
-  \item \textbf{GNN training cost}: Generating labeled datasets for v3 training requires running IC/KMA on 200K graphs, which is computationally expensive ($\sim$hours on a workstation).
-  \item \textbf{Distribution shift}: GNN models trained on synthetic data may generalize less well to competition instances with different structural properties.
-  \item \textbf{PACE gap}: Our best score of 78.93 is significantly below the PACE winner's 99.91, reflecting the sophistication of competition-tuned implementations.
+	\item \textbf{Parameter sensitivity}: KMA and DKMA performance depends on population size, early-stop, and commit threshold. Tuning across graph families would require additional experiments.
+	\item \textbf{Large dense graphs}: On dense graphs where kernelization is less effective, all heuristic methods face a harder residual problem. GNN guidance helps less when the kernel is large.
+	\item \textbf{GNN training cost}: Generating labeled datasets for v3 training requires running IC/KMA on 200K graphs, which is computationally expensive ($\sim$hours on a workstation).
+	\item \textbf{Distribution shift}: GNN models trained on synthetic data may generalize less well to competition instances with different structural properties.
+	\item \textbf{PACE gap}: Our best score of 78.93 is significantly below the PACE winner's 99.91, reflecting the sophistication of competition-tuned implementations.
 \end{itemize}
 
 %% ═══════════════════════════════════════════════════════════════════════════
@@ -1099,13 +2178,13 @@ Pure KMA with population 90 is recommended when GNN weights are unavailable or t
 %% ═══════════════════════════════════════════════════════════════════════════
 
 \begin{enumerate}
-  \item \textbf{Adaptive kernelization}: Develop data-driven rules that learn which reduction rules are most effective for a given graph family.
-  \item \textbf{Improved GNN architectures}: Explore equivariant GNNs, higher-order message passing, or transformer-based architectures for richer structural representations.
-  \item \textbf{Online learning}: Update GNN weights incrementally as new solved instances become available, enabling continuous improvement.
-  \item \textbf{Distributed MA}: Parallelize population evolution across multiple cores/machines for larger population budgets.
-  \item \textbf{Theoretical bounds}: Prove approximation guarantees for the KMA/DKMA pipeline under specific graph families.
-  \item \textbf{Multi-objective optimization}: Explore Pareto frontiers trading FVS size against runtime or robustness.
-  \item \textbf{PACE 2024/2025}: Apply the framework to future PACE challenge problems to evaluate generality.
+	\item \textbf{Adaptive kernelization}: Develop data-driven rules that learn which reduction rules are most effective for a given graph family.
+	\item \textbf{Improved GNN architectures}: Explore equivariant GNNs, higher-order message passing, or transformer-based architectures for richer structural representations.
+	\item \textbf{Online learning}: Update GNN weights incrementally as new solved instances become available, enabling continuous improvement.
+	\item \textbf{Distributed MA}: Parallelize population evolution across multiple cores/machines for larger population budgets.
+	\item \textbf{Theoretical bounds}: Prove approximation guarantees for the KMA/DKMA pipeline under specific graph families.
+	\item \textbf{Multi-objective optimization}: Explore Pareto frontiers trading FVS size against runtime or robustness.
+	\item \textbf{PACE 2024/2025}: Apply the framework to future PACE challenge problems to evaluate generality.
 \end{enumerate}
 
 %% ═══════════════════════════════════════════════════════════════════════════
@@ -1118,13 +2197,13 @@ This report presented a comprehensive research and engineering framework for the
 Our primary contributions are:
 
 \begin{enumerate}
-  \item \textbf{KMA}: A kernelized memetic algorithm that integrates directed SCC reduction with C++-backed evolutionary search, eliminating 60--90\% of directed-graph vertices before search and consistently outperforming plain MA by 4--5 PACE points.
+	\item \textbf{KMA}: A kernelized memetic algorithm that integrates directed SCC reduction with C++-backed evolutionary search, eliminating 60--90\% of directed-graph vertices before search and consistently outperforming plain MA by 4--5 PACE points.
 
-  \item \textbf{DKMA}: A dynamic re-kernelization loop with SHORTONE contractions, topological diversification, and gain local search, enabling an opening-up effect that progressively shrinks the search space as evolutionary consensus develops.
+	\item \textbf{DKMA}: A dynamic re-kernelization loop with SHORTONE contractions, topological diversification, and gain local search, enabling an opening-up effect that progressively shrinks the search space as evolutionary consensus develops.
 
-  \item \textbf{GNN-KMA v1/v2/v3}: Three generations of GNN-guided hybrid solvers, culminating in v3 with 16-channel SCC-aware features, GATv2 residual blocks, asymmetric precision loss, and topk-precision@8\% checkpointing. GNN-KMA v3 achieves 78.64/100 on PACE 2022, comparable to running KMA with 3$\times$ more population.
+	\item \textbf{GNN-KMA v1/v2/v3}: Three generations of GNN-guided hybrid solvers, culminating in v3 with 16-channel SCC-aware features, GATv2 residual blocks, asymmetric precision loss, and topk-precision@8\% checkpointing. GNN-KMA v3 achieves 78.64/100 on PACE 2022, comparable to running KMA with 3$\times$ more population.
 
-  \item \textbf{FVS Dataset}: The largest publicly available labeled FVS dataset (200K graphs), enabling reproducible evaluation and future learning-based research.
+	\item \textbf{FVS Dataset}: The largest publicly available labeled FVS dataset (200K graphs), enabling reproducible evaluation and future learning-based research.
 \end{enumerate}
 
 The framework demonstrates that principled integration of kernelization, evolutionary search, and learned guidance yields competitive solvers while remaining conceptually transparent and extensible. The code, datasets, and weights are publicly available at the project repository, making this work a platform for continued research in combinatorial optimization.
@@ -1135,89 +2214,89 @@ The framework demonstrates that principled integration of kernelization, evoluti
 \bibliographystyle{unsrtnat}
 \begin{thebibliography}{99}
 
-\bibitem{karp1972}
-R.~M. Karp, ``Reducibility among combinatorial problems,''
-in \emph{Complexity of Computer Computations}, 1972, pp.~85--103.
+	\bibitem{karp1972}
+	R.~M. Karp, ``Reducibility among combinatorial problems,''
+	in \emph{Complexity of Computer Computations}, 1972, pp.~85--103.
 
-\bibitem{becker1996}
-A.~Becker and D.~Geiger, ``Optimization of Pearl's method of conditioning and
-greedy-like approximation algorithms for the weighted maximum acyclic subgraph
-problem,'' \emph{Artificial Intelligence}, vol.~105, pp.~1--2, 1996.
+	\bibitem{becker1996}
+	A.~Becker and D.~Geiger, ``Optimization of Pearl's method of conditioning and
+	greedy-like approximation algorithms for the weighted maximum acyclic subgraph
+	problem,'' \emph{Artificial Intelligence}, vol.~105, pp.~1--2, 1996.
 
-\bibitem{thomasse2010}
-S.~Thomass{\'e}, ``A $4k^2$ kernel for feedback vertex set,''
-\emph{ACM Transactions on Algorithms}, vol.~6, no.~2, 2010.
+	\bibitem{thomasse2010}
+	S.~Thomass{\'e}, ``A $4k^2$ kernel for feedback vertex set,''
+	\emph{ACM Transactions on Algorithms}, vol.~6, no.~2, 2010.
 
-\bibitem{reed2004}
-B.~Reed, K.~Smith, and A.~Vetta, ``Finding odd cycle transversals,''
-\emph{Operations Research Letters}, vol.~32, no.~4, pp.~299--301, 2004.
+	\bibitem{reed2004}
+	B.~Reed, K.~Smith, and A.~Vetta, ``Finding odd cycle transversals,''
+	\emph{Operations Research Letters}, vol.~32, no.~4, pp.~299--301, 2004.
 
-\bibitem{cygan2015}
-M.~Cygan et al., \emph{Parameterized Algorithms}. Springer, 2015.
+	\bibitem{cygan2015}
+	M.~Cygan et al., \emph{Parameterized Algorithms}. Springer, 2015.
 
-\bibitem{chen2008dfvs}
-J.~Chen, Y.~Liu, S.~Lu, B.~O'Sullivan, and I.~Razgon, ``A fixed-parameter
-algorithm for the directed feedback vertex set problem,''
-\emph{Journal of the ACM}, vol.~55, no.~5, 2008.
+	\bibitem{chen2008dfvs}
+	J.~Chen, Y.~Liu, S.~Lu, B.~O'Sullivan, and I.~Razgon, ``A fixed-parameter
+	algorithm for the directed feedback vertex set problem,''
+	\emph{Journal of the ACM}, vol.~55, no.~5, 2008.
 
-\bibitem{lust2010}
-T.~Lust and J.~Teghem, ``The multiobjective multidimensional knapsack problem:
-a survey and a new approach,'' \emph{International Transactions in Operations
-Research}, 2010. (Memetic algorithm framework reference.)
+	\bibitem{lust2010}
+	T.~Lust and J.~Teghem, ``The multiobjective multidimensional knapsack problem:
+	a survey and a new approach,'' \emph{International Transactions in Operations
+		Research}, 2010. (Memetic algorithm framework reference.)
 
-\bibitem{grossmann2022ipec}
-G.~Grossmann, M.~Heuer, P.~Schulz, and D.~Strash,
-``Targeted solution methods for the minimum feedback vertex set problem,''
-in \emph{Proc.~17th IPEC}, LIPIcs vol.~249, 2022,
-doi:10.4230/LIPIcs.IPEC.2022.26.
+	\bibitem{grossmann2022ipec}
+	G.~Grossmann, M.~Heuer, P.~Schulz, and D.~Strash,
+	``Targeted solution methods for the minimum feedback vertex set problem,''
+	in \emph{Proc.~17th IPEC}, LIPIcs vol.~249, 2022,
+	doi:10.4230/LIPIcs.IPEC.2022.26.
 
-\bibitem{figiel2022esa}
-A.~Figiel, V.~Froese, A.~Nichterlein, and R.~Niedermeier,
-``Improved parameterized algorithms for the directed feedback vertex set
-problem,'' in \emph{Proc.~ESA 2022}, LIPIcs, 2022,
-doi:10.4230/LIPIcs.ESA.2022.53.
+	\bibitem{figiel2022esa}
+	A.~Figiel, V.~Froese, A.~Nichterlein, and R.~Niedermeier,
+	``Improved parameterized algorithms for the directed feedback vertex set
+	problem,'' in \emph{Proc.~ESA 2022}, LIPIcs, 2022,
+	doi:10.4230/LIPIcs.ESA.2022.53.
 
-\bibitem{langedal2022}
-K.~Langedal, J.~Langguth, F.~Manne, and D.~Strash,
-``Efficient minimum weight vertex cover heuristics using graph neural
-networks'' (Mount-Doom FVS solver), Zenodo, 2022,
-doi:10.5281/zenodo.6630611.
+	\bibitem{langedal2022}
+	K.~Langedal, J.~Langguth, F.~Manne, and D.~Strash,
+	``Efficient minimum weight vertex cover heuristics using graph neural
+	networks'' (Mount-Doom FVS solver), Zenodo, 2022,
+	doi:10.5281/zenodo.6630611.
 
-\bibitem{hamilton2017}
-W.~Hamilton, Z.~Ying, and J.~Leskovec, ``Inductive representation learning
-on large graphs'' (GraphSAGE), in \emph{NeurIPS}, 2017.
+	\bibitem{hamilton2017}
+	W.~Hamilton, Z.~Ying, and J.~Leskovec, ``Inductive representation learning
+	on large graphs'' (GraphSAGE), in \emph{NeurIPS}, 2017.
 
-\bibitem{brody2022}
-S.~Brody, U.~Alon, and E.~Yahav, ``How attentive are graph attention
-networks?'' (GATv2), in \emph{ICLR}, 2022.
+	\bibitem{brody2022}
+	S.~Brody, U.~Alon, and E.~Yahav, ``How attentive are graph attention
+	networks?'' (GATv2), in \emph{ICLR}, 2022.
 
-\bibitem{dwivedi2023}
-V.~P. Dwivedi et al., ``Benchmarking graph neural networks,''
-\emph{Journal of Machine Learning Research}, vol.~24, no.~43, 2023.
+	\bibitem{dwivedi2023}
+	V.~P. Dwivedi et al., ``Benchmarking graph neural networks,''
+	\emph{Journal of Machine Learning Research}, vol.~24, no.~43, 2023.
 
-\bibitem{ahmed2015}
-N.~K. Ahmed, J.~Neville, R.~A. Rossi, and N.~Duffield,
-``Efficient graphlet counting for large networks,'' in \emph{ICDM}, 2015.
+	\bibitem{ahmed2015}
+	N.~K. Ahmed, J.~Neville, R.~A. Rossi, and N.~Duffield,
+	``Efficient graphlet counting for large networks,'' in \emph{ICDM}, 2015.
 
-\bibitem{batagelj2003}
-V.~Batagelj and M.~Zaversnik, ``An $\mathcal{O}(m)$ algorithm for cores
-decomposition of networks,'' arXiv:cs/0310049, 2003.
+	\bibitem{batagelj2003}
+	V.~Batagelj and M.~Zaversnik, ``An $\mathcal{O}(m)$ algorithm for cores
+	decomposition of networks,'' arXiv:cs/0310049, 2003.
 
-\bibitem{tarjan1972}
-R.~E. Tarjan, ``Depth-first search and linear graph algorithms,''
-\emph{SIAM Journal on Computing}, vol.~1, no.~2, 1972.
+	\bibitem{tarjan1972}
+	R.~E. Tarjan, ``Depth-first search and linear graph algorithms,''
+	\emph{SIAM Journal on Computing}, vol.~1, no.~2, 1972.
 
-\bibitem{barabasi1999}
-A.-L. Barab{\'a}si and R.~Albert, ``Emergence of scaling in random
-networks,'' \emph{Science}, vol.~286, 1999.
+	\bibitem{barabasi1999}
+	A.-L. Barab{\'a}si and R.~Albert, ``Emergence of scaling in random
+	networks,'' \emph{Science}, vol.~286, 1999.
 
-\bibitem{watts1998}
-D.~J. Watts and S.~H. Strogatz, ``Collective dynamics of `small-world'
-networks,'' \emph{Nature}, vol.~393, 1998.
+	\bibitem{watts1998}
+	D.~J. Watts and S.~H. Strogatz, ``Collective dynamics of `small-world'
+	networks,'' \emph{Nature}, vol.~393, 1998.
 
-\bibitem{erdos1959}
-P.~Erd\H{o}s and A.~R{\'e}nyi, ``On random graphs I,''
-\emph{Publicationes Mathematicae}, vol.~6, 1959.
+	\bibitem{erdos1959}
+	P.~Erd\H{o}s and A.~R{\'e}nyi, ``On random graphs I,''
+	\emph{Publicationes Mathematicae}, vol.~6, 1959.
 
 \end{thebibliography}
 
