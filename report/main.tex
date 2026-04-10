@@ -207,7 +207,7 @@ We implement three classes of solvers: \emph{exact FPT solvers} (Bounded Search 
 
 Our primary algorithmic contributions are: (i) the \textbf{Kernelized Memetic Algorithm (KMA)}, which integrates graph-theoretic reduction rules --- including SCC-based directed reduction that eliminates 60--90\% of vertices --- with a C++-backed evolutionary search; (ii) the \textbf{Dynamic Kernelized Memetic Algorithm (DKMA)}, which interleaves population-based search with progressive commitment and re-kernelization, enabling an \emph{opening-up} effect that standard static kernelization cannot exploit; and (iii) three generations of \textbf{GNN-KMA} models (v1, v2, v3), where graph neural networks predict high-confidence \fvs{} vertices that are hard-fixed prior to KMA, under a precision-first coupling strategy that caps false-positive risk.
 
-Experimentally, we generate and publicly release the largest labeled \fvs{} dataset to our knowledge: 100K undirected and 100K directed graphs spanning five graph families and two difficulty tracks, with solver-verified ground-truth labels. On the PACE 2022 benchmark, our best configuration (directed GNN-KMA-3 with $\theta = 0.85$, timeout=60s) achieves a mean score of 79.1917 out of 100, while directed GNN-KMA-3 with $\theta = 0.70$ and timeout=30s reaches 78.6449, competitive with world-class solvers. All exact solvers achieve 100\% optimality on their completed instances.
+Experimentally, we generate and publicly release a large \fvs{} graph input dataset: 100K undirected and 100K directed graphs spanning five graph families and two difficulty tracks, with solver-verified ground-truth labels. On the PACE 2022 benchmark, our best configuration (directed GNN-KMA-3 with $\theta = 0.85$, timeout=60s) achieves a mean score of 79.1917 out of 100, while directed GNN-KMA-3 with $\theta = 0.70$ and timeout=30s reaches 78.6449, competitive with world-class solvers. All exact solvers achieve 100\% optimality on their completed instances.
 
 This work demonstrates that integrating kernelization, evolutionary search, and graph neural network guidance into a unified pipeline yields competitive solutions across both small exact instances and large heuristic-track graphs.
 
@@ -275,8 +275,8 @@ This project pursues the following objectives:
 	\item Design, implement, and evaluate the \kma{} algorithm, integrating graph-theoretic kernelization with a population-based memetic search.
 	\item Design and evaluate \dkma{}, a dynamic extension of \kma{} that interleaves search and re-kernelization.
 	\item Design and evaluate three generations of GNN-guided hybrid solvers (\gnnkma{} v1/v2/v3) that use learned vertex-level predictions to guide combinatorial search.
-	\item Construct and release the largest labeled \fvs{} dataset publicly available, comprising 200K graphs across diverse families.
-	\item Benchmark all solvers on synthetic datasets and the PACE 2022 competition instances, with comparison against the official PACE winner.
+	\item Construct and release the a large labeled \fvs{} input dataset publicly available, comprising 200K graphs across diverse families.
+	\item Benchmark all exact and heuristic solvers on synthetic datasets and only the heuristic solvers on the PACE 2022 competition instances, with comparison against the official PACE winner.
 \end{enumerate}
 
 \section{Summary of Contributions}
@@ -1063,7 +1063,7 @@ Iterative Compression (IC) is an FPT algorithm for \fvs{} that builds a solution
 
 At each compression step, there are $2^{k+1}$ partitions of $F$. For each partition, the inner compression problem on the disjoint vertex set can be solved in $\bigO{4^{k-|F_1|} \cdot n^2}$ using a disjoint-paths-based subroutine. Over $n$ steps, the total complexity is $\bigO{5^k \cdot k \cdot n^2}$ \cite{cygan2015}.
 
-The IC solver is implemented in C++ in the \texttt{cpp\_engine} module. It is exact, guaranteed to find the optimal solution or correctly report that no solution of size $\leq k$ exists. In our evaluation, IC completes 9,906 exact-track instances with 100\% optimality before timeout.
+The IC solver is implemented in C++ in the \texttt{cpp\_engine} module. It is exact, guaranteed to find the optimal solution. In our evaluation, IC completes 9,906 exact-track instances with 100\% optimality before timeout.
 
 \subsection{Advantages and Limitations}
 
@@ -1416,7 +1416,7 @@ The MA runs in $\bigO{P \cdot G_{\max} \cdot |V|^2}$ per generation due to cycle
 		Population  & \texttt{--pop}       & 20      & Individuals per generation  \\
 		Generations & \texttt{--gens}      & 100     & Max evolutionary iterations \\
 		Early-stop  & \texttt{--earlystop} & 30      & Gens without improvement    \\
-		Timeout     & \texttt{--timeout}   & 600s    & Hard wall-clock limit       \\
+		Timeout     & \texttt{--timeout}   & 60s    & Hard wall-clock limit       \\
 		\bottomrule
 	\end{tabular}
 \end{table}
@@ -1661,7 +1661,7 @@ The function \texttt{kernelize\_directed\_graph} applies stronger directed rules
 The MA on the kernel is dispatched to the C++ engine (\texttt{cpp\_engine}), which exposes:
 \begin{itemize}
 	\item \texttt{cpp\_engine.solve\_undirected\_KMA} / \texttt{solve\_directed\_KMA}
-	\item Fallback chain: KMA $\to$ KME $\to$ MA
+	\item Fallback chain: KMA $\to$ MA
 \end{itemize}
 
 The C++ solver enforces a hard wall-clock timeout internally, returning the best solution found within the budget.
@@ -1918,7 +1918,7 @@ The codebase is organized into four layers:
 At runtime, the hybrid solver dispatches to the best available C++ solver:
 
 \begin{lstlisting}[language=Python, caption=Solver dispatch in run\_hybrid.py]
-for fn_name in ['solve_undirected_KMA', 'solve_undirected_KME', 'solve_undirected_MA']:
+for fn_name in ['solve_undirected_KMA', 'solve_undirected_MA']:
     if hasattr(cpp_engine, fn_name):
         solver_fn = getattr(cpp_engine, fn_name)
         break
@@ -2021,7 +2021,7 @@ To our knowledge, this is the largest publicly available labeled FVS dataset.
 
 \section{PACE 2022 Benchmark}
 
-The Parameterized Algorithms and Computational Experiments (PACE) Challenge 2022 \cite{grossmann2022ipec} focused on FVS and provided 200 public undirected test instances curated from real-world and synthetic sources, ranging from small exact instances to large heuristic-track graphs. The official solution checker and world-class solver implementations serve as baselines.
+The Parameterized Algorithms and Computational Experiments (PACE) Challenge 2022 \cite{grossmann2022ipec} focused on FVS and provided 200 public directed test instances curated from real-world and synthetic sources, ranging from small exact instances to large heuristic-track graphs. The official solution checker and world-class solver implementations serve as baselines.
 
 We use PACE 2022 as a held-out real-world stress test for heuristic solvers. The PACE winner (Sylwester Swat, Pozna\'{n} University of Technology) achieved a reported score of 99.91/100.
 
@@ -2190,6 +2190,15 @@ This section presents all generated result figures referenced by the experimenta
 	\label{fig:runtime-vs-n}
 \end{figure}
 
+
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{figures/pareto_analysis.png}
+	\caption{Pareto analysis showing quality-time trade-offs among solver configurations.}
+	\label{fig:pareto-analysis}
+\end{figure}
+
 \subsection{PACE and Solver-Level Score Comparisons}
 
 \begin{figure}[htbp]
@@ -2206,19 +2215,7 @@ This section presents all generated result figures referenced by the experimenta
 	\label{fig:gnn-models-mean-score}
 \end{figure}
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.92\textwidth]{figures/gnn_comparison_directed.csv.png}
-	\caption{Directed-track comparison of GNN-based solver variants from the aggregated evaluation CSV.}
-	\label{fig:gnn-comparison-directed}
-\end{figure}
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.92\textwidth]{figures/pareto_analysis.png}
-	\caption{Pareto analysis showing quality-time trade-offs among solver configurations.}
-	\label{fig:pareto-analysis}
-\end{figure}
 
 \subsection{Timeout-Grouped Performance}
 
@@ -2243,28 +2240,10 @@ This section presents all generated result figures referenced by the experimenta
 	\label{fig:group-60-mean-score}
 \end{figure}
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.92\textwidth]{figures/group_90_mean_score.png}
-	\caption{Mean score for the 90-second timeout group (\texttt{group\_90}).}
-	\label{fig:group-90-mean-score}
-\end{figure}
 
 \subsection{Model-Family Mean Score Breakdown}
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.92\textwidth]{figures/models_0_mean_score.png}
-	\caption{Mean score for model group \texttt{models\_0}.}
-	\label{fig:models-0-mean-score}
-\end{figure}
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.92\textwidth]{figures/models_3_mean_score.png}
-	\caption{Mean score for model group \texttt{models\_3}.}
-	\label{fig:models-3-mean-score}
-\end{figure}
 
 \begin{figure}[htbp]
 	\centering
